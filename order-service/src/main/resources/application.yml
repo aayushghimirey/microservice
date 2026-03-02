@@ -1,0 +1,30 @@
+spring:
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    topics:
+      order-event: ORDER_EVENT
+
+
+  feign:
+    inventory-service:
+      url: http://localhost:8082
+
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/orders
+    username: postgres
+    password: admin
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      show-sql: true
+    properties:
+      hibernate.format_sql: true
+
+server:
+  port: 8083
+
+app:
+  kafka:
