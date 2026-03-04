@@ -1,21 +1,35 @@
 spring:
-  kafka:
-    bootstrap-servers: localhost:9092
+
+  application:
+    name: menu-service
+
   datasource:
     url: jdbc:postgresql://localhost:5432/menu
     username: postgres
     password: admin
 
-  feign:
-    inventory-service:
-      url: http://localhost:8080
-
   jpa:
     hibernate:
       ddl-auto: update
-      show-sql: true
-    properties:
-      hibernate.format_sql: true
+      format_sql: true
+    show-sql: true
+
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
 
 server:
   port: 8082
+
+
+# Custom application properties
+app:
+  clients:
+    inventory-service:
+      url: http://localhost:8080
+
+logging:
+  level:
+    com.sts: DEBUG
+    org.hibernate.SQL: DEBUG
