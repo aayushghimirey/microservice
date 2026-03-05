@@ -1,6 +1,6 @@
 package com.sts.dto.request;
 
-import com.sts.constant.enums.StockType;
+import com.sts.utils.enums.StockType;
 
 public record GetStockQueryRequest(
         String name,

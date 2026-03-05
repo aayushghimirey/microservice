@@ -20,6 +20,6 @@ app:
     topics:
       order-event: ORDER_EVENT
   clients:
-    inventory-service:
+    menu-service:
       url: http://localhost:8082
 

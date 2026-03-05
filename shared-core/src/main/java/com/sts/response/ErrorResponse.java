@@ -14,19 +14,11 @@ import java.util.List;
 @AllArgsConstructor
 public class ErrorResponse {
 
-  private LocalDateTime timestamp;
-  private int status;
-  private String error;
-  private String message;
-  private String path;
-  private List<FieldError> errors;
-
-  @Getter
-  @Setter
-  @NoArgsConstructor
-  @AllArgsConstructor
-  public static class FieldError {
-    private String field;
+    private LocalDateTime timestamp;
+    private int status;
+    private String error;
     private String message;
-  }
+    private String path;
+
+
 }

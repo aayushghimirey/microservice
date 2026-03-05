@@ -20,6 +20,9 @@ public final class StockUpdateMapper {
 
         if (command.variants() != null) {
             for (var variantCmd : command.variants()) {
+                // check for exiting variants
+                // filter by name if, update variant name exits then apply updated ,
+                // else build new variant
                 Optional<StockVariant> existingVariant = stock.getVariants().stream()
                         .filter(v -> v.getName().equals(variantCmd.name()))
                         .findFirst();
@@ -29,6 +32,7 @@ public final class StockUpdateMapper {
                     variant = existingVariant.get();
                     updateVariant(variant, variantCmd);
                 } else {
+                    // new variant
                     variant = buildVariant(variantCmd);
                     stock.addVariant(variant);
                 }

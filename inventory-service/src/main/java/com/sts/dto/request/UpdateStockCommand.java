@@ -1,7 +1,7 @@
 package com.sts.dto.request;
 
-import com.sts.constant.enums.StockType;
-import com.sts.constant.enums.UnitType;
+import com.sts.utils.enums.StockType;
+import com.sts.utils.enums.UnitType;
 
 import java.math.BigDecimal;
 import java.util.List;

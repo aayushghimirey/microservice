@@ -3,15 +3,12 @@ package com.sts;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
-public class MenuServiceApplication {
-
+public class InventoryApplication {
     public static void main(String[] args) {
-        SpringApplication.run(MenuServiceApplication.class, args);
+        SpringApplication.run(InventoryApplication.class, args);
     }
 }

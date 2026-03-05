@@ -3,7 +3,7 @@ package com.sts.model.stock;
 import com.sts.domain.Audit;
 import jakarta.persistence.*;
 import lombok.*;
-import com.sts.constant.enums.StockType;
+import com.sts.utils.enums.StockType;
 
 import java.util.ArrayList;
 import java.util.List;

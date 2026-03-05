@@ -11,7 +11,6 @@ import com.sts.pagination.PageRequestDto;
 import com.sts.response.ApiResponse;
 import com.sts.response.AppResponse;
 import com.sts.response.PagedResponse;
-import com.sts.service.stock.StockQueryService;
 import com.sts.service.stock.StockService;
 import com.sts.service.stock.StockTransactionService;
 import lombok.AllArgsConstructor;
@@ -31,7 +30,6 @@ public class StockController {
 
     private final StockService stockService;
     private final StockTransactionService stockTransactionService;
-    private final StockQueryService stockQueryService;
 
     /*
      *  Commands
@@ -60,20 +58,20 @@ public class StockController {
      * */
     @GetMapping
     public ResponseEntity<PagedResponse<List<StockResponse>>> getAllStocks(PageRequestDto pageRequestDto) {
-        var stocks = stockQueryService.getAllStock(pageRequestDto.buildPageable());
+        var stocks = stockService.getAllStock(pageRequestDto.buildPageable());
         return AppResponse.success(stocks, "Stocks fetched successfully");
     }
 
     @GetMapping("/filter")
     public ResponseEntity<PagedResponse<List<StockResponse>>> getAllStocks(PageRequestDto pageRequestDto, GetStockQueryRequest queryRequest) {
-        var stocks = stockQueryService.getAllQueryStock(queryRequest, pageRequestDto.buildPageable());
+        var stocks = stockService.getAllQueryStock(queryRequest, pageRequestDto.buildPageable());
         return AppResponse.success(stocks, "Stocks fetched successfully");
     }
 
-    @GetMapping("/{variant}")
+    @GetMapping("/{stockId}")
     public ResponseEntity<PagedResponse<List<StockResponse.VariantResponse>>> getAllVariants(
             @PathVariable("stockId") UUID stockId, PageRequestDto pageRequestDto) {
-        var variants = stockQueryService.getAllVariantByStockId(stockId, pageRequestDto.buildPageable());
+        var variants = stockService.getAllVariantByStockId(stockId, pageRequestDto.buildPageable());
         return AppResponse.success(variants, "Variants fetched successfully");
     }
 

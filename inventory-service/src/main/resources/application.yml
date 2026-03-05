@@ -17,5 +17,5 @@ server:
 app:
   kafka:
     bootstrap-servers: localhost:9092
-  topics:
-    purchase-event: PURCHASE_EVENT
+    topics:
+      purchase-event: PURCHASE_EVENT

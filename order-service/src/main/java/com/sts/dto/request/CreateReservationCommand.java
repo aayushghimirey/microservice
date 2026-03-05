@@ -3,7 +3,7 @@ package com.sts.dto.request;
 import java.util.List;
 import java.util.UUID;
 
-public record ReservationRequest(
+public record CreateReservationCommand(
         UUID tableId,
         List<ReservationItemRequest> items
 

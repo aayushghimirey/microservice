@@ -25,6 +25,7 @@ public class PurchaseMapper {
                 .discountAmount(command.discountAmount() != null ? command.discountAmount() : BigDecimal.ZERO)
                 .build();
 
+        // mapping purchased items
         if (command.items() != null) {
             command.items().forEach(itemCmd -> {
                 PurchaseItem item = buildPurchaseItem(itemCmd);

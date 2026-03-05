@@ -27,13 +27,12 @@ public abstract class Audit {
     @Column(updatable = false, nullable = false)
     private UUID id;
 
-
     @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime createdDateTime;
 
     @LastModifiedDate
-    private LocalDateTime updatedAt;
+    private LocalDateTime lastUpdateDateTime;
 
     @Column(name = "is_deleted", nullable = false)
     private boolean deleted = false;

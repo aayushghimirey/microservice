@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import com.sts.constant.enums.UnitType;
+import com.sts.utils.enums.UnitType;
 
 @Entity
 @Builder

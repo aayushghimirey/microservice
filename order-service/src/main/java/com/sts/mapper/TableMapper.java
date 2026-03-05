@@ -1,6 +1,6 @@
 package com.sts.mapper;
 
-import com.sts.dto.request.TableRequest;
+import com.sts.dto.request.CreateTableCommand;
 import com.sts.dto.response.TableResponse;
 import com.sts.model.Table;
 import org.springframework.stereotype.Component;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TableMapper {
 
-    public Table buildTable(TableRequest request) {
+    public Table buildTable(CreateTableCommand request) {
         Table table = new Table();
         table.setName(request.name());
         table.setCapacity(request.capacity());

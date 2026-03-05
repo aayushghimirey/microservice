@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.sts.response.ErrorResponse;
@@ -17,27 +18,32 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DuplicatePurchase.class)
     public ResponseEntity<ErrorResponse> handleException(DuplicatePurchase e, HttpServletRequest request) {
-        return build(HttpStatus.BAD_REQUEST, e.getMessage(), request.getRequestURI(), List.of());
+        return build(HttpStatus.BAD_REQUEST, e.getMessage(), request.getRequestURI());
     }
 
     @ExceptionHandler(VariantNotFound.class)
     public ResponseEntity<ErrorResponse> handleException(VariantNotFound e, HttpServletRequest request) {
-        return build(HttpStatus.BAD_REQUEST, e.getMessage(), request.getRequestURI(), List.of());
+        return build(HttpStatus.BAD_REQUEST, e.getMessage(), request.getRequestURI());
     }
 
     @ExceptionHandler(UnitNotFound.class)
     public ResponseEntity<ErrorResponse> handleException(UnitNotFound e, HttpServletRequest request) {
-        return build(HttpStatus.BAD_REQUEST, e.getMessage(), request.getRequestURI(), List.of());
+        return build(HttpStatus.BAD_REQUEST, e.getMessage(), request.getRequestURI());
     }
 
     @ExceptionHandler(StockNotFound.class)
     public ResponseEntity<ErrorResponse> handleException(StockNotFound e, HttpServletRequest request) {
-        return build(HttpStatus.BAD_REQUEST, e.getMessage(), request.getRequestURI(), List.of());
+        return build(HttpStatus.BAD_REQUEST, e.getMessage(), request.getRequestURI());
     }
 
     @ExceptionHandler(DuplicateStock.class)
     public ResponseEntity<ErrorResponse> handleException(DuplicateStock e, HttpServletRequest request) {
-        return build(HttpStatus.BAD_REQUEST, e.getMessage(), request.getRequestURI(), List.of());
+        return build(HttpStatus.BAD_REQUEST, e.getMessage(), request.getRequestURI());
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidEnum(HttpMessageNotReadableException ex, HttpServletRequest request) {
+        return build(HttpStatus.BAD_REQUEST, ex.getMessage(), request.getRequestURI());
     }
 
     @ExceptionHandler(Exception.class)
@@ -45,18 +51,18 @@ public class GlobalExceptionHandler {
             Exception ex, HttpServletRequest request) {
         log.error("Unexpected error: {}", ex.getMessage(), ex);
         return build(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred",
-                request.getRequestURI(), List.of());
+                request.getRequestURI());
     }
 
 
     private ResponseEntity<ErrorResponse> build(
-            HttpStatus status, String message, String path, List<ErrorResponse.FieldError> errors) {
+            HttpStatus status, String message, String path) {
         return ResponseEntity.status(status).body(new ErrorResponse(
                 LocalDateTime.now(),
                 status.value(),
                 status.getReasonPhrase(),
                 message,
-                path,
-                errors));
+                path
+        ));
     }
 }

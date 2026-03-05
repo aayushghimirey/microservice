@@ -9,6 +9,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
+/*
+* Application event for updating stock items after purchase / adjustment
+* */
 @Component
 public class StockUpdateEventBuilder {
 

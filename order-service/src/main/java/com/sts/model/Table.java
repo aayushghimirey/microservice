@@ -1,10 +1,8 @@
 package com.sts.model;
 
 import com.sts.domain.Audit;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.OneToMany;
+import com.sts.utils.enums.TableStatus;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -25,6 +23,9 @@ public class Table extends Audit {
     private String name;
     private int capacity;
     private String location;
+
+    @Enumerated(EnumType.STRING)
+    private TableStatus status;
 
     @OneToMany(mappedBy = "table", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true)
     @Builder.Default

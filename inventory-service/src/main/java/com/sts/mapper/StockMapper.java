@@ -23,6 +23,7 @@ public class StockMapper {
                 .type(command.type())
                 .build();
 
+        // adding variants
         for (var variantCmd : command.variants()) {
             stock.addVariant(buildVariant(variantCmd));
         }
@@ -38,6 +39,7 @@ public class StockMapper {
 
         sv.setOpeningStock(variant.openingStock() != null ? variant.openingStock() : BigDecimal.ZERO);
 
+        // adding units for variant
         for (var unitCmd : variant.units()) {
             sv.addUnit(buildUnit(unitCmd));
         }
