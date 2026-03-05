@@ -1,7 +1,8 @@
-package com.sts.dto;
+package com.sts.dto.response;
+
 
 import com.sts.constant.enums.TransactionReference;
-import com.sts.entity.stock.StockTransaction;
+import com.sts.model.stock.StockTransaction;
 import lombok.Builder;
 import lombok.Getter;
 

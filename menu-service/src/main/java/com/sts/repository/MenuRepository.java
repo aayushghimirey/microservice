@@ -15,4 +15,6 @@ import java.util.UUID;
 
 
     Page<Menu> findAllByDeletedFalse(Pageable pageable);
-}
+
+     boolean findByName(String name);
+ }

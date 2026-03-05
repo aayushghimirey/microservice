@@ -1,10 +1,10 @@
-package com.sts.stock.application.usecase;
+package com.sts.service.stock;
 
 
+import com.sts.dto.response.StockTransactionResponse;
 import com.sts.model.stock.StockVariant;
 import com.sts.model.stock.VariantUnit;
 import com.sts.repository.StockTransactionRepository;
-import com.sts.dto.StockTransactionResponse;
 import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class StockTransactionUseCase {
+public class StockTransactionService {
 
     private final StockTransactionRepository stockTransactionRepository;
     private final EntityManager entityManager;

@@ -1,11 +1,11 @@
-package com.sts.stock.domain.model;
+package com.sts.model.stock;
 
 import com.sts.domain.Audit;
-import com.sts.stock.domain.enums.UnitType;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import com.sts.constant.enums.UnitType;
 
 @Entity
 @Builder

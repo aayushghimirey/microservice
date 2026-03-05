@@ -1,21 +1,27 @@
 package com.sts.topics;
 
-
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
 @Getter
 @Setter
-public static class KafkaConfig {
+@Component
+@ConfigurationProperties(prefix = "app.kafka")
+public class KafkaProperties {
+
     private String bootstrapServers;
     private Map<String, String> topics;
+    private Map<String, String> groups;
 
     public String getTopic(String key) {
-        return topics != null ? topics.get(key) : null;
+        return topics.get(key);
+    }
+
+    public String getGroup(String key) {
+        return groups.get(key);
     }
 }

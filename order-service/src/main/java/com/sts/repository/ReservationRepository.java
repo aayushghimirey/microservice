@@ -1,4 +1,4 @@
-package com.sts.domain.repository;
+package com.sts.repository;
 
 import com.sts.domain.model.Reservation;
 import org.springframework.data.jpa.repository.JpaRepository;

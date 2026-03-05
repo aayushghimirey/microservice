@@ -1,6 +1,7 @@
-package com.sts.infra.config;
+package com.sts.config;
 
 import com.sts.event.PurchaseCreatedEvent;
+import com.sts.topics.KafkaProperties;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -24,20 +25,15 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class KafkaListenerConfig {
 
-    @Value("${spring.kafka.bootstrap-servers}")
-    private String bootstrapServers;
-
-    @Value("${spring.kafka.groups.finance-group}")
-    private String finance_group;
-
+    private final KafkaProperties kafkaProperties;
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @Bean
     public ConsumerFactory<String, PurchaseCreatedEvent> financeConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
 
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, finance_group);
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaProperties.getBootstrapServers());
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaProperties.getGroups().get("finance-group"));
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
 

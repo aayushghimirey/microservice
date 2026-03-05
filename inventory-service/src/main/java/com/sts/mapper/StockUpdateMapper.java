@@ -1,5 +1,7 @@
-package com.sts.stock.command;
+package com.sts.mapper;
 
+import com.sts.dto.request.StockAdjustmentCommand;
+import com.sts.dto.request.UpdateStockCommand;
 import com.sts.model.stock.Stock;
 import com.sts.model.stock.StockVariant;
 import com.sts.model.stock.VariantUnit;
@@ -8,10 +10,11 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-@Component
-public class StockUpdateHandler {
+public final class StockUpdateMapper {
 
-    public void updateStock(Stock stock, UpdateStockCommand command) {
+    private StockUpdateMapper(){}
+
+    public static void updateStock(Stock stock, UpdateStockCommand command) {
         if (command.name() != null) stock.setName(command.name());
         if (command.type() != null) stock.setType(command.type());
 
@@ -34,7 +37,7 @@ public class StockUpdateHandler {
     }
 
     // stock adjustment
-    public void adjustStock(StockVariant variant, VariantUnit variantUnit, StockAdjustmentCommand command) {
+    public static void adjustStock(StockVariant variant, VariantUnit variantUnit, StockAdjustmentCommand command) {
         BigDecimal currentStock = variant.getCurrentStock();
         BigDecimal adjustmentQuantity = command.quantity().multiply(variantUnit.getConversionRate());
 
@@ -45,7 +48,7 @@ public class StockUpdateHandler {
 
     }
 
-    private void updateVariant(StockVariant variant, UpdateStockCommand.VariantItemUpdate cmd) {
+    private static void updateVariant(StockVariant variant, UpdateStockCommand.VariantItemUpdate cmd) {
         if (cmd.baseUnit() != null) variant.setBaseUnit(cmd.baseUnit());
         if (cmd.openingStock() != null && cmd.openingStock().compareTo(BigDecimal.ZERO) > 0) {
             variant.setOpeningStock(cmd.openingStock());
@@ -72,7 +75,7 @@ public class StockUpdateHandler {
         }
     }
 
-    private StockVariant buildVariant(UpdateStockCommand.VariantItemUpdate cmd) {
+    private static StockVariant buildVariant(UpdateStockCommand.VariantItemUpdate cmd) {
         StockVariant variant = StockVariant.builder()
                 .name(cmd.name())
                 .baseUnit(cmd.baseUnit())
@@ -88,7 +91,7 @@ public class StockUpdateHandler {
         return variant;
     }
 
-    private VariantUnit buildUnit(UpdateStockCommand.VariantUnitUpdate cmd) {
+    private static VariantUnit buildUnit(UpdateStockCommand.VariantUnitUpdate cmd) {
         return VariantUnit.builder()
                 .name(cmd.name())
                 .conversionRate(cmd.conversionRate() != null ? cmd.conversionRate() : BigDecimal.ONE)

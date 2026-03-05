@@ -1,5 +1,6 @@
 package com.sts.exception;
 
+import com.sts.response.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -11,10 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Central exception handler for the Menu Service.
- * Returns a consistent {@link ErrorResponse} body for all error types.
- */
+
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {

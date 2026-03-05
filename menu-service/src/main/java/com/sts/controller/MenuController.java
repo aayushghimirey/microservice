@@ -1,7 +1,10 @@
 package com.sts.controller;
 
 import com.sts.event.MenuResponse;
- import com.sts.utils.constant.AppConstants;
+import com.sts.response.ApiResponse;
+import com.sts.response.AppResponse;
+import com.sts.response.PagedResponse;
+import com.sts.utils.constant.AppConstants;
 import com.sts.dto.CreateMenuRequest;
 import com.sts.pagination.PageRequestDto;
 import com.sts.service.MenuService;
@@ -12,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -22,21 +26,21 @@ public class MenuController {
 
     private final MenuService menuService;
 
-
     @PostMapping
-    public ResponseEntity<MenuResponse> createMenu(@Valid @RequestBody CreateMenuRequest request) {
-        MenuResponse response = menuService.createMenu(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    public ResponseEntity<ApiResponse<MenuResponse>> createMenu(@Valid @RequestBody CreateMenuRequest request) {
+        var menu = menuService.createMenu(request);
+        return AppResponse.success(menu, "Menu created successfully");
     }
 
     @GetMapping
-    public ResponseEntity<Page<MenuResponse>> getAllMenus(@ModelAttribute PageRequestDto pageRequestDto) {
-        Page<MenuResponse> menus = menuService.getAllMenus(pageRequestDto.buildPageable());
-        return ResponseEntity.ok(menus);
+    public ResponseEntity<PagedResponse<List<MenuResponse>>> getAllMenus(@ModelAttribute PageRequestDto pageRequestDto) {
+        var menus = menuService.getAllMenus(pageRequestDto.buildPageable());
+        return AppResponse.success(menus, "Menus fetched successfully");
     }
 
     @GetMapping("/{menuId}")
-    public ResponseEntity<MenuResponse> getMenuById(@PathVariable UUID menuId) {
-        return ResponseEntity.ok(menuService.getMenuById(menuId));
+    public ResponseEntity<ApiResponse<MenuResponse>> getMenuById(@PathVariable UUID menuId) {
+        var menuById = menuService.getMenuById(menuId);
+        return AppResponse.success(menuById, "Menu fetched successfully");
     }
 }

@@ -1,9 +1,9 @@
-package com.sts.stock.domain.model;
+package com.sts.model.stock;
 
 import com.sts.domain.Audit;
-import com.sts.stock.domain.enums.StockType;
 import jakarta.persistence.*;
 import lombok.*;
+import com.sts.constant.enums.StockType;
 
 import java.util.ArrayList;
 import java.util.List;

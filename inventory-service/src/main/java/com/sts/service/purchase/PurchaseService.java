@@ -1,18 +1,21 @@
-package com.sts.purchase.application.usecase;
+package com.sts.service.purchase;
 
 
+import com.sts.dto.request.CreatePurchaseCommand;
+import com.sts.dto.response.PurchaseResponse;
 import com.sts.entity.OutboxEvent;
 import com.sts.entity.OutboxEventType;
 import com.sts.event.PurchaseCreatedEvent;
+import com.sts.event.StockUpdateEventBuilder;
+import com.sts.exception.DuplicatePurchase;
 import com.sts.mapper.OutboxMapper;
-import com.sts.purchase.command.CreatePurchaseCommand;
-import com.sts.purchase.command.PurchaseCommandHandler;
-import com.sts.repository.OutboxEventRepository;
+import com.sts.mapper.PurchaseMapper;
 import com.sts.model.purchase.Purchase;
+import com.sts.repository.OutboxEventRepository;
 import com.sts.repository.PurchaseRepository;
-import com.sts.stock.application.event.StockUpdateEventBuilder;
 import com.sts.repository.StockVariantRepository;
-import com.sts.topics.KafkaTopics;
+import com.sts.topics.KafkaProperties;
+import com.sts.utils.contant.AppConstants;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -23,22 +26,26 @@ import tools.jackson.databind.ObjectMapper;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class PurchaseCommandUseCase {
+public class PurchaseService {
 
     private final PurchaseRepository purchaseRepository;
-    private final PurchaseCommandHandler purchaseCommandHandler;
+    private final PurchaseMapper purchaseMapper;
     private final OutboxMapper outboxMapper;
     private final OutboxEventRepository outboxEventRepository;
-    private final KafkaTopics topics;
+    private final KafkaProperties kafkaProperties;
     private final ObjectMapper objectMapper;
     private final ApplicationEventPublisher publisher;
-    private final StockVariantRepository stockVariantRepository;
     private final StockUpdateEventBuilder stockUpdateEventBuilder;
 
     @Transactional
-    public Purchase createPurchase(CreatePurchaseCommand command) {
+    public PurchaseResponse createPurchase(CreatePurchaseCommand command) {
         try {
-            Purchase purchase = purchaseCommandHandler.buildPurchase(command);
+
+            if (purchaseRepository.exitsByInvoiceNumber(command.invoiceNumber())) {
+                throw new DuplicatePurchase(String.format(AppConstants.INVOICE_NUMBER_EXITS, command.invoiceNumber()));
+            }
+
+            Purchase purchase = purchaseMapper.buildPurchase(command);
             purchaseRepository.save(purchase);
 
             // publish to kafka
@@ -47,7 +54,7 @@ public class PurchaseCommandUseCase {
             // publish to application
             publisher.publishEvent(stockUpdateEventBuilder.buildStockUpdateEventFromPurchase(purchase));
 
-            return purchase;
+            return purchaseMapper.toResponse(purchase);
         } catch (Exception e) {
             throw new RuntimeException("Failed to create purchase", e);
         }
@@ -56,7 +63,7 @@ public class PurchaseCommandUseCase {
 
     // ------------- HELPER / BUILDER ----------------
 
-    private void publishPurchaseCreatedEvent(Purchase purchase) throws Exception {
+    private void publishPurchaseCreatedEvent(Purchase purchase) {
         PurchaseCreatedEvent event = new PurchaseCreatedEvent(
                 purchase.getId(),
                 purchase.getBillingType(),
@@ -72,7 +79,7 @@ public class PurchaseCommandUseCase {
                 purchase.getId().toString(),
                 OutboxEventType.CREATED,
                 payload,
-                topics.getPurchaseEvent()
+                kafkaProperties.getTopic("purchase-event")
         );
 
         outboxEventRepository.save(outboxEvent);

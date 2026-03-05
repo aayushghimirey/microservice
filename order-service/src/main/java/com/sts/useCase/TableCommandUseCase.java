@@ -2,7 +2,7 @@ package com.sts.useCase;
 
 import com.sts.command.CreateTableCommand;
 import com.sts.domain.model.Table;
-import com.sts.domain.repository.TableRepository;
+import com.sts.repository.TableRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

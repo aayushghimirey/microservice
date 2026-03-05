@@ -2,7 +2,7 @@ package com.sts.useCase;
 
 
 import com.sts.domain.model.Table;
-import com.sts.domain.repository.TableRepository;
+import com.sts.repository.TableRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,11 +1,10 @@
-package com.sts.stock.domain.repository;
+package com.sts.repository;
 
 import java.util.UUID;
 
-import com.sts.stock.domain.model.StockVariant;
+import com.sts.model.stock.StockVariant;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -14,4 +13,4 @@ public interface StockVariantRepository
     Page<StockVariant> findAllByStockId(UUID stockId, Pageable pageable);
 
 
-}
+ }

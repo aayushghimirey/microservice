@@ -1,51 +1,97 @@
-package com.sts.stock.api;
+package com.sts.controller;
 
 
-import com.sts.stock.command.CreateStockCommand;
-import com.sts.stock.command.StockAdjustmentCommand;
-import com.sts.stock.command.UpdateStockCommand;
-import com.sts.stock.application.usecase.StockCommandUseCase;
-import com.sts.stock.dto.StockResponse;
-import com.sts.stock.application.mapper.StockMapper;
+import com.sts.dto.request.CreateStockCommand;
+import com.sts.dto.request.GetStockQueryRequest;
+import com.sts.dto.request.StockAdjustmentCommand;
+import com.sts.dto.request.UpdateStockCommand;
+import com.sts.dto.response.StockResponse;
+import com.sts.dto.response.StockTransactionResponse;
+import com.sts.pagination.PageRequestDto;
+import com.sts.response.ApiResponse;
+import com.sts.response.AppResponse;
+import com.sts.response.PagedResponse;
+import com.sts.service.stock.StockQueryService;
+import com.sts.service.stock.StockService;
+import com.sts.service.stock.StockTransactionService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/stock")
 @AllArgsConstructor
-public class StockCommandController {
+public class StockController {
 
-    private final StockCommandUseCase stockCommandUseCase;
-    private final StockMapper stockMapper;
+    private final StockService stockService;
+    private final StockTransactionService stockTransactionService;
+    private final StockQueryService stockQueryService;
 
+
+    /*
+     *  Commands
+     * */
     @PostMapping
-    public ResponseEntity<StockResponse> createStock(@Valid @RequestBody CreateStockCommand command) {
-        var stock = stockCommandUseCase.createStock(command);
-
-        StockResponse response = stockMapper.toResponse(stock);
-
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse<StockResponse>> createStock(@Valid @RequestBody CreateStockCommand command) {
+        var stock = stockService.createStock(command);
+        return AppResponse.success(stock, "Stock created successfully");
     }
 
     @PostMapping("/{stockId}")
-    public ResponseEntity<StockResponse> updateStock(@PathVariable("stockId") UUID stockId, @Valid @RequestBody UpdateStockCommand command) {
-        var stock = stockCommandUseCase.updateStock(stockId, command);
-
-        StockResponse response = stockMapper.toResponse(stock);
-
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse<StockResponse>> updateStock(@PathVariable("stockId") UUID stockId,
+                                                                  @Valid @RequestBody UpdateStockCommand command) {
+        var stock = stockService.updateStock(stockId, command);
+        return AppResponse.success(stock, "Stock updated successfully");
     }
 
     @PostMapping("/adjustment")
-    public ResponseEntity<Void> createAdjustment(@RequestBody StockAdjustmentCommand command) {
-        stockCommandUseCase.createAdjustmentStock(command);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<ApiResponse<Void>> createAdjustment(@RequestBody StockAdjustmentCommand command) {
+        stockService.createAdjustmentStock(command);
+        return AppResponse.noContent();
+    }
+
+    /*
+     * Query
+     * */
+    @GetMapping
+    public ResponseEntity<PagedResponse<List<StockResponse>>> getAllStocks(PageRequestDto pageRequestDto) {
+        var stocks = stockQueryService.getAllStock(pageRequestDto.buildPageable());
+        return AppResponse.success(stocks, "Stocks fetched successfully");
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<PagedResponse<List<StockResponse>>> getAllStocks(PageRequestDto pageRequestDto, GetStockQueryRequest queryRequest) {
+        var stocks = stockQueryService.getAllQueryStock(queryRequest, pageRequestDto.buildPageable());
+        return AppResponse.success(stocks, "Stocks fetched successfully");
+    }
+
+    @GetMapping("/{variant}")
+    public ResponseEntity<PagedResponse<List<StockResponse.VariantResponse>>> getAllVariants(
+            @PathVariable("stockId") UUID stockId, PageRequestDto pageRequestDto) {
+        var variants = stockQueryService.getAllVariantByStockId(stockId, pageRequestDto.buildPageable());
+        return AppResponse.success(variants, "Variants fetched successfully");
+    }
+
+    /*
+     * Transactions
+     * */
+    @GetMapping("/transaction")
+    public ResponseEntity<PagedResponse<List<StockTransactionResponse>>> getAllStockTransaction(PageRequestDto pageRequestDto) {
+        var transactions = stockTransactionService.getAllTransaction(pageRequestDto.buildPageable());
+        return AppResponse.success(transactions, "Transactions fetched successfully");
+    }
+
+    @GetMapping("/transaction/{variantId}")
+    public ResponseEntity<PagedResponse<List<StockTransactionResponse>>> getAllStockTransactionByVariantId(
+            @PathVariable("variantId") UUID variantId, PageRequestDto pageRequestDto) {
+        var transactions = stockTransactionService.getAllTransactionByVariantId(variantId, pageRequestDto.buildPageable());
+        return AppResponse.success(transactions, "Transactions fetched successfully");
     }
 
 }

@@ -1,4 +1,4 @@
-package com.sts.stock.application.event;
+package com.sts.event;
 
 import java.math.BigDecimal;
 import java.util.List;

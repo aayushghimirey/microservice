@@ -1,4 +1,5 @@
-package com.sts.dto.command;
+package com.sts.dto.request;
+
 
 import java.math.BigDecimal;
 import java.util.UUID;

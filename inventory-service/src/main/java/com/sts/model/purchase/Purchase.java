@@ -1,4 +1,4 @@
-package com.sts.purchase.domain.model;
+package com.sts.model.purchase;
 
 import com.sts.domain.Audit;
 import com.sts.enums.BillingType;

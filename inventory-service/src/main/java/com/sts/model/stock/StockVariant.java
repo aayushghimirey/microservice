@@ -1,4 +1,4 @@
-package com.sts.stock.domain.model;
+package com.sts.model.stock;
 
 import com.sts.domain.Audit;
 import jakarta.persistence.*;

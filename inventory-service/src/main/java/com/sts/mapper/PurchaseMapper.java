@@ -1,17 +1,23 @@
-package com.sts.purchase.command;
+package com.sts.mapper;
 
+import com.sts.dto.request.CreatePurchaseCommand;
+import com.sts.dto.response.PurchaseResponse;
+import com.sts.exception.UnitNotFound;
+import com.sts.exception.VariantNotFound;
 import com.sts.model.purchase.Purchase;
 import com.sts.model.purchase.PurchaseItem;
 import com.sts.repository.StockVariantRepository;
 import com.sts.repository.VariantUnitRepository;
+import com.sts.utils.contant.AppConstants;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
-public class PurchaseCommandHandler {
+public class PurchaseMapper {
 
     private final StockVariantRepository stockVariantRepository;
     private final VariantUnitRepository variantUnitRepository;
@@ -43,10 +49,10 @@ public class PurchaseCommandHandler {
         if (itemCmd == null) return null;
 
         if (!stockVariantRepository.existsById(itemCmd.variantId())) {
-            throw new RuntimeException("Variant id not found");
+            throw new VariantNotFound(String.format(AppConstants.VARIANT_NOT_FOUND, itemCmd.variantId()));
         }
         if (!variantUnitRepository.existsById(itemCmd.unitId())) {
-            throw new RuntimeException("Unit id not found");
+            throw new UnitNotFound(String.format(AppConstants.UNIT_NOT_FOUND, itemCmd.unitId()));
         }
 
         return PurchaseItem.builder()
@@ -59,4 +65,32 @@ public class PurchaseCommandHandler {
     }
 
 
+    // -- response mapper -----------------------------
+    public PurchaseResponse toResponse(Purchase purchase) {
+        return new PurchaseResponse(
+                purchase.getId(),
+                purchase.getInvoiceNumber(),
+                purchase.getBillingType(),
+                purchase.getMoneyTransaction(),
+                purchase.getDiscountAmount(),
+                purchase.getSubTotal(),
+                purchase.getVatAmount(),
+                purchase.getGrossTotal(),
+                purchase.getPurchaseItems().stream()
+                        .map(this::toItemResponse)
+                        .collect(Collectors.toList())
+        );
+    }
+
+    private PurchaseResponse.PurchaseItemResponse toItemResponse(PurchaseItem item) {
+        return new PurchaseResponse.PurchaseItemResponse(
+                item.getVariantId(),
+                item.getUnitId(),
+                item.getQuantity(),
+                item.getPerUnitPrice(),
+                item.getDiscountAmount(),
+                item.getSubTotal(),
+                item.getNetTotal()
+        );
+    }
 }

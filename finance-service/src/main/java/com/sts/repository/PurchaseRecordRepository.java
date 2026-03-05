@@ -1,6 +1,6 @@
-package com.sts.domain.repository;
+package com.sts.repository;
 
-import com.sts.domain.model.PurchaseRecord;
+import com.sts.model.PurchaseRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

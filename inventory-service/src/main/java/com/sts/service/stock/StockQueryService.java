@@ -1,12 +1,16 @@
-package com.sts.stock.application.usecase;
+package com.sts.service.stock;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.sts.stock.application.query.GetStockQueryRequest;
-import com.sts.stock.application.query.GetVariantQueryRequest;
+
+import com.sts.dto.request.GetStockQueryRequest;
+import com.sts.dto.request.GetVariantQueryRequest;
+import com.sts.dto.response.StockResponse;
+import com.sts.mapper.StockMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -23,38 +27,30 @@ import jakarta.persistence.criteria.Predicate;
 import lombok.AllArgsConstructor;
 
 @Service
+@Slf4j
 @AllArgsConstructor
-public class StockQueryUseCase {
+public class StockQueryService {
 
-    private static final Logger log = LoggerFactory.getLogger(StockQueryUseCase.class);
     private final StockRepository stockRepository;
     private final StockVariantRepository stockVariantRepository;
+    private final StockMapper stockMapper;
 
     // Fetch all stocks with pagination
-    public Page<Stock> getAllStock(Pageable pageable) {
-        return stockRepository.findAll(pageable);
+    public Page<StockResponse> getAllStock(Pageable pageable) {
+        return stockRepository.findAll(pageable).map(stockMapper::toResponse);
     }
 
     // Fetch stocks with dynamic filters based on GetStockQueryRequest
-    public Page<Stock> getAllQueryStock(GetStockQueryRequest queryRequest, Pageable pageable) {
+    public Page<StockResponse> getAllQueryStock(GetStockQueryRequest queryRequest, Pageable pageable) {
         Specification<Stock> spec = buildSpecification(queryRequest);
-        return stockRepository.findAll(spec, pageable);
+        return stockRepository.findAll(spec, pageable).map(stockMapper::toResponse);
     }
 
     // Fetch all variants with pagination
-    public Page<StockVariant> getAllVariantByStockId(UUID stockId, Pageable pageable) {
-        return stockVariantRepository.findAllByStockId(stockId, pageable);
+    public Page<StockResponse.VariantResponse> getAllVariantByStockId(UUID stockId, Pageable pageable) {
+        return stockVariantRepository.findAllByStockId(stockId, pageable).map(stockMapper::toVariantResponse);
     }
 
-    // Fetch variants based on variant-specific filters
-    public Page<StockVariant> getAllQueryVariantByStockId(
-            UUID stockId,
-            GetVariantQueryRequest request,
-            Pageable pageable
-    ) {
-        Specification<StockVariant> spec = buildSpecification(request, stockId);
-        return stockVariantRepository.findAll(spec, pageable);
-    }
 
     // id validators
     public boolean validateVariantIdWithUnitId(UUID variantId, UUID unitId) {
@@ -81,26 +77,5 @@ public class StockQueryUseCase {
         };
     }
 
-    // Specification for StockVariant filtering
-    private Specification<StockVariant> buildSpecification(
-            GetVariantQueryRequest request,
-            UUID stockId
-    ) {
-        return (root, query, cb) -> {
-            List<Predicate> predicates = new ArrayList<>();
 
-            // Optional name filter
-            if (request.variantName() != null && !request.variantName().isEmpty()) {
-                predicates.add(cb.like(
-                        cb.lower(root.get("name")),
-                        "%" + request.variantName().toLowerCase() + "%"
-                ));
-            }
-
-            // Mandatory stockId filter
-            predicates.add(cb.equal(root.get("stock").get("id"), stockId));
-
-            return cb.and(predicates.toArray(new Predicate[0]));
-        };
-    }
 }

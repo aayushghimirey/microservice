@@ -1,7 +1,7 @@
 package com.sts.mapper;
 
 import com.sts.dto.CreateMenuRequest;
- import com.sts.event.MenuResponse;
+import com.sts.event.MenuResponse;
 import com.sts.model.Menu;
 import com.sts.model.MenuIngredient;
 

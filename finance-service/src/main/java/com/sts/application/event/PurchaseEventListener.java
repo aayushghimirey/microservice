@@ -1,10 +1,11 @@
 package com.sts.application.event;
 
-import com.sts.domain.model.PurchaseRecord;
-import com.sts.domain.repository.PurchaseRecordRepository;
+import com.sts.model.PurchaseRecord;
+import com.sts.repository.PurchaseRecordRepository;
 import com.sts.event.PurchaseCreatedEvent;
-import lombok.AllArgsConstructor;
+import com.sts.topics.KafkaProperties;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,22 +16,26 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
+
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class PurchaseEventListener {
 
-    private static final Logger log = LoggerFactory.getLogger(PurchaseEventListener.class);
-
-    @Value("${spring.kafka.groups.finance-group}")
-    private String finance_group;
-
-
     private final PurchaseRecordRepository purchaseRecordRepository;
+    private final KafkaProperties kafkaProperties;
 
-
-    @KafkaListener(groupId = "${spring.kafka.groups.finance-group}", topics = "${spring.kafka.topics.purchase-event}", containerFactory = "financeKafkaListenerContainerFactory")
-    public void listen(ConsumerRecord<String, PurchaseCreatedEvent> record, Acknowledgment acknowledgment) {
-        log.info("Message received form topic {}, on offset {}", record.topic(), record.offset());
+    @KafkaListener(
+            topics = "#{@kafkaProperties.getTopic('purchase-event')}",
+            groupId = "#{@kafkaProperties.getGroup('finance-group')}",
+            containerFactory = "financeKafkaListenerContainerFactory"
+    )
+    public void listen(
+            ConsumerRecord<String, PurchaseCreatedEvent> record,
+            Acknowledgment acknowledgment
+    ) {
+        log.info("Message received from topic {}, offset {}",
+                record.topic(), record.offset());
 
         try {
             PurchaseCreatedEvent value = record.value();
@@ -39,7 +44,9 @@ public class PurchaseEventListener {
             purchaseRecord.setPurchaseId(value.getPurchaseId());
             purchaseRecord.setBillingType(value.getBillingType());
             purchaseRecord.setMoneyTransaction(value.getMoneyTransaction());
-            purchaseRecord.setVatAmount(value.getVatAmount() != null ? value.getVatAmount() : BigDecimal.ZERO);
+            purchaseRecord.setVatAmount(
+                    value.getVatAmount() != null ? value.getVatAmount() : BigDecimal.ZERO
+            );
             purchaseRecord.setGrossTotal(value.getGrossTotal());
 
             purchaseRecordRepository.save(purchaseRecord);
@@ -47,11 +54,8 @@ public class PurchaseEventListener {
 
             log.info("Purchase record saved for purchaseId {}", value.getPurchaseId());
 
-
         } catch (Exception e) {
-            log.error("Failed to process message at offset {}: {}", record.offset(), e.getMessage());
-            log.error("Error", e);
+            log.error("Failed at offset {}", record.offset(), e);
         }
-
     }
 }

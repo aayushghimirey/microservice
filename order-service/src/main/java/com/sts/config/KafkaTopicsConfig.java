@@ -1,10 +1,9 @@
-package com.sts.infra.config;
+package com.sts.config;
 
-import com.sts.topics.KafkaTopics;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableConfigurationProperties(KafkaTopics.class)
+@EnableConfigurationProperties(KafkaTopicsConfig.class)
 public class KafkaTopicsConfig {
 }

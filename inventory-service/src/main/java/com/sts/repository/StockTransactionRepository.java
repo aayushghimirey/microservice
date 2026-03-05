@@ -1,6 +1,5 @@
-package com.sts.stock.domain.repository;
-
-import com.sts.stock.domain.model.StockTransaction;
+package com.sts.repository;
+import com.sts.model.stock.StockTransaction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

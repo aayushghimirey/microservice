@@ -1,7 +1,9 @@
-package com.sts.stock.application.event;
+package com.sts.event;
+
 
 import com.sts.model.purchase.Purchase;
 import org.springframework.stereotype.Component;
+import com.sts.event.StockUpdateEvent;
 
 import java.math.BigDecimal;
 import java.util.List;

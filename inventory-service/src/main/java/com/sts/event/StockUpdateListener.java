@@ -1,7 +1,7 @@
-package com.sts.stock.application.event;
+package com.sts.event;
 
-import com.sts.stock.domain.enums.TransactionReference;
-import com.sts.model.stock.StockTransaction;
+
+ import com.sts.model.stock.StockTransaction;
 import com.sts.model.stock.StockVariant;
 import com.sts.repository.StockTransactionRepository;
 import com.sts.repository.StockVariantRepository;
@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
+import com.sts.constant.enums.TransactionReference;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -51,7 +52,7 @@ public class StockUpdateListener {
             variant.setCurrentStock(variant.getCurrentStock().add(delta));
             stockVariantRepository.saveAndFlush(variant);
 
-            saveTransaction(item, variant, delta, stockUpdateEvent.purchaseId(), TransactionReference.PURCHASE);
+            saveTransaction(item, variant, delta, stockUpdateEvent.purchaseId(), com.sts.constant.enums.TransactionReference.PURCHASE);
         }
     }
 

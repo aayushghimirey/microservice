@@ -1,13 +1,11 @@
-package com.sts.domain.model;
+package com.sts.model;
 
 import com.sts.domain.Audit;
 import com.sts.enums.BillingType;
 import com.sts.enums.MoneyTransaction;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -17,6 +15,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @Builder
 public class PurchaseRecord extends Audit {
 

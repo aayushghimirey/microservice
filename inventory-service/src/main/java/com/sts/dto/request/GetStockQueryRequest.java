@@ -1,4 +1,4 @@
-package com.sts.dto;
+package com.sts.dto.request;
 
 import com.sts.constant.enums.StockType;
 
