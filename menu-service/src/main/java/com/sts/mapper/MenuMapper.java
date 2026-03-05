@@ -4,17 +4,17 @@ import com.sts.dto.CreateMenuRequest;
 import com.sts.event.MenuResponse;
 import com.sts.model.Menu;
 import com.sts.model.MenuIngredient;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 
+@Component
 public final class MenuMapper {
 
-    private MenuMapper() {
-    }
 
 
-    public static Menu toEntity(CreateMenuRequest request) {
+    public Menu toEntity(CreateMenuRequest request) {
         Menu menu = new Menu();
         menu.setName(request.name());
         menu.setCode(request.code());
@@ -31,7 +31,7 @@ public final class MenuMapper {
     }
 
 
-    public static MenuResponse toResponse(Menu menu) {
+    public MenuResponse toResponse(Menu menu) {
 
 
         return new MenuResponse(
@@ -45,7 +45,7 @@ public final class MenuMapper {
 
     // ── Private helpers ────────────────────────────────────────────────────
 
-    private static MenuIngredient toIngredientEntity(CreateMenuRequest.MenuIngredientRequest req) {
+    private MenuIngredient toIngredientEntity(CreateMenuRequest.MenuIngredientRequest req) {
         MenuIngredient ingredient = new MenuIngredient();
         ingredient.setVariantId(req.variantId());
         ingredient.setUnitId(req.unitId());

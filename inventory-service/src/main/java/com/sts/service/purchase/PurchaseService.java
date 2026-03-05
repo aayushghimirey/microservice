@@ -8,12 +8,15 @@ import com.sts.entity.OutboxEventType;
 import com.sts.event.PurchaseCreatedEvent;
 import com.sts.event.StockUpdateEventBuilder;
 import com.sts.exception.DuplicatePurchase;
+import com.sts.exception.UnitNotFound;
+import com.sts.exception.VariantNotFound;
 import com.sts.mapper.OutboxMapper;
 import com.sts.mapper.PurchaseMapper;
 import com.sts.model.purchase.Purchase;
 import com.sts.repository.OutboxEventRepository;
 import com.sts.repository.PurchaseRepository;
 import com.sts.repository.StockVariantRepository;
+import com.sts.repository.VariantUnitRepository;
 import com.sts.topics.KafkaProperties;
 import com.sts.utils.contant.AppConstants;
 import lombok.AllArgsConstructor;
@@ -37,12 +40,23 @@ public class PurchaseService {
     private final ApplicationEventPublisher publisher;
     private final StockUpdateEventBuilder stockUpdateEventBuilder;
 
+    private final StockVariantRepository stockVariantRepository;
+    private final VariantUnitRepository variantUnitRepository;
+
     @Transactional
     public PurchaseResponse createPurchase(CreatePurchaseCommand command) {
         try {
 
             if (purchaseRepository.exitsByInvoiceNumber(command.invoiceNumber())) {
                 throw new DuplicatePurchase(String.format(AppConstants.INVOICE_NUMBER_EXITS, command.invoiceNumber()));
+            }
+            for (var item : command.items()) {
+                if (!stockVariantRepository.existsById(item.variantId())) {
+                    throw new VariantNotFound(String.format(AppConstants.VARIANT_NOT_FOUND, item.variantId()));
+                }
+                if (!variantUnitRepository.existsById(item.unitId())) {
+                    throw new UnitNotFound(String.format(AppConstants.UNIT_NOT_FOUND, item.unitId()));
+                }
             }
 
             Purchase purchase = purchaseMapper.buildPurchase(command);

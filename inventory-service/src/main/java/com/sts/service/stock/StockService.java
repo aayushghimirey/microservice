@@ -32,6 +32,7 @@ public class StockService {
 
     private final StockRepository stockRepository;
     private final StockMapper stockMapper;
+    private final StockUpdateMapper stockUpdateMapper;
     private final StockVariantRepository stockVariantRepository;
     private final StockUpdateEventBuilder stockUpdateEventBuilder;
     private final ApplicationEventPublisher applicationEventPublisher;
@@ -52,7 +53,7 @@ public class StockService {
         Stock stock = stockRepository.findById(stockId).orElseThrow(
                 () -> new StockNotFound(String.format(AppConstants.STOCK_NOT_FOUND, stockId))
         );
-        StockUpdateMapper.updateStock(stock, updateCommand);
+        stockUpdateMapper.updateStock(stock, updateCommand);
         return stockMapper.toResponse(stockRepository.save(stock));
     }
 
@@ -68,7 +69,7 @@ public class StockService {
                 .findFirst()
                 .orElseThrow(() -> new UnitNotFound(String.format(AppConstants.UNIT_NOT_FOUND, command.unitId())));
 
-        StockUpdateMapper.adjustStock(stockVariant, variantUnit, command);
+        stockUpdateMapper.adjustStock(stockVariant, variantUnit, command);
 
         StockUpdateEvent stockUpdateEvent = stockUpdateEventBuilder.buildStockUpdateEventFromAdjustment(
                 stockVariant.getId(),

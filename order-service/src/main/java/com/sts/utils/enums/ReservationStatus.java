@@ -1,4 +1,4 @@
-package com.sts.domain.enums;
+package com.sts.utils.enums;
 
 public enum ReservationStatus {
     PENDING,

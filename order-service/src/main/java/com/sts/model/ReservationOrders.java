@@ -1,4 +1,4 @@
-package com.sts.domain.model;
+package com.sts.model;
 
 import com.sts.domain.Audit;
 import jakarta.persistence.Entity;

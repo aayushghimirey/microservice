@@ -1,6 +1,6 @@
-package com.sts.infra.feign;
+package com.sts.utils.feign;
 
-import com.sts.event.MenuResponseDto;
+import com.sts.event.MenuResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +12,6 @@ import java.util.UUID;
 public interface MenuClient {
 
     @GetMapping("/{menuId}")
-    ResponseEntity<MenuResponseDto> getMenuById(@PathVariable("menuId") UUID menuId);
+    ResponseEntity<MenuResponse> getMenuById(@PathVariable("menuId") UUID menuId);
 
 }

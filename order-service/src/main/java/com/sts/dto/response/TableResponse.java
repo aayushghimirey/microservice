@@ -1,4 +1,4 @@
-package com.sts.dto;
+package com.sts.dto.response;
 
 import com.sts.model.Table;
 import lombok.AllArgsConstructor;
@@ -22,14 +22,5 @@ public class TableResponse {
 
     private int capacity;
 
-
-    public static TableResponse fromEntity(Table entity) {
-        TableResponse tableResponse = new TableResponse();
-        tableResponse.setId(entity.getId());
-        tableResponse.setName(entity.getName());
-        tableResponse.setLocation(entity.getLocation());
-        tableResponse.setCapacity(entity.getCapacity());
-        return tableResponse;
-    }
 
 }

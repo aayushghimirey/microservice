@@ -1,6 +1,6 @@
 package com.sts.repository;
 
-import com.sts.domain.model.Reservation;
+import com.sts.model.Reservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

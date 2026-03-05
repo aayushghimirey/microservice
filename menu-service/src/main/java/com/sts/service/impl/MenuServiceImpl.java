@@ -23,11 +23,12 @@ import java.util.UUID;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class MenuServiceImpl implements MenuService {
+class MenuServiceImpl implements MenuService {
 
 
     private final MenuRepository menuRepository;
     private final InventoryClient inventoryClient;
+    private final MenuMapper menuMapper;
 
     // ── Commands ────────────────────────────────────────────────────────────
 
@@ -49,11 +50,11 @@ public class MenuServiceImpl implements MenuService {
 
         validateIngredients(request);
 
-        Menu menu = MenuMapper.toEntity(request);
+        Menu menu = menuMapper.toEntity(request);
         Menu saved = menuRepository.save(menu);
 
         log.info("Menu created successfully with id: {}", saved.getId());
-        return MenuMapper.toResponse(saved);
+        return menuMapper.toResponse(saved);
     }
 
     // ── Queries ─────────────────────────────────────────────────────────────
@@ -63,7 +64,7 @@ public class MenuServiceImpl implements MenuService {
     public Page<MenuResponse> getAllMenus(Pageable pageable) {
         log.debug("Fetching all menus — page: {}, size: {}", pageable.getPageNumber(), pageable.getPageSize());
         return menuRepository.findAll(pageable)
-                .map(MenuMapper::toResponse);
+                .map(menuMapper::toResponse);
     }
 
 
@@ -72,7 +73,7 @@ public class MenuServiceImpl implements MenuService {
         log.debug("Fetching menu with id: {}", menuId);
         Menu menu = menuRepository.findById(menuId)
                 .orElseThrow(() -> new MenuNotFoundException(AppConstants.MENU_NOT_FOUND + menuId));
-        return MenuMapper.toResponse(menu);
+        return menuMapper.toResponse(menu);
     }
 
 

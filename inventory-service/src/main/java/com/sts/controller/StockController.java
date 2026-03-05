@@ -33,7 +33,6 @@ public class StockController {
     private final StockTransactionService stockTransactionService;
     private final StockQueryService stockQueryService;
 
-
     /*
      *  Commands
      * */

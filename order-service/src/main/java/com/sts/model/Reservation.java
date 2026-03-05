@@ -1,8 +1,8 @@
-package com.sts.domain.model;
+package com.sts.model;
 
 
 import com.sts.domain.Audit;
-import com.sts.domain.enums.ReservationStatus;
+import com.sts.utils.enums.ReservationStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
