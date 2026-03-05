@@ -1,6 +1,6 @@
 package com.sts.dto;
 
-import com.sts.domain.model.Table;
+import com.sts.model.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

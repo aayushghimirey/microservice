@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.UUID;
 
-@FeignClient(name = "menu-validator", url = "${spring.feign.inventory-service.url}", path = "/menu")
-public interface FeignMenuValidatorClient {
+@FeignClient(name = "menu-validator", url = "${app.clients.inventory-service.url}", path = "/menu")
+public interface MenuClient {
 
     @GetMapping("/{menuId}")
     ResponseEntity<MenuResponseDto> getMenuById(@PathVariable("menuId") UUID menuId);
