@@ -1,0 +1,27 @@
+spring:
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/invoice
+    username: postgres
+    password: admin
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.format_sql: true
+
+server:
+  port: 8083
+
+app:
+  kafka:
+    bootstrap-servers: localhost:9092
+    topics:
+      order-event: ORDER_EVENT
+    groups:
+      invoice-group: invoice-group-consumer
+  clients:
+    menu-service:
+      url: http://localhost:8082
+

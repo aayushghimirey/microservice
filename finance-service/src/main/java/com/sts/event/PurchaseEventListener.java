@@ -1,4 +1,4 @@
-package com.sts.application.event;
+package com.sts.event;
 
 import com.sts.model.PurchaseRecord;
 import com.sts.repository.PurchaseRecordRepository;
