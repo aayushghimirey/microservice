@@ -15,6 +15,7 @@ import com.sts.service.stock.StockService;
 import com.sts.service.stock.StockTransactionService;
 import lombok.AllArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("/stock")
 @AllArgsConstructor
@@ -73,6 +75,14 @@ public class StockController {
             @PathVariable("stockId") UUID stockId, PageRequestDto pageRequestDto) {
         var variants = stockService.getAllVariantByStockId(stockId, pageRequestDto.buildPageable());
         return AppResponse.success(variants, "Variants fetched successfully");
+    }
+
+
+    @GetMapping("/{variantId}/{unitId}/validate")
+    public ResponseEntity<ApiResponse<Boolean>> validateStock(
+            @PathVariable("variantId") UUID variantId,
+            @PathVariable("unitId") UUID unitId) {
+        return AppResponse.success(stockService.validateVariantIdWithUnitId(variantId, unitId), "Variants fetched successfully");
     }
 
     /*

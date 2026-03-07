@@ -1,6 +1,7 @@
 package com.sts.service.impl;
 
 import com.sts.dto.CreateMenuRequest;
+import com.sts.event.MenuIngredientResponse;
 import com.sts.event.MenuResponse;
 import com.sts.exception.IngredientValidationException;
 import com.sts.exception.MenuNotFoundException;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -43,7 +45,7 @@ class MenuServiceImpl implements MenuService {
             }
         }
 
-        if (menuRepository.findByName(request.name())) {
+        if (menuRepository.existsByName(request.name())) {
             throw new IllegalArgumentException(
                     String.format(AppConstants.DUPLICATE_MENU_NAME, request.code()));
         }
@@ -58,7 +60,6 @@ class MenuServiceImpl implements MenuService {
     }
 
     // ── Queries ─────────────────────────────────────────────────────────────
-
 
     @Transactional(readOnly = true)
     public Page<MenuResponse> getAllMenus(Pageable pageable) {
@@ -76,6 +77,14 @@ class MenuServiceImpl implements MenuService {
         return menuMapper.toResponse(menu);
     }
 
+    @Transactional(readOnly = true)
+    public List<MenuIngredientResponse> getMenuIngredentsById(UUID menuId) {
+        log.debug("Fetching menu with id: {}", menuId);
+        Menu menu = menuRepository.findById(menuId)
+                .orElseThrow(() -> new MenuNotFoundException(AppConstants.MENU_NOT_FOUND + menuId));
+        return menu.getIngredients().stream().map(menuMapper::toMenuIngredientResponse).toList();
+    }
+
 
     // ── Private helpers ─────────────────────────────────────────────────────
 
@@ -83,7 +92,7 @@ class MenuServiceImpl implements MenuService {
         if (request.ingredients() == null)
             return;
         request.ingredients().forEach(ingredient -> {
-            boolean valid = inventoryClient.validateStock(ingredient.variantId(), ingredient.unitId());
+            boolean valid = inventoryClient.validateStock(ingredient.variantId(), ingredient.unitId()).getBody().getData();
             if (!valid) {
                 throw new IngredientValidationException(
                         String.format(AppConstants.INVALID_INGREDIENT,

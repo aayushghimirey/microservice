@@ -4,6 +4,7 @@ import com.sts.dto.request.CreateReservationCommand;
 import com.sts.dto.response.ReservationResponse;
 import com.sts.entity.OutboxEvent;
 import com.sts.entity.OutboxEventType;
+import com.sts.event.MenuIngredientResponse;
 import com.sts.event.MenuResponse;
 
 import com.sts.event.OrderCreatedEvent;
@@ -24,11 +25,14 @@ import com.sts.utils.enums.ReservationStatus;
 import com.sts.utils.enums.TableStatus;
 import com.sts.utils.feign.MenuClient;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -61,11 +65,36 @@ public class ReservationService {
         // reserve table
         table.setStatus(TableStatus.RESERVED);
 
+        // send sse event
+
 
         tableRepository.save(table);
 
         return reservationMapper.toResponse(reservationRepository.save(reservation));
     }
+
+    public List<ReservationResponse> getAllPendingOrders() {
+        return reservationRepository.findByStatus(ReservationStatus.PENDING).stream().map(
+                reservationMapper::toResponse
+        ).toList();
+    }
+
+
+    public List<ReservationResponse.OrderItem> getOrderItemBySessionId(UUID sessionId) {
+
+        return reservationRepository.findBySessionId(sessionId)
+                .stream()
+                .map(Reservation::getReservationOrders)
+                .flatMap(List::stream)
+                .map(reservationMapper::toOrderItem)
+                .toList();
+
+    }
+
+
+    /*
+     * private helpers
+     * */
 
     private Reservation buildReservation(CreateReservationCommand request, Table table) {
 
@@ -109,6 +138,12 @@ public class ReservationService {
             orderCreatedEvent.setBillAmount(reservation.getBillAmount());
             orderCreatedEvent.setReservationTime(reservation.getReservationTime());
 
+            List<OrderCreatedEvent.MenuItems> menuItems = reservation.getReservationOrders().stream()
+                    .flatMap(order -> buildMenuItems(order).stream())
+                    .toList();
+
+            orderCreatedEvent.setItems(menuItems);
+
             String payload = objectMapper.writeValueAsString(orderCreatedEvent);
 
             OutboxEvent outboxEvent = outboxMapper.map(
@@ -123,6 +158,20 @@ public class ReservationService {
             throw new RuntimeException("Error publishing order created event", e);
         }
 
+    }
+
+    private List<OrderCreatedEvent.MenuItems> buildMenuItems(ReservationOrders reservationOrders) {
+
+        List<MenuIngredientResponse> ingredients = menuClient.getMenuIngredentsById(reservationOrders.getMenuItemId()).getBody().getData();
+
+        return ingredients.stream().map(
+                ingredient ->
+                        new OrderCreatedEvent.MenuItems(
+                                ingredient.getVariantId(),
+                                ingredient.getUnitId(),
+                                ingredient.getQuantity()
+                        )
+        ).toList();
     }
 
 }

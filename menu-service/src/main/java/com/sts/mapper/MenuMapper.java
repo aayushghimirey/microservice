@@ -1,17 +1,15 @@
 package com.sts.mapper;
 
 import com.sts.dto.CreateMenuRequest;
+import com.sts.event.MenuIngredientResponse;
 import com.sts.event.MenuResponse;
 import com.sts.model.Menu;
 import com.sts.model.MenuIngredient;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 
 @Component
 public final class MenuMapper {
-
 
 
     public Menu toEntity(CreateMenuRequest request) {
@@ -40,6 +38,14 @@ public final class MenuMapper {
                 menu.getCode(),
                 menu.getCategory().name(),
                 menu.getPrice()
+        );
+    }
+
+    public MenuIngredientResponse toMenuIngredientResponse(MenuIngredient menuIngredient) {
+        return new MenuIngredientResponse(
+                menuIngredient.getVariantId(),
+                menuIngredient.getUnitId(),
+                menuIngredient.getQuantity()
         );
     }
 

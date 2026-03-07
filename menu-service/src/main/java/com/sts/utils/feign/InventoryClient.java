@@ -1,6 +1,8 @@
 package com.sts.utils.feign;
 
+import com.sts.response.ApiResponse;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -10,7 +12,7 @@ import java.util.UUID;
 public interface InventoryClient {
 
     @GetMapping("/{variantId}/{unitId}/validate")
-    boolean validateStock(
+    ResponseEntity<ApiResponse<Boolean>> validateStock(
             @PathVariable("variantId") UUID variantId,
             @PathVariable("unitId") UUID unitId);
 }

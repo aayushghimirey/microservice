@@ -1,6 +1,7 @@
 package com.sts.controller;
 
-import com.sts.event.MenuResponse;
+ import com.sts.event.MenuIngredientResponse;
+ import com.sts.event.MenuResponse;
 import com.sts.response.ApiResponse;
 import com.sts.response.AppResponse;
 import com.sts.response.PagedResponse;
@@ -10,8 +11,6 @@ import com.sts.pagination.PageRequestDto;
 import com.sts.service.MenuService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,6 +40,12 @@ public class MenuController {
     @GetMapping("/{menuId}")
     public ResponseEntity<ApiResponse<MenuResponse>> getMenuById(@PathVariable UUID menuId) {
         var menuById = menuService.getMenuById(menuId);
+        return AppResponse.success(menuById, "Menu fetched successfully");
+    }
+
+    @GetMapping("/{menuId}")
+    public ResponseEntity<ApiResponse<List<MenuIngredientResponse>>> getMenuIngredentsById(@PathVariable UUID menuId) {
+        var menuById = menuService.getMenuIngredentsById(menuId);
         return AppResponse.success(menuById, "Menu fetched successfully");
     }
 }

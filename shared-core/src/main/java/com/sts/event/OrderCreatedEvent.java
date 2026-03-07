@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -27,5 +28,21 @@ public class OrderCreatedEvent {
     private LocalDateTime reservationTime;
 
     private LocalDateTime reservationEndTime;
+
+    private List<MenuItems> items;
+
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class MenuItems {
+        private UUID variantId;
+
+        private UUID unitId;
+
+        private double quantity;
+    }
 
 }
