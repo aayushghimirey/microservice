@@ -1,28 +1,24 @@
 package com.sts.service;
 
-import com.sts.pagination.PageRequestDto;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Component
-@RequiredArgsConstructor
-public class ReservationSseService {
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-    private final ReservationService reservationService;
+import lombok.RequiredArgsConstructor;
+
+@Component
+@Slf4j
+public class ReservationSseService {
 
     private final Map<UUID, SseEmitter> emitters = new ConcurrentHashMap<>();
 
-
     public SseEmitter createEmitter(UUID tenantId) {
 
-        SseEmitter emitter = new SseEmitter(0L);
+        SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
 
         emitters.put(tenantId, emitter);
 
@@ -33,8 +29,7 @@ public class ReservationSseService {
         return emitter;
     }
 
-
-    public void initPush(UUID tenantId) {
+    public void initPush(UUID tenantId, Object data) {
 
         SseEmitter emitter = emitters.get(tenantId);
 
@@ -45,7 +40,7 @@ public class ReservationSseService {
             emitter.send(
                     SseEmitter.event()
                             .name("initial-orders")
-                            .data(reservationService.getAllPendingOrders())
+                            .data(data)
             );
 
         } catch (Exception e) {
@@ -53,14 +48,19 @@ public class ReservationSseService {
         }
     }
 
-
     public void newOrderEvent(UUID tenantId, Object order) {
+
+        log.info("Create new order event push ready ");
 
         SseEmitter emitter = emitters.get(tenantId);
 
-        if (emitter == null) return;
 
+        if (emitter == null) {
+            log.warn("No emitter found for tenant {}", tenantId);
+            return;
+        }
         try {
+            log.info("Pushing SSE event to {}", tenantId);
 
             emitter.send(
                     SseEmitter.event()
@@ -69,6 +69,7 @@ public class ReservationSseService {
             );
 
         } catch (Exception e) {
+            log.error(e.getMessage(), "Error happen");
             emitters.remove(tenantId);
         }
     }

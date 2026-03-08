@@ -4,6 +4,7 @@ package com.sts.publisher;
 import com.sts.entity.OutboxEvent;
 import com.sts.repository.OutboxEventRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class OutboxPublisher {
 
     private final OutboxEventRepository outboxEventRepository;
@@ -34,10 +36,16 @@ public class OutboxPublisher {
 
                 event.setProcessed(true);
                 outboxEventRepository.save(event);
+
+                log.info("Event publish on topic {}", topic);
+
+
             } catch (Exception e) {
                 // handle deserialization error (log or retry later)
                 e.printStackTrace();
             }
         }
+
+
     }
 }

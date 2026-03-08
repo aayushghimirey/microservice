@@ -12,13 +12,14 @@ spring:
       hibernate.format_sql: true
 
 server:
-  port: 8083
+  port: 8084
 
 app:
   kafka:
     bootstrap-servers: localhost:9092
     topics:
       order-event: ORDER_EVENT
+      invoice-event: INVOICE_EVENT
     groups:
       invoice-group: invoice-group-consumer
   clients:

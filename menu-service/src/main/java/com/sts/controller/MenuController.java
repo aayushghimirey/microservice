@@ -1,22 +1,29 @@
 package com.sts.controller;
 
- import com.sts.event.MenuIngredientResponse;
- import com.sts.event.MenuResponse;
-import com.sts.response.ApiResponse;
-import com.sts.response.AppResponse;
-import com.sts.response.PagedResponse;
-import com.sts.utils.constant.AppConstants;
-import com.sts.dto.CreateMenuRequest;
-import com.sts.pagination.PageRequestDto;
-import com.sts.service.MenuService;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.sts.dto.CreateMenuRequest;
+import com.sts.event.MenuIngredientResponse;
+import com.sts.event.MenuResponse;
+import com.sts.pagination.PageRequestDto;
+import com.sts.response.ApiResponse;
+import com.sts.response.AppResponse;
+import com.sts.response.PagedResponse;
+import com.sts.service.MenuService;
+import com.sts.utils.constant.AppConstants;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping(AppConstants.MENU_BASE_PATH)
@@ -28,24 +35,25 @@ public class MenuController {
     @PostMapping
     public ResponseEntity<ApiResponse<MenuResponse>> createMenu(@Valid @RequestBody CreateMenuRequest request) {
         var menu = menuService.createMenu(request);
-        return AppResponse.success(menu, "Menu created successfully");
+        return AppResponse.success(menu, AppConstants.SUCCESS_MESSAGES.MENU_CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<PagedResponse<List<MenuResponse>>> getAllMenus(@ModelAttribute PageRequestDto pageRequestDto) {
+    public ResponseEntity<PagedResponse<List<MenuResponse>>> getAllMenus(
+            @ModelAttribute PageRequestDto pageRequestDto) {
         var menus = menuService.getAllMenus(pageRequestDto.buildPageable());
-        return AppResponse.success(menus, "Menus fetched successfully");
+        return AppResponse.success(menus, AppConstants.SUCCESS_MESSAGES.MENUS_FETCHED);
     }
 
     @GetMapping("/{menuId}")
     public ResponseEntity<ApiResponse<MenuResponse>> getMenuById(@PathVariable UUID menuId) {
         var menuById = menuService.getMenuById(menuId);
-        return AppResponse.success(menuById, "Menu fetched successfully");
+        return AppResponse.success(menuById, AppConstants.SUCCESS_MESSAGES.MENU_FETCHED);
     }
 
-    @GetMapping("/{menuId}")
-    public ResponseEntity<ApiResponse<List<MenuIngredientResponse>>> getMenuIngredentsById(@PathVariable UUID menuId) {
-        var menuById = menuService.getMenuIngredentsById(menuId);
-        return AppResponse.success(menuById, "Menu fetched successfully");
+    @GetMapping("/{menuId}/ingredients")
+    public ResponseEntity<ApiResponse<List<MenuIngredientResponse>>> getMenuIngredientsById(@PathVariable UUID menuId) {
+        var menuIngredients = menuService.getMenuIngredientsById(menuId);
+        return AppResponse.success(menuIngredients, AppConstants.SUCCESS_MESSAGES.MENU_INGREDIENTS_FETCHED);
     }
 }

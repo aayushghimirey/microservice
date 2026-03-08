@@ -30,8 +30,6 @@ public final class MenuMapper {
 
 
     public MenuResponse toResponse(Menu menu) {
-
-
         return new MenuResponse(
                 menu.getId(),
                 menu.getName(),

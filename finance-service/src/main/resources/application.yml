@@ -21,5 +21,6 @@ app:
     bootstrap-servers: localhost:9092
     topics:
       purchase-event: PURCHASE_EVENT
+      invoice-event: INVOICE_EVENT
     groups:
       finance-group: finance-group-consumer

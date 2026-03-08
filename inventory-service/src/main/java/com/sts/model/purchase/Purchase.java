@@ -1,21 +1,34 @@
 package com.sts.model.purchase;
 
-import com.sts.domain.Audit;
-import com.sts.enums.BillingType;
-import com.sts.enums.MoneyTransaction;
-import jakarta.persistence.*;
-import lombok.*;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.sts.domain.Audit;
+import com.sts.enums.BillingType;
+import com.sts.enums.MoneyTransaction;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
 @Builder
-@EntityListeners(EntityListeners.class)
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "purchase")
@@ -34,22 +47,25 @@ public class Purchase extends Audit {
     private MoneyTransaction moneyTransaction;
 
     @Column(name = "discount_amount")
+    @Builder.Default
     private BigDecimal discountAmount = BigDecimal.ZERO;
 
     @Column(name = "sub_total", nullable = false)
+    @Builder.Default
     private BigDecimal subTotal = BigDecimal.ZERO;
 
     @Column(name = "vat_amount")
+    @Builder.Default
     private BigDecimal vatAmount = BigDecimal.ZERO;
 
     @Column(name = "gross_total")
+    @Builder.Default
     private BigDecimal grossTotal = BigDecimal.ZERO;
 
     // items
     @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<PurchaseItem> purchaseItems = new ArrayList<>();
-
 
     public void addItem(PurchaseItem item) {
         if (item != null) {
@@ -82,7 +98,8 @@ public class Purchase extends Audit {
 
     // VAT at 13%, rounded to 2 decimal places
     public BigDecimal calculateVat(BigDecimal taxableAmount) {
-        if (taxableAmount == null || taxableAmount.compareTo(BigDecimal.ZERO) <= 0) return BigDecimal.ZERO;
+        if (taxableAmount == null || taxableAmount.compareTo(BigDecimal.ZERO) <= 0)
+            return BigDecimal.ZERO;
         return taxableAmount.multiply(BigDecimal.valueOf(13))
                 .divide(BigDecimal.valueOf(100))
                 .setScale(2, BigDecimal.ROUND_HALF_UP);

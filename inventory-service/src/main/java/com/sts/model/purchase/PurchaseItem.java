@@ -1,18 +1,31 @@
 package com.sts.model.purchase;
 
-import com.sts.domain.Audit;
-import jakarta.persistence.*;
-import lombok.*;
-
 import java.math.BigDecimal;
 import java.util.UUID;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.sts.domain.Audit;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(EntityListeners.class)
+@EntityListeners(AuditingEntityListener.class)
 @Builder
 @Table(name = "purchase_items")
 public class PurchaseItem extends Audit {
@@ -37,7 +50,6 @@ public class PurchaseItem extends Audit {
 
     @Column(name = "net_total", nullable = false, updatable = false)
     private BigDecimal netTotal;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "purchase_id")

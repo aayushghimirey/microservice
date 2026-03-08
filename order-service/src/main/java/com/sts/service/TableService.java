@@ -1,16 +1,20 @@
 package com.sts.service;
 
-import com.sts.dto.request.CreateTableCommand;
-import com.sts.dto.response.TableResponse;
-import com.sts.mapper.TableMapper;
-import com.sts.model.Table;
-import com.sts.repository.TableRepository;
-import lombok.AllArgsConstructor;
-import org.hibernate.annotations.SQLJoinTableRestriction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.sts.dto.request.CreateTableCommand;
+import com.sts.dto.response.TableResponse;
+import com.sts.exception.DuplicateResourceException;
+import com.sts.mapper.TableMapper;
+import com.sts.model.Table;
+import com.sts.repository.TableRepository;
+import com.sts.utils.contant.AppConstants;
+import com.sts.utils.enums.TableStatus;
+
+import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
@@ -21,12 +25,22 @@ public class TableService {
 
     @Transactional
     public TableResponse createTable(CreateTableCommand request) {
-        Table table = new Table();
-        table.setName(request.name());
-        table.setCapacity(request.capacity());
-        table.setLocation(request.location());
 
-        return tableMapper.toResponse(tableRepository.save(table));
+        if (tableRepository.existsByName(request.name())) {
+            throw new DuplicateResourceException(
+                    String.format(AppConstants.ERROR_MESSAGES.DUPLICATE_TABLE_NAME, request.name()));
+        }
+
+        Table table = Table.builder()
+                .name(request.name())
+                .capacity(request.capacity())
+                .location(request.location())
+                .status(TableStatus.OPEN)
+                .build();
+
+        table = tableRepository.save(table);
+
+        return tableMapper.toResponse(table);
     }
 
     @Transactional(readOnly = true)

@@ -1,16 +1,21 @@
 package com.sts.event;
 
 
-import com.sts.constant.enums.InvoiceStatus;
+import com.sts.model.InvoiceItem;
+import com.sts.utils.constant.AppConstants;
+import com.sts.utils.enums.InvoiceStatus;
 import com.sts.model.Invoice;
 import com.sts.repository.InvoiceRepository;
 import com.sts.topics.KafkaProperties;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
 
 @Slf4j
 @Component
@@ -20,46 +25,76 @@ public class OrderEventListener {
     private final KafkaProperties kafkaProperties;
     private final InvoiceRepository invoiceRepository;
 
+    @Transactional
     @KafkaListener(
             topics = "#{@kafkaProperties.getTopic('order-event')}",
             groupId = "#{@kafkaProperties.getGroup('invoice-group')}"
     )
-    public void listen(ConsumerRecord<String, OrderCreatedEvent> record, Acknowledgment acknowledgment) {
+    public void listen(OrderCreatedEvent event, Acknowledgment acknowledgment) {
 
-        Invoice bySessionId = invoiceRepository.findBySessionId(record.value().getSessionId());
-        if (bySessionId != null) {
-            bySessionId.setBillNumber("Bill-" + record.offset());
-            bySessionId.setStatus(InvoiceStatus.PENDING);
-            bySessionId.setSubTotal(record.value().getBillAmount());
-            bySessionId.setSessionId(record.value().getSessionId());
-            bySessionId.setTableId(record.value().getTableId());
-            bySessionId.setReservationTime(record.value().getReservationTime());
-            bySessionId.calculateGrossTotal();
+        try {
+            log.info(String.format(AppConstants.LOG_MESSAGES.ORDER_EVENT_MESSAGE, event.getSessionId()));
 
-            invoiceRepository.save(bySessionId);
-            acknowledgment.acknowledge();
+            Invoice invoice = invoiceRepository.findBySessionId(event.getSessionId());
 
-            log.info("Invoice updated success");
-        } else {
-
-            Invoice invoice = new Invoice();
-            invoice.setBillNumber("Bill-" + record.offset());
-            invoice.setStatus(InvoiceStatus.PENDING);
-            invoice.setSubTotal(record.value().getBillAmount());
-            invoice.setSessionId(record.value().getSessionId());
-            invoice.setTableId(record.value().getTableId());
-            invoice.setReservationTime(record.value().getReservationTime());
-            invoice.calculateGrossTotal();
-
+            if (invoice != null) {
+                updateInvoice(invoice, event);
+            } else {
+                invoice = createInvoice(event);
+            }
 
             invoiceRepository.save(invoice);
+
+            log.info(String.format(AppConstants.LOG_MESSAGES.INVOICE_PROCESSED_SUCCESS, event.getSessionId()));
+
             acknowledgment.acknowledge();
 
-            log.info("Invoice save success");
+        } catch (Exception e) {
+
+            log.error("Error processing order event {}", event, e);
+            throw e;
         }
-
-
     }
 
+    private void updateInvoice(Invoice invoice, OrderCreatedEvent event) {
 
+        invoice.setBillNumber(generateBillNumber());
+        invoice.setStatus(InvoiceStatus.PENDING);
+        invoice.setSubTotal(event.getBillAmount());
+        invoice.setSessionId(event.getSessionId());
+        invoice.setTableId(event.getTableId());
+        invoice.setReservationTime(event.getReservationTime());
+
+        invoice.calculateGrossTotal();
+    }
+
+    private Invoice createInvoice(OrderCreatedEvent event) {
+
+        Invoice invoice = Invoice.builder()
+                .billNumber(generateBillNumber())
+                .status(InvoiceStatus.PENDING)
+                .subTotal(event.getBillAmount())
+                .discountAmount(BigDecimal.ZERO)
+                .sessionId(event.getSessionId())
+                .tableId(event.getTableId())
+                .reservationTime(event.getReservationTime())
+                .build();
+
+        event.getItems().forEach(item ->
+        {
+            InvoiceItem invoiceItem = new InvoiceItem();
+            invoiceItem.setMenuItemId(item.getMenuId());
+            invoiceItem.setQuantity(item.getQuantity());
+
+            invoice.addItem(invoiceItem);
+        });
+
+        invoice.calculateGrossTotal();
+
+        return invoice;
+    }
+
+    private String generateBillNumber() {
+        return "INV-" + System.currentTimeMillis();
+    }
 }

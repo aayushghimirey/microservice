@@ -1,5 +1,7 @@
 package com.sts.event;
 
+import com.sts.utils.enums.StockUpdateSource;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
@@ -13,7 +15,7 @@ public record StockUpdateEvent(
             UUID variantId,
             UUID unitId,
             BigDecimal quantity,
-            String reason
+            StockUpdateSource source
     ) {
     }
 

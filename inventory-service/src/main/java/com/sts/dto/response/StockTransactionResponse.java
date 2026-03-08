@@ -1,52 +1,27 @@
 package com.sts.dto.response;
 
-
-import com.sts.constant.enums.TransactionReference;
-import com.sts.model.stock.StockTransaction;
-import lombok.Builder;
-import lombok.Getter;
-
 import java.math.BigDecimal;
 import java.util.UUID;
 
+public interface StockTransactionResponse {
 
-@Getter
-@Builder
-public class StockTransactionResponse {
+    UUID getId();
 
-    private UUID id;
-    private UUID referenceId;
-    private TransactionReference referenceType;
+    UUID getReferenceId();
 
-    private UUID variantId;
-    private String variantName;
+    String getReferenceType();
 
-    private UUID unitId;
-    private String unitName;
+    UUID getVariantId();
 
-    private BigDecimal quantityChange;
-    private BigDecimal balanceAfter;
-    private String remark;
+    String getVariantName();
 
+    UUID getUnitId();
 
-    public static StockTransactionResponse fromEntity(
-            StockTransaction entity,
-            String variantName,
-            String unitName
-    ) {
-        return StockTransactionResponse.builder()
-                .id(entity.getId())
-                .referenceId(entity.getReferenceId())
-                .referenceType(entity.getReferenceType())
-                .variantId(entity.getVariantId())
-                .variantName(variantName)
-                .unitId(entity.getUnitId())
-                .unitName(unitName)
-                .quantityChange(entity.getQuantityChange())
-                .balanceAfter(entity.getBalanceAfter())
-                .remark(entity.getRemark())
-                .build();
-    }
+    String getUnitName();
 
+    BigDecimal getQuantityChanged();
 
+    BigDecimal getBalanceAfter();
+
+    String getRemark();
 }

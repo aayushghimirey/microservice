@@ -1,11 +1,24 @@
 package com.sts.model.stock;
 
-import com.sts.domain.Audit;
-import jakarta.persistence.*;
-import lombok.*;
-
 import java.math.BigDecimal;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.sts.domain.Audit;
 import com.sts.utils.enums.UnitType;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Builder
@@ -13,7 +26,7 @@ import com.sts.utils.enums.UnitType;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(EntityListeners.class)
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "variant_unit")
 public class VariantUnit extends Audit {
     @Column(name = "name", nullable = false)

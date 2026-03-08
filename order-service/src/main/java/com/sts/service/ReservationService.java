@@ -1,16 +1,22 @@
 package com.sts.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.sts.dto.request.CreateReservationCommand;
 import com.sts.dto.response.ReservationResponse;
 import com.sts.entity.OutboxEvent;
 import com.sts.entity.OutboxEventType;
 import com.sts.event.MenuIngredientResponse;
 import com.sts.event.MenuResponse;
-
 import com.sts.event.OrderCreatedEvent;
-import com.sts.exception.MenuNotFoundException;
-import com.sts.exception.TableNotFoundException;
-import com.sts.exception.TableNotOpenException;
+import com.sts.exception.BusinessValidationException;
+import com.sts.exception.ResourceNotFoundException;
 import com.sts.mapper.OutboxMapper;
 import com.sts.mapper.ReservationMapper;
 import com.sts.model.Reservation;
@@ -24,19 +30,14 @@ import com.sts.utils.contant.AppConstants;
 import com.sts.utils.enums.ReservationStatus;
 import com.sts.utils.enums.TableStatus;
 import com.sts.utils.feign.MenuClient;
-import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import tools.jackson.databind.ObjectMapper;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
-
+@Slf4j
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
@@ -47,54 +48,70 @@ public class ReservationService {
     private final ObjectMapper objectMapper;
     private final KafkaProperties kafkaProperties;
     private final MenuClient menuClient;
+    private final ReservationSseService reservationSseService;
 
     @Transactional
     public ReservationResponse createReservation(CreateReservationCommand request) {
 
-        Table table = tableRepository.findById(request.tableId()).orElseThrow(
-                () -> new TableNotFoundException(String.format(AppConstants.TABLE_NOT_FOUND, request.tableId())));
-
-        if (!table.getStatus().equals(TableStatus.OPEN)) {
-            throw new TableNotOpenException(String.format(AppConstants.TABLE_NOT_OPEN));
-        }
+        Table table = validateTable(request.tableId());
 
         Reservation reservation = buildReservation(request, table);
 
-        publishOrderCreatedEvent(reservation);
+        reservation = reservationRepository.save(reservation);
 
-        // reserve table
-        table.setStatus(TableStatus.RESERVED);
+        createReservationOutboxEvent(reservation);
 
-        // send sse event
+        reserveTable(table);
 
+        ReservationResponse response = reservationMapper.toResponse(reservation);
 
-        tableRepository.save(table);
+        reservationSseService.newOrderEvent(UUID.fromString("11111111-1111-1111-1111-111111111111"), response);
 
-        return reservationMapper.toResponse(reservationRepository.save(reservation));
+        log.info(AppConstants.LOG_MESSAGES.RESERVATION_CREATED, reservation.getId());
+
+        return response;
     }
 
+    @Transactional(readOnly = true)
     public List<ReservationResponse> getAllPendingOrders() {
-        return reservationRepository.findByStatus(ReservationStatus.PENDING).stream().map(
-                reservationMapper::toResponse
-        ).toList();
+        return reservationRepository.findByStatus(ReservationStatus.PENDING)
+                .stream()
+                .map(reservationMapper::toResponse)
+                .toList();
     }
 
-
+    @Transactional(readOnly = true)
     public List<ReservationResponse.OrderItem> getOrderItemBySessionId(UUID sessionId) {
 
         return reservationRepository.findBySessionId(sessionId)
                 .stream()
                 .map(Reservation::getReservationOrders)
                 .flatMap(List::stream)
-                .map(reservationMapper::toOrderItem)
+                .map(reservationMapper::toOrderItemResponse)
                 .toList();
-
     }
 
+    /* --------------------------------------------------
+       Private helpers
+     -------------------------------------------------- */
 
-    /*
-     * private helpers
-     * */
+    private Table validateTable(UUID tableId) {
+
+        Table table = tableRepository.findById(tableId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format(AppConstants.ERROR_MESSAGES.TABLE_NOT_FOUND, tableId)));
+
+        if (!TableStatus.OPEN.equals(table.getStatus())) {
+            throw new BusinessValidationException(AppConstants.ERROR_MESSAGES.TABLE_NOT_OPEN);
+        }
+
+        return table;
+    }
+
+    private void reserveTable(Table table) {
+        table.setStatus(TableStatus.RESERVED);
+        tableRepository.save(table);
+    }
 
     private Reservation buildReservation(CreateReservationCommand request, Table table) {
 
@@ -106,45 +123,35 @@ public class ReservationService {
 
         for (var itemRequest : request.items()) {
 
-            MenuResponse menuResponseDto = menuClient.getMenuById(itemRequest.menuId()).getBody().getData();
+            MenuResponse menu = fetchMenu(itemRequest.menuId());
 
-            if (menuResponseDto == null) {
-                throw new MenuNotFoundException(String.format(AppConstants.MENU_NOT_FOUND, itemRequest.menuId()));
-            }
+            ReservationOrders orders =
+                    reservationMapper.buildReservationOrders(itemRequest, menu);
 
-            ReservationOrders orders = buildReservationOrders(itemRequest, menuResponseDto);
             reservation.addReservationOrder(orders);
         }
 
         return reservation;
     }
 
-    private ReservationOrders buildReservationOrders(CreateReservationCommand.ReservationItemRequest request,
-                                                     MenuResponse menuResponseDto) {
-        ReservationOrders orders = new ReservationOrders();
-        orders.setMenuItemId(request.menuId());
-        orders.setQuantity(request.quantity());
-        orders.setPrice(menuResponseDto.getPrice());
-        return orders;
+    private MenuResponse fetchMenu(UUID menuId) {
+
+        var response = menuClient.getMenuById(menuId);
+
+        if (response == null || response.getBody() == null || response.getBody().getData() == null) {
+            throw new ResourceNotFoundException(
+                    String.format(AppConstants.ERROR_MESSAGES.MENU_NOT_FOUND, menuId));
+        }
+
+        return response.getBody().getData();
     }
 
-    private void publishOrderCreatedEvent(Reservation reservation) {
+    private void createReservationOutboxEvent(Reservation reservation) {
+
         try {
-            OrderCreatedEvent orderCreatedEvent = new OrderCreatedEvent();
-            orderCreatedEvent.setReservationId(reservation.getId());
-            orderCreatedEvent.setSessionId(reservation.getSessionId());
-            orderCreatedEvent.setStatus(reservation.getStatus().name());
-            orderCreatedEvent.setTableId(reservation.getTable().getId());
-            orderCreatedEvent.setBillAmount(reservation.getBillAmount());
-            orderCreatedEvent.setReservationTime(reservation.getReservationTime());
+            OrderCreatedEvent event = buildOrderCreatedEvent(reservation);
 
-            List<OrderCreatedEvent.MenuItems> menuItems = reservation.getReservationOrders().stream()
-                    .flatMap(order -> buildMenuItems(order).stream())
-                    .toList();
-
-            orderCreatedEvent.setItems(menuItems);
-
-            String payload = objectMapper.writeValueAsString(orderCreatedEvent);
+            String payload = objectMapper.writeValueAsString(event);
 
             OutboxEvent outboxEvent = outboxMapper.map(
                     "ORDER",
@@ -154,24 +161,34 @@ public class ReservationService {
                     kafkaProperties.getTopic("order-event"));
 
             outboxEventRepository.save(outboxEvent);
+
         } catch (Exception e) {
+            log.error("Failed to create reservation outbox event", e);
             throw new RuntimeException("Error publishing order created event", e);
         }
-
     }
 
-    private List<OrderCreatedEvent.MenuItems> buildMenuItems(ReservationOrders reservationOrders) {
+    private OrderCreatedEvent buildOrderCreatedEvent(Reservation reservation) {
 
-        List<MenuIngredientResponse> ingredients = menuClient.getMenuIngredentsById(reservationOrders.getMenuItemId()).getBody().getData();
+        OrderCreatedEvent event = new OrderCreatedEvent();
 
-        return ingredients.stream().map(
-                ingredient ->
-                        new OrderCreatedEvent.MenuItems(
-                                ingredient.getVariantId(),
-                                ingredient.getUnitId(),
-                                ingredient.getQuantity()
-                        )
-        ).toList();
+        event.setReservationId(reservation.getId());
+        event.setSessionId(reservation.getSessionId());
+        event.setStatus(reservation.getStatus().name());
+        event.setTableId(reservation.getTable().getId());
+        event.setBillAmount(reservation.getBillAmount());
+        event.setReservationTime(reservation.getReservationTime());
+
+        List<OrderCreatedEvent.MenuItem> items = reservation.getReservationOrders().stream()
+                .map(item -> new OrderCreatedEvent.MenuItem(
+                        item.getMenuItemId(),
+                        item.getQuantity()
+                )).toList();
+
+        event.setItems(items);
+
+        return event;
     }
+
 
 }

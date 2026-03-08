@@ -1,5 +1,15 @@
 package com.sts.controller;
 
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.sts.dto.request.CreateTableCommand;
 import com.sts.dto.response.TableResponse;
 import com.sts.pagination.PageRequestDto;
@@ -7,15 +17,14 @@ import com.sts.response.ApiResponse;
 import com.sts.response.AppResponse;
 import com.sts.response.PagedResponse;
 import com.sts.service.TableService;
+import com.sts.utils.contant.AppConstants;
+
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
-
+@Slf4j
 @RestController
-@RequestMapping("/table")
+@RequestMapping(AppConstants.TABLE_BASE_PATH)
 @AllArgsConstructor
 public class TableController {
 
@@ -23,11 +32,13 @@ public class TableController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<TableResponse>> createTable(@RequestBody CreateTableCommand request) {
-        return AppResponse.success(tableService.createTable(request), "Table create successfully");
+        log.info(AppConstants.LOG_MESSAGES.CREATING_TABLE, request.name());
+        return AppResponse.success(tableService.createTable(request), AppConstants.SUCCESS_MESSAGES.TABLE_CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<PagedResponse<List<TableResponse>>> getAllTables(@ModelAttribute PageRequestDto pageRequestDto) {
-        return AppResponse.success(tableService.getAllTables(pageRequestDto.buildPageable()), "Success");
+    public ResponseEntity<PagedResponse<List<TableResponse>>> getAllTables(PageRequestDto pageRequestDto) {
+        return AppResponse.success(tableService.getAllTables(pageRequestDto.buildPageable()),
+                AppConstants.SUCCESS_MESSAGES.TABLES_FETCHED);
     }
 }

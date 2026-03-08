@@ -1,11 +1,25 @@
 package com.sts.model.stock;
 
-import com.sts.domain.Audit;
-import jakarta.persistence.*;
-import lombok.*;
-import com.sts.constant.enums.TransactionReference;
 import java.math.BigDecimal;
 import java.util.UUID;
+
+import com.sts.constant.enums.TransactionReference;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.sts.domain.Audit;
+
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Builder
@@ -13,7 +27,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(EntityListeners.class)
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "stock_transaction")
 public class StockTransaction extends Audit {
 

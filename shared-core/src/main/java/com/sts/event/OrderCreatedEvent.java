@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,7 +30,12 @@ public class OrderCreatedEvent {
 
     private LocalDateTime reservationEndTime;
 
-    private List<MenuItems> items;
+    @Builder.Default
+    private List<MenuItem> items = new ArrayList<>();
+
+    public void addItem(MenuItem item) {
+        items.add(item);
+    }
 
 
     @Getter
@@ -37,10 +43,9 @@ public class OrderCreatedEvent {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class MenuItems {
-        private UUID variantId;
+    public static class MenuItem {
 
-        private UUID unitId;
+        private UUID menuId;
 
         private double quantity;
     }

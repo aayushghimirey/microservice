@@ -27,8 +27,7 @@ public class PurchaseEventListener {
 
     @KafkaListener(
             topics = "#{@kafkaProperties.getTopic('purchase-event')}",
-            groupId = "#{@kafkaProperties.getGroup('finance-group')}",
-            containerFactory = "financeKafkaListenerContainerFactory"
+            containerFactory = "purchaseKafkaListenerContainerFactory"
     )
     public void listen(
             ConsumerRecord<String, PurchaseCreatedEvent> record,

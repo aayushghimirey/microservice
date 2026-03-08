@@ -1,17 +1,31 @@
 package com.sts.model;
 
-
-import com.sts.domain.Audit;
-import com.sts.utils.enums.ReservationStatus;
-import jakarta.persistence.*;
-import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.sts.domain.Audit;
+import com.sts.utils.enums.ReservationStatus;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -48,13 +62,13 @@ public class Reservation extends Audit {
         this.billAmount = BigDecimal.ZERO;
         for (var order : reservationOrders) {
             this.billAmount = this.billAmount.add(
-                    order.getPrice().multiply(BigDecimal.valueOf(order.getQuantity()))
-            );
+                    order.getPrice().multiply(BigDecimal.valueOf(order.getQuantity())));
         }
     }
 
     public void addReservationOrder(ReservationOrders reservationOrder) {
-        if (reservationOrder == null) return;
+        if (reservationOrder == null)
+            return;
         reservationOrders.add(reservationOrder);
         reservationOrder.setReservation(this);
         calculateBillAmount();

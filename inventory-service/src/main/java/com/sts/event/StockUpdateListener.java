@@ -1,7 +1,7 @@
 package com.sts.event;
 
 
- import com.sts.model.stock.StockTransaction;
+import com.sts.model.stock.StockTransaction;
 import com.sts.model.stock.StockVariant;
 import com.sts.repository.StockTransactionRepository;
 import com.sts.repository.StockVariantRepository;
@@ -97,7 +97,7 @@ public class StockUpdateListener {
                 .balanceAfter(variant.getCurrentStock())
                 .referenceId(referenceId)
                 .referenceType(type)
-                .remark(item.reason())
+                .remark(item.source().name())
                 .build();
         stockTransactionRepository.save(transaction);
 

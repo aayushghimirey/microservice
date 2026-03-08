@@ -18,7 +18,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class KafkaProducerConfig {
 
-     private final KafkaProperties kafkaProperties;
+    private final KafkaProperties kafkaProperties;
 
 
     @Bean

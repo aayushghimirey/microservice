@@ -1,12 +1,27 @@
 package com.sts.model.stock;
 
-import com.sts.domain.Audit;
-import jakarta.persistence.*;
-import lombok.*;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.sts.domain.Audit;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Builder
@@ -14,7 +29,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(EntityListeners.class)
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "stock_variant")
 public class StockVariant extends Audit {
 
@@ -36,7 +51,6 @@ public class StockVariant extends Audit {
     @JoinColumn(name = "stock_id", nullable = false)
     private Stock stock;
 
-
     @OneToMany(mappedBy = "stockVariant", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<VariantUnit> units = new ArrayList<>();
@@ -52,7 +66,8 @@ public class StockVariant extends Audit {
     }
 
     public void addUnit(VariantUnit unit) {
-        if (unit == null) return;
+        if (unit == null)
+            return;
         units.add(unit);
         unit.setStockVariant(this);
     }

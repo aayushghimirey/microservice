@@ -1,22 +1,25 @@
 package com.sts.model;
 
-import com.sts.constant.enums.InvoiceStatus;
+import com.sts.utils.enums.InvoiceStatus;
 import com.sts.domain.Audit;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Invoice extends Audit {
 
     private String billNumber;
@@ -29,19 +32,31 @@ public class Invoice extends Audit {
     private InvoiceStatus status;
 
     @Builder.Default
-    private BigDecimal discountAmount;
+    private BigDecimal discountAmount = BigDecimal.ZERO;
 
-    private BigDecimal subTotal;
-
-    private BigDecimal grossTotal;
+    @Builder.Default
+    private BigDecimal subTotal = BigDecimal.ZERO;
+    @Builder.Default
+    private BigDecimal grossTotal = BigDecimal.ZERO;
 
     private LocalDateTime reservationTime;
 
     private LocalDateTime reservationEndTime;
 
+    @Builder.Default
+    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<InvoiceItem> items = new ArrayList<>();
 
     public void calculateGrossTotal() {
-        this.grossTotal = subTotal.subtract(discountAmount);
+        BigDecimal sub = subTotal == null ? BigDecimal.ZERO : subTotal;
+        BigDecimal discount = discountAmount == null ? BigDecimal.ZERO : discountAmount;
+
+        this.grossTotal = sub.subtract(discount);
+    }
+
+    public void addItem(InvoiceItem item) {
+        items.add(item);
+        item.setInvoice(this);
     }
 
 }

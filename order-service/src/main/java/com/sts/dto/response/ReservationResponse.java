@@ -5,6 +5,7 @@ import lombok.Builder;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,13 +20,17 @@ public record ReservationResponse(
         List<OrderItem> items
 ) {
 
+    public ReservationResponse {
+        if (items == null) {
+            items = new ArrayList<>();
+        }
+    }
+
     @Builder
     public record OrderItem(
             UUID menuItemId,
             BigDecimal price,
             Integer quantity
     ) {
-
     }
-
 }

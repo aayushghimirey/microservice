@@ -14,7 +14,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-
 @MappedSuperclass
 @Getter
 @Setter
@@ -36,6 +35,5 @@ public abstract class Audit {
 
     @Column(name = "is_deleted", nullable = false)
     private boolean deleted = false;
-
 
 }

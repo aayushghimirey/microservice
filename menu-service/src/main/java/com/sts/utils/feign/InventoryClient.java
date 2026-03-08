@@ -8,11 +8,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.UUID;
 
-@FeignClient(name = "inventory-client", url = "${app.clients.inventory-service.url}", path = "/stock")
+@FeignClient(
+        name = "inventory-client",
+        url = "${app.clients.inventory-service.url}",
+        path = "/stocks"
+)
 public interface InventoryClient {
 
-    @GetMapping("/{variantId}/{unitId}/validate")
-    ResponseEntity<ApiResponse<Boolean>> validateStock(
-            @PathVariable("variantId") UUID variantId,
-            @PathVariable("unitId") UUID unitId);
+    @GetMapping("/variants/{variantId}/units/{unitId}/exists")
+    public ResponseEntity<ApiResponse<Boolean>> validateStock(
+            @PathVariable UUID variantId,
+            @PathVariable UUID unitId);
 }

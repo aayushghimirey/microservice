@@ -22,6 +22,7 @@ public class TableMapper {
         tableResponse.setName(entity.getName());
         tableResponse.setLocation(entity.getLocation());
         tableResponse.setCapacity(entity.getCapacity());
+        tableResponse.setStatus(entity.getStatus());
         return tableResponse;
     }
 }

@@ -16,10 +16,12 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
         </processorPath>
         <module name="order-service" />
         <module name="inventory-service" />
         <module name="menu-service" />
+        <module name="invoice-service" />
         <module name="finance-service" />
       </profile>
     </annotationProcessing>
@@ -28,6 +30,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="finance-service" options="-parameters" />
       <module name="inventory-service" options="-parameters" />
+      <module name="invoice-service" options="-parameters" />
       <module name="menu-service" options="-parameters" />
       <module name="order-service" options="-parameters" />
     </option>

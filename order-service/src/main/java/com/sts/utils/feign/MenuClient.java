@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 import java.util.UUID;
 
-@FeignClient(name = "menu-client", url = "${app.clients.menu-service.url}", path = "/menu")
+@FeignClient(name = "menu-client", url = "${app.clients.menu-service.url}", path = "/menus")
 public interface MenuClient {
 
     @GetMapping("/{menuId}")
     ResponseEntity<ApiResponse<MenuResponse>> getMenuById(@PathVariable UUID menuId);
 
-    ResponseEntity<ApiResponse<List<MenuIngredientResponse>>> getMenuIngredentsById(@PathVariable UUID menuId);
+    @GetMapping("/{menuId}/ingredients")
+    ResponseEntity<ApiResponse<List<MenuIngredientResponse>>> getMenuIngredientsById(@PathVariable UUID menuId);
 
 }

@@ -19,3 +19,5 @@ app:
     bootstrap-servers: localhost:9092
     topics:
       purchase-event: PURCHASE_EVENT
+
+

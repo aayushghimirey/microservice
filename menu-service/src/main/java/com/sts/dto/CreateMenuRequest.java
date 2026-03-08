@@ -1,28 +1,29 @@
 package com.sts.dto;
 
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.UUID;
+
+import com.sts.utils.constant.AppConstants;
 import com.sts.utils.enums.MenuCategory;
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.UUID;
+public record CreateMenuRequest(
 
+        @NotBlank(message = AppConstants.VALIDATION_MESSAGES.MENU_NAME_REQUIRED) String name,
 
-public record   CreateMenuRequest(
+        String code,
 
-        @NotBlank(message = "Menu name is required") String name,
+        @NotNull(message = AppConstants.VALIDATION_MESSAGES.MENU_CATEGORY_REQUIRED) MenuCategory category,
 
-         String code,
+        @NotNull(message = AppConstants.VALIDATION_MESSAGES.PRICE_REQUIRED) @Positive(message = AppConstants.VALIDATION_MESSAGES.PRICE_POSITIVE) BigDecimal price,
 
-        @NotNull(message = "Menu category is required") MenuCategory category,
-
-        @NotNull(message = "Price is required") @Positive(message = "Price must be a positive value") BigDecimal price,
-
-        @NotEmpty(message = "At least one ingredient is required") @Valid List<MenuIngredientRequest> ingredients
+        @NotEmpty(message = AppConstants.VALIDATION_MESSAGES.INGREDIENTS_REQUIRED) @Valid List<MenuIngredientRequest> ingredients
 
 ) {
 
@@ -31,10 +32,10 @@ public record   CreateMenuRequest(
      */
     public record MenuIngredientRequest(
 
-            @NotNull(message = "Variant ID is required") UUID variantId,
+            @NotNull(message = AppConstants.VALIDATION_MESSAGES.VARIANT_ID_REQUIRED) UUID variantId,
 
-            @NotNull(message = "Unit ID is required") UUID unitId,
+            @NotNull(message = AppConstants.VALIDATION_MESSAGES.UNIT_ID_REQUIRED) UUID unitId,
 
-            @Positive(message = "Quantity must be a positive value") double quantity) {
+            @Positive(message = AppConstants.VALIDATION_MESSAGES.QUANTITY_POSITIVE) double quantity) {
     }
 }
