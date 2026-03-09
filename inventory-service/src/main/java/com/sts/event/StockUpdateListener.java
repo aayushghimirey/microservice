@@ -38,6 +38,8 @@ public class StockUpdateListener {
     public void on(StockUpdateEvent stockUpdateEvent) {
         if (stockUpdateEvent.purchaseId() != null) {
             processAddition(stockUpdateEvent);
+        } else if (stockUpdateEvent.invoiceId() != null) {
+            processDeductionForInvoice(stockUpdateEvent);
         } else {
             processDeduction(stockUpdateEvent);
         }
@@ -69,36 +71,38 @@ public class StockUpdateListener {
         }
     }
 
+    private void processDeductionForInvoice(StockUpdateEvent stockUpdateEvent) {
+
+        log.info("Processing stock deduction for invoiceId {}", stockUpdateEvent.invoiceId());
+
+        for (var item : stockUpdateEvent.event()) {
+
+            StockVariant variant = getVariantAndUnit(item);
+
+            BigDecimal delta = item.quantity().multiply(getConversionRate(variant, item));
+
+            // Deduct stock
+            variant.setCurrentStock(variant.getCurrentStock().subtract(delta));
+            stockVariantRepository.saveAndFlush(variant);
+
+            // Save transaction
+            saveTransaction(item, variant, delta.negate(), stockUpdateEvent.invoiceId(), TransactionReference.SALES);
+        }
+    }
+
     private StockVariant getVariantAndUnit(StockUpdateEvent.Info item) {
-        StockVariant variant = stockVariantRepository.findById(item.variantId())
-                .orElseThrow(() -> new IllegalArgumentException("Variant not found: " + item.variantId()));
-        variant.getUnits().stream()
-                .filter(u -> u.getId().equals(item.unitId()))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Unit not found: " + item.unitId()));
+        StockVariant variant = stockVariantRepository.findById(item.variantId()).orElseThrow(() -> new IllegalArgumentException("Variant not found: " + item.variantId()));
+        variant.getUnits().stream().filter(u -> u.getId().equals(item.unitId())).findFirst().orElseThrow(() -> new IllegalArgumentException("Unit not found: " + item.unitId()));
         return variant;
     }
 
     private BigDecimal getConversionRate(StockVariant variant, StockUpdateEvent.Info item) {
-        return variant.getUnits().stream()
-                .filter(u -> u.getId().equals(item.unitId()))
-                .findFirst()
-                .get()
-                .getConversionRate();
+        return variant.getUnits().stream().filter(u -> u.getId().equals(item.unitId())).findFirst().get().getConversionRate();
     }
 
 
-    private void saveTransaction(StockUpdateEvent.Info item, StockVariant variant, BigDecimal delta,
-                                 UUID referenceId, TransactionReference type) {
-        StockTransaction transaction = StockTransaction.builder()
-                .variantId(item.variantId())
-                .unitId(item.unitId())
-                .quantityChange(delta)
-                .balanceAfter(variant.getCurrentStock())
-                .referenceId(referenceId)
-                .referenceType(type)
-                .remark(item.source().name())
-                .build();
+    private void saveTransaction(StockUpdateEvent.Info item, StockVariant variant, BigDecimal delta, UUID referenceId, TransactionReference type) {
+        StockTransaction transaction = StockTransaction.builder().variantId(item.variantId()).unitId(item.unitId()).quantityChange(delta).balanceAfter(variant.getCurrentStock()).referenceId(referenceId).referenceType(type).remark(item.source().name()).build();
         stockTransactionRepository.save(transaction);
 
         log.info("Transaction saved: variant {} delta {}", item.variantId(), delta);

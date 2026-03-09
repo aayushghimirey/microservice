@@ -14,4 +14,5 @@ public class MenuIngredientResponse {
     private UUID variantId;
     private UUID unitId;
     private double quantity;
+
 }

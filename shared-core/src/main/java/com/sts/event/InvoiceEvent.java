@@ -15,6 +15,10 @@ import java.util.UUID;
 @Builder
 public class InvoiceEvent {
 
+    private UUID invoiceId;
+
+    private UUID sessionId;
+
     @Builder.Default
     private BigDecimal grossTotal = BigDecimal.ZERO;
 

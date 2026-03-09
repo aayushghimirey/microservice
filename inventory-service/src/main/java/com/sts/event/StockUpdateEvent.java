@@ -8,6 +8,7 @@ import java.util.UUID;
 
 public record StockUpdateEvent(
         UUID purchaseId,
+        UUID invoiceId,
         List<Info> event
 ) {
 
@@ -16,6 +17,7 @@ public record StockUpdateEvent(
             UUID unitId,
             BigDecimal quantity,
             StockUpdateSource source
+
     ) {
     }
 

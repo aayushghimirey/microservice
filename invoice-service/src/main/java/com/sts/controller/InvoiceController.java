@@ -9,11 +9,10 @@ import com.sts.service.InvoiceService;
 import com.sts.utils.constant.AppConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(AppConstants.INVOICE_BASE_PATH)
@@ -25,6 +24,11 @@ public class InvoiceController {
     @GetMapping("/pending")
     public ResponseEntity<ApiResponse<List<InvoiceResponse>>> getAllPending() {
         return AppResponse.success(invoiceService.getAllPendingInvoices(), AppConstants.SUCCESS_MESSAGES.INVOICES_FETCHED);
+    }
+
+    @PostMapping("/{invoiceId}")
+    public ResponseEntity<?> proceedInvoice(@PathVariable("invoiceId") UUID invoiceId) {
+        return AppResponse.success(invoiceService.proceedInvoice(invoiceId), AppConstants.SUCCESS_MESSAGES.INVOICE_CREATED);
     }
 
     @GetMapping

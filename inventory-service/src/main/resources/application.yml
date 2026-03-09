@@ -1,10 +1,12 @@
 spring:
 
-  datasource:
-    url: jdbc:postgresql://localhost:5432/inventory
-    username: postgres
-    password: admin
+  application:
+    name: inventory-service
 
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/inventory}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:admin}
   jpa:
     hibernate:
       ddl-auto: update
@@ -12,12 +14,26 @@ spring:
       hibernate.format_sql: true
 
 server:
-  port: 8080
+  port: ${SERVER_PORT:8080}
 
 app:
+  clients:
+    menu-service:
+      url: ${MENU_SERVICE_URL:http://localhost:8082}
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     topics:
       purchase-event: PURCHASE_EVENT
+      invoice-event: INVOICE_EVENT
+    groups:
+      inventory-group: inventory-group-consumer
 
 
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_DEFAULT_ZONE:http://eureka-service:8761/eureka}
+    register-with-eureka: true
+    fetch-registry: false

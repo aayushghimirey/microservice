@@ -1,10 +1,12 @@
 spring:
 
-  datasource:
-    url: jdbc:postgresql://localhost:5432/invoice
-    username: postgres
-    password: admin
+  application:
+    name: invoice-service
 
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/invoice}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:admin}
   jpa:
     hibernate:
       ddl-auto: update
@@ -12,11 +14,11 @@ spring:
       hibernate.format_sql: true
 
 server:
-  port: 8084
+  port: ${SERVER_PORT:8084}
 
 app:
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     topics:
       order-event: ORDER_EVENT
       invoice-event: INVOICE_EVENT
@@ -24,5 +26,13 @@ app:
       invoice-group: invoice-group-consumer
   clients:
     menu-service:
-      url: http://localhost:8082
+      url: ${MENU_SERVICE_URL:http://localhost:8082}
 
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_DEFAULT_ZONE:http://eureka-service:8761/eureka}
+    register-with-eureka: true
+    fetch-registry: false

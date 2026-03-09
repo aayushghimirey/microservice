@@ -9,6 +9,7 @@ public class InvoiceMapper {
 
     public InvoiceResponse toResponse(Invoice invoice) {
         return InvoiceResponse.builder()
+                .id(invoice.getId())
                 .billNumber(invoice.getBillNumber())
                 .tableId(invoice.getTableId())
                 .sessionId(invoice.getSessionId())

@@ -1,6 +1,23 @@
 services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   zookeeper:
     image: confluentinc/cp-zookeeper:7.9.1
+    container_name: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -9,15 +26,138 @@ services:
 
   kafka:
     image: confluentinc/cp-kafka:7.9.1
+    container_name: kafka
     depends_on:
       - zookeeper
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:29092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     ports:
       - "9092:9092"
       - "29092:29092"
+
+  eureka-service:
+    build:
+      context: .
+      args:
+        SERVICE_NAME: eureka-service
+    container_name: eureka-service
+    ports:
+      - "8761:8761"
+    environment:
+      SERVER_PORT: 8761
+
+  inventory-service:
+    build:
+      context: .
+      args:
+        SERVICE_NAME: inventory-service
+    container_name: inventory-service
+    ports:
+      - "8000:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/inventory
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      EUREKA_CLIENT_DEFAULT_ZONE: http://eureka-service:8761/eureka
+      SERVER_PORT: 8080
+      MENU_SERVICE_URL: http://menu-service:8080
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+      eureka-service:
+        condition: service_started
+
+  finance-service:
+    build:
+      context: .
+      args:
+        SERVICE_NAME: finance-service
+    container_name: finance-service
+    ports:
+      - "8001:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/finance
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      EUREKA_CLIENT_DEFAULT_ZONE: http://eureka-service:8761/eureka
+      SERVER_PORT: 8080
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+
+  menu-service:
+    build:
+      context: .
+      args:
+        SERVICE_NAME: menu-service
+    container_name: menu-service
+    ports:
+      - "8002:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/menu
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      EUREKA_CLIENT_DEFAULT_ZONE: http://eureka-service:8761/eureka
+      SERVER_PORT: 8080
+      INVENTORY_SERVICE_URL: http://inventory-service:8080
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+
+  order-service:
+    build:
+      context: .
+      args:
+        SERVICE_NAME: order-service
+    container_name: order-service
+    ports:
+      - "8003:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/orders
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      EUREKA_CLIENT_DEFAULT_ZONE: http://eureka-service:8761/eureka
+      SERVER_PORT: 8080
+      MENU_SERVICE_URL: http://menu-service:8080
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+
+  invoice-service:
+    build:
+      context: .
+      args:
+        SERVICE_NAME: invoice-service
+    container_name: invoice-service
+    ports:
+      - "8004:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/invoice
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      EUREKA_CLIENT_DEFAULT_ZONE: http://eureka-service:8761/eureka
+      SERVER_PORT: 8080
+      MENU_SERVICE_URL: http://menu-service:8080
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_started

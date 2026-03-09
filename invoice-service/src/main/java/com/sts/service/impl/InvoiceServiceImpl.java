@@ -71,6 +71,8 @@ public class InvoiceServiceImpl implements InvoiceService {
     public void createInvoiceOutboxEvent(Invoice invoice) {
 
         InvoiceEvent invoiceEvent = InvoiceEvent.builder()
+                .invoiceId(invoice.getId())
+                .sessionId(invoice.getSessionId())
                 .grossTotal(invoice.getGrossTotal())
                 .reservationTime(invoice.getReservationTime())
                 .reservationEndTime(invoice.getReservationEndTime()).build();

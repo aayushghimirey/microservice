@@ -4,28 +4,26 @@ spring:
     name: menu-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/menu
-    username: postgres
-    password: admin
-
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/menu}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:admin}
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
 
-
-
 server:
-  port: 8082
+  port: ${SERVER_PORT:8082}
 
-
-# Custom application properties
 app:
   clients:
     inventory-service:
-      url: http://localhost:8080
+      url: ${INVENTORY_SERVICE_URL:http://localhost:8080}
 
-logging:
-  level:
-    com.sts: DEBUG
-    org.hibernate.SQL: DEBUG
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_DEFAULT_ZONE:http://eureka-service:8761/eureka}
+    register-with-eureka: true
+    fetch-registry: false

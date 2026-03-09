@@ -7,6 +7,7 @@ public interface AppConstants {
 
     interface SUCCESS_MESSAGES {
         String INVOICES_FETCHED = "Invoices fetched successfully";
+        String INVOICE_CREATED = " Invoice created successfully";
     }
 
     interface LOG_MESSAGES {

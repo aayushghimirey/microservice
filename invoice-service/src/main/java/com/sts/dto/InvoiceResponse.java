@@ -14,6 +14,8 @@ import java.util.UUID;
 @Builder
 public class InvoiceResponse {
 
+    private UUID id;
+
     private String billNumber;
 
     private UUID tableId;

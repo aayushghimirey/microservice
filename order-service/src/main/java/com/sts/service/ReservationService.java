@@ -80,16 +80,16 @@ public class ReservationService {
                 .toList();
     }
 
-    @Transactional(readOnly = true)
-    public List<ReservationResponse.OrderItem> getOrderItemBySessionId(UUID sessionId) {
-
-        return reservationRepository.findBySessionId(sessionId)
-                .stream()
-                .map(Reservation::getReservationOrders)
-                .flatMap(List::stream)
-                .map(reservationMapper::toOrderItemResponse)
-                .toList();
-    }
+//    @Transactional(readOnly = true)
+//    public List<ReservationResponse.OrderItem> getOrderItemBySessionId(UUID sessionId) {
+//
+//        return reservationRepository.findBySessionId(sessionId)
+//                .stream()
+//                .map(Reservation::getReservationOrders)
+//                .flatMap(List::stream)
+//                .map(reservationMapper::toOrderItemResponse)
+//                .toList();
+//    }
 
     /* --------------------------------------------------
        Private helpers

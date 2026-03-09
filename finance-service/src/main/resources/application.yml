@@ -1,11 +1,12 @@
 spring:
 
+  application:
+    name: finance-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/finance
-    username: postgres
-    password: admin
-
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/finance}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:admin}
   jpa:
     hibernate:
       ddl-auto: update
@@ -14,13 +15,22 @@ spring:
       hibernate.format_sql: true
 
 server:
-  port: 8081
+  port: ${SERVER_PORT:8081}
 
 app:
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     topics:
       purchase-event: PURCHASE_EVENT
       invoice-event: INVOICE_EVENT
     groups:
       finance-group: finance-group-consumer
+
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_DEFAULT_ZONE:http://eureka-service:8761/eureka}
+    register-with-eureka: true
+    fetch-registry: false

@@ -3,10 +3,12 @@ package com.sts.event;
 
 import com.sts.model.purchase.Purchase;
 import com.sts.utils.enums.StockUpdateSource;
+import com.sts.utils.feign.MenuClient;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import com.sts.event.StockUpdateEvent;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,7 +16,10 @@ import java.util.UUID;
  * Application event for updating stock items after purchase / adjustment
  * */
 @Component
+@AllArgsConstructor
 public class StockUpdateEventBuilder {
+
+    private final MenuClient menuClient;
 
     public StockUpdateEvent buildFromPurchase(Purchase purchase) {
 
@@ -28,7 +33,7 @@ public class StockUpdateEventBuilder {
                 ))
                 .toList();
 
-        return new StockUpdateEvent(purchase.getId(), infos);
+        return new StockUpdateEvent(purchase.getId(), null, infos);
     }
 
 
@@ -47,9 +52,41 @@ public class StockUpdateEventBuilder {
 
         return new StockUpdateEvent(
                 null,
+                null,
                 List.of(info)
         );
     }
 
+    public StockUpdateEvent buildFromInvoiceEvent(InvoiceEvent invoiceEvent) {
+        List<StockUpdateEvent.Info> infos = new ArrayList<>();
 
+        List<InvoiceEvent.InvoiceMenuItem> items = invoiceEvent.getItems();
+
+        for (var item : items) {
+
+            List<MenuIngredientResponse> data =
+                    menuClient.getMenuIngredientsById(item.getMenuId())
+                            .getBody()
+                            .getData();
+
+            double orderQuantity = item.getQuantity();
+
+            for (var detail : data) {
+
+                double deductionQuantity = detail.getQuantity() * orderQuantity;
+
+                infos.add(
+                        new StockUpdateEvent.Info(
+                                detail.getVariantId(),
+                                detail.getUnitId(),
+                                BigDecimal.valueOf(deductionQuantity),
+                                StockUpdateSource.SALE
+                        )
+                );
+            }
+        }
+
+        return new StockUpdateEvent(null, invoiceEvent.getInvoiceId(), infos);
+
+    }
 }

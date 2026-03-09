@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="shared-outbox" />
+        <module name="eureka-service" />
         <module name="shared-core" />
       </profile>
       <profile name="Annotation profile for order-service" enabled="true">
@@ -15,7 +16,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
         </processorPath>
         <module name="order-service" />
@@ -28,6 +28,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="eureka-service" options="-parameters" />
       <module name="finance-service" options="-parameters" />
       <module name="inventory-service" options="-parameters" />
       <module name="invoice-service" options="-parameters" />
