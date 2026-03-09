@@ -4,6 +4,9 @@ WORKDIR /app
 
 ARG SERVICE_NAME
 
-COPY ${SERVICE_NAME}/target/${SERVICE_NAME}.jar app.jar
+# Copy the built jar of the specific service
+COPY ${SERVICE_NAME}/target/*.jar app.jar
+
+EXPOSE 8080
 
 ENTRYPOINT ["java","-jar","/app/app.jar"]
