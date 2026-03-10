@@ -5,6 +5,7 @@ public interface AppConstants {
 
     String STOCK_BASE_PATH = "/stocks";
     String PURCHASE_BASE_PATH = "/purchases";
+    String VENDOR_BASE_PATH = "/vendors";
 
     interface SUCCESS_MESSAGES {
         String PURCHASE_CREATED = "Purchase created successfully";
@@ -21,6 +22,7 @@ public interface AppConstants {
         String UNIT_NOT_FOUND = "Unit not found with id '%s'";
         String INVOICE_NUMBER_EXISTS = "Purchase with invoice number '%s' already exists";
         String STOCK_ALREADY_EXISTS = "Stock already exists with name '%s'";
+        String VENDOR_NOT_FOUND = " Vendor not found with id '%s'";
         String STOCK_NOT_FOUND = "Stock not found with id '%s'";
         String INVALID_UNIT_TYPE = "Invalid unit type '%s' for purchase";
     }
@@ -58,6 +60,8 @@ public interface AppConstants {
         String INVOICE_NUMBER_REQUIRED = "Invoice number is required";
         String BILLING_TYPE_REQUIRED = "Billing type is required";
         String MONEY_TRANSACTION_REQUIRED = "Money transaction type is required";
+
+        String VENDOR_ID_REQUIRED = "Vendor id is required";
 
         String ITEMS_REQUIRED = "At least one purchase item is required";
 

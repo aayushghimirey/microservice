@@ -18,6 +18,9 @@ public record CreatePurchaseCommand(
         @NotNull(message = AppConstants.VALIDATION_MESSAGES.BILLING_TYPE_REQUIRED)
         BillingType billingType,
 
+        @NotNull(message = AppConstants.VALIDATION_MESSAGES.VENDOR_ID_REQUIRED)
+        UUID vendorId,
+
         @NotNull(message = AppConstants.VALIDATION_MESSAGES.MONEY_TRANSACTION_REQUIRED)
         MoneyTransaction moneyTransaction,
 

@@ -13,25 +13,25 @@ import com.sts.mapper.OutboxMapper;
 import com.sts.mapper.PurchaseMapper;
 import com.sts.model.purchase.Purchase;
 import com.sts.model.stock.VariantUnit;
-import com.sts.repository.OutboxEventRepository;
-import com.sts.repository.PurchaseRepository;
-import com.sts.repository.StockVariantRepository;
-import com.sts.repository.VariantUnitRepository;
+import com.sts.model.vendor.Vendor;
+import com.sts.repository.*;
 import com.sts.service.PurchaseService;
 import com.sts.topics.KafkaProperties;
 import com.sts.utils.contant.AppConstants;
 import com.sts.utils.enums.UnitType;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class PurchaseServiceImpl implements PurchaseService {
 
 
@@ -46,6 +46,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     private final StockVariantRepository stockVariantRepository;
     private final VariantUnitRepository variantUnitRepository;
+    private final VendorRepository vendorRepository;
 
     @Override
     @Transactional
@@ -56,10 +57,15 @@ public class PurchaseServiceImpl implements PurchaseService {
                     String.format(AppConstants.ERROR_MESSAGES.INVOICE_NUMBER_EXISTS, command.invoiceNumber()));
         }
 
+        Vendor vendor = vendorRepository.findById(command.vendorId()).orElseThrow(
+                () -> new ResourceNotFoundException(
+                        String.format(AppConstants.ERROR_MESSAGES.VARIANT_NOT_FOUND, command.vendorId())
+                )
+        );
 
         validateItems(command);
 
-        Purchase purchase = purchaseMapper.buildPurchase(command);
+        Purchase purchase = purchaseMapper.buildPurchase(command, vendor);
         purchaseRepository.save(purchase);
 
         createPurchaseOutboxEvent(purchase);
@@ -83,6 +89,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     private void validateItems(CreatePurchaseCommand command) {
         for (var item : command.items()) {
+
+            log.info("Received variantId: {}", item.variantId());
 
             if (!stockVariantRepository.existsById(item.variantId())) {
                 throw new ResourceNotFoundException(

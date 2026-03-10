@@ -33,6 +33,9 @@ public class InvoiceListener {
         bySessionId.setStatus(ReservationStatus.COMPLETED);
 
         bySessionId.getTable().setStatus(TableStatus.OPEN);
+
+        acknowledgment.acknowledge();
+
     }
 
 }

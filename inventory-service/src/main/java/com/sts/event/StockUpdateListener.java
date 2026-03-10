@@ -8,6 +8,7 @@ import com.sts.repository.StockVariantRepository;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,13 +30,16 @@ import java.util.UUID;
 public class StockUpdateListener {
 
     private static final Logger log = LoggerFactory.getLogger(StockUpdateListener.class);
+
     private final StockVariantRepository stockVariantRepository;
     private final StockTransactionRepository stockTransactionRepository;
 
-
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @EventListener
     public void on(StockUpdateEvent stockUpdateEvent) {
+
+        log.info("StockUpdateEvent received");
+
         if (stockUpdateEvent.purchaseId() != null) {
             processAddition(stockUpdateEvent);
         } else if (stockUpdateEvent.invoiceId() != null) {

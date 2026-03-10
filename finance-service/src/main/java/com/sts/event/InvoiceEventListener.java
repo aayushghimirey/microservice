@@ -22,7 +22,8 @@ public class InvoiceEventListener {
     )
     public void listenInvoice(InvoiceEvent event, Acknowledgment acknowledgment) {
 
-        log.info("Invoice event recevied with id {}", event.getInvoiceId());
+        log.info("Invoice event received with id {}", event.getInvoiceId());
+
 
         InvoiceRecord invoiceRecord = InvoiceRecord.builder()
                 .invoiceId(event.getInvoiceId())
@@ -31,6 +32,8 @@ public class InvoiceEventListener {
                 .grossTotal(event.getGrossTotal()).build();
 
         invoiceRecordRepository.save(invoiceRecord);
+
+        acknowledgment.acknowledge();
 
     }
 }

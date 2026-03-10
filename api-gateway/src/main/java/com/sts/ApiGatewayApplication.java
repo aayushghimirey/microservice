@@ -22,7 +22,7 @@ public class ApiGatewayApplication {
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route("inventory-service", predicateSpec -> predicateSpec
-                        .path("/stocks/**", "/purchases/**")
+                        .path("/stocks/**", "/purchases/**", "/vendors/**")
                         .uri("lb://inventory-service")
                 )
                 .route("finance-service", predicateSpec -> predicateSpec

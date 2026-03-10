@@ -5,6 +5,8 @@ import com.sts.model.purchase.Purchase;
 import com.sts.utils.enums.StockUpdateSource;
 import com.sts.utils.feign.MenuClient;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -19,6 +21,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class StockUpdateEventBuilder {
 
+    private static final Logger log = LoggerFactory.getLogger(StockUpdateEventBuilder.class);
     private final MenuClient menuClient;
 
     public StockUpdateEvent buildFromPurchase(Purchase purchase) {
@@ -58,6 +61,7 @@ public class StockUpdateEventBuilder {
     }
 
     public StockUpdateEvent buildFromInvoiceEvent(InvoiceEvent invoiceEvent) {
+        log.info("Building invoice");
         List<StockUpdateEvent.Info> infos = new ArrayList<>();
 
         List<InvoiceEvent.InvoiceMenuItem> items = invoiceEvent.getItems();
@@ -85,6 +89,7 @@ public class StockUpdateEventBuilder {
                 );
             }
         }
+        log.info("Builded invoice");
 
         return new StockUpdateEvent(null, invoiceEvent.getInvoiceId(), infos);
 

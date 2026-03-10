@@ -4,6 +4,7 @@ import com.sts.dto.request.CreatePurchaseCommand;
 import com.sts.dto.response.PurchaseResponse;
 import com.sts.model.purchase.Purchase;
 import com.sts.model.purchase.PurchaseItem;
+import com.sts.model.vendor.Vendor;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 public class PurchaseMapper {
 
 
-    public Purchase buildPurchase(CreatePurchaseCommand command) {
+    public Purchase buildPurchase(CreatePurchaseCommand command, Vendor vendor) {
         if (command == null) return null;
 
         Purchase purchase = Purchase.builder()
@@ -23,6 +24,7 @@ public class PurchaseMapper {
                 .billingType(command.billingType())
                 .moneyTransaction(command.moneyTransaction())
                 .discountAmount(command.discountAmount() != null ? command.discountAmount() : BigDecimal.ZERO)
+                .vendor(vendor)
                 .build();
 
         // mapping purchased items

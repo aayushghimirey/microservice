@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 public class InvoiceEventListener {
 
     private static final Logger log = LoggerFactory.getLogger(InvoiceEventListener.class);
+
     private final KafkaProperties kafkaProperties;
     private final StockUpdateEventBuilder stockUpdateEventBuilder;
     private final ApplicationEventPublisher applicationEventPublisher;
@@ -23,9 +24,14 @@ public class InvoiceEventListener {
             containerFactory = "invoiceKafkaListenerContainerFactory"
     )
     public void listen(InvoiceEvent event, Acknowledgment acknowledgment) {
-        log.info("Event received with id {}", event.getInvoiceId());
 
-        StockUpdateEvent stockUpdateEvent = stockUpdateEventBuilder.buildFromInvoiceEvent(event);
+        log.info("Invoice event received with id {}", event.getInvoiceId());
+
+        StockUpdateEvent stockUpdateEvent =
+                stockUpdateEventBuilder.buildFromInvoiceEvent(event);
+
         applicationEventPublisher.publishEvent(stockUpdateEvent);
+
+        acknowledgment.acknowledge();
     }
 }
