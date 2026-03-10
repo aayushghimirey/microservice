@@ -38,14 +38,6 @@ public class ReservationController {
 
     @GetMapping(value = "/orders/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter getOrderStream(@RequestParam UUID tenantId) {
-
-        SseEmitter emitter = reservationSseService.createEmitter(tenantId);
-
-        reservationSseService.initPush(
-                tenantId,
-                reservationService.getAllPendingOrders()
-        );
-
-        return emitter;
+        return reservationSseService.createEmitter(tenantId);
     }
 }

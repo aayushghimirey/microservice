@@ -2,9 +2,9 @@ package com.sts.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
+import com.sts.utils.PushPendingReservations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,7 +12,6 @@ import com.sts.dto.request.CreateReservationCommand;
 import com.sts.dto.response.ReservationResponse;
 import com.sts.entity.OutboxEvent;
 import com.sts.entity.OutboxEventType;
-import com.sts.event.MenuIngredientResponse;
 import com.sts.event.MenuResponse;
 import com.sts.event.OrderCreatedEvent;
 import com.sts.exception.BusinessValidationException;
@@ -48,6 +47,9 @@ public class ReservationService {
     private final ObjectMapper objectMapper;
     private final KafkaProperties kafkaProperties;
     private final MenuClient menuClient;
+
+    private final PushPendingReservations pushPendingReservations;
+
     private final ReservationSseService reservationSseService;
 
     @Transactional
@@ -63,33 +65,15 @@ public class ReservationService {
 
         reserveTable(table);
 
-        ReservationResponse response = reservationMapper.toResponse(reservation);
-
-        reservationSseService.newOrderEvent(UUID.fromString("11111111-1111-1111-1111-111111111111"), response);
+        pushPendingReservations.pushPendingReservations();
 
         log.info(AppConstants.LOG_MESSAGES.RESERVATION_CREATED, reservation.getId());
 
-        return response;
+        return reservationMapper.toResponse(reservation);
     }
 
-    @Transactional(readOnly = true)
-    public List<ReservationResponse> getAllPendingOrders() {
-        return reservationRepository.findByStatus(ReservationStatus.PENDING)
-                .stream()
-                .map(reservationMapper::toResponse)
-                .toList();
-    }
 
-//    @Transactional(readOnly = true)
-//    public List<ReservationResponse.OrderItem> getOrderItemBySessionId(UUID sessionId) {
-//
-//        return reservationRepository.findBySessionId(sessionId)
-//                .stream()
-//                .map(Reservation::getReservationOrders)
-//                .flatMap(List::stream)
-//                .map(reservationMapper::toOrderItemResponse)
-//                .toList();
-//    }
+
 
     /* --------------------------------------------------
        Private helpers

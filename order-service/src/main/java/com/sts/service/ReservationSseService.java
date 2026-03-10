@@ -19,7 +19,6 @@ public class ReservationSseService {
     public SseEmitter createEmitter(UUID tenantId) {
 
         SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
-
         emitters.put(tenantId, emitter);
 
         emitter.onCompletion(() -> emitters.remove(tenantId));
@@ -29,48 +28,23 @@ public class ReservationSseService {
         return emitter;
     }
 
-    public void initPush(UUID tenantId, Object data) {
+    public void sendUpdate(UUID tenantId, Object data) {
 
         SseEmitter emitter = emitters.get(tenantId);
-
-        if (emitter == null) return;
-
-        try {
-
-            emitter.send(
-                    SseEmitter.event()
-                            .name("initial-orders")
-                            .data(data)
-            );
-
-        } catch (Exception e) {
-            emitters.remove(tenantId);
-        }
-    }
-
-    public void newOrderEvent(UUID tenantId, Object order) {
-
-        log.info("Create new order event push ready ");
-
-        SseEmitter emitter = emitters.get(tenantId);
-
 
         if (emitter == null) {
-            log.warn("No emitter found for tenant {}", tenantId);
             return;
         }
-        try {
-            log.info("Pushing SSE event to {}", tenantId);
 
+        try {
             emitter.send(
                     SseEmitter.event()
-                            .name("new-order")
-                            .data(order)
+                            .name("pending-orders")
+                            .data(data)
             );
-
         } catch (Exception e) {
-            log.error(e.getMessage(), "Error happen");
             emitters.remove(tenantId);
         }
     }
+
 }
