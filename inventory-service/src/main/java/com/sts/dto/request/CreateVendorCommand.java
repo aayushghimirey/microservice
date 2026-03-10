@@ -1,17 +1,10 @@
 package com.sts.dto.request;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.NotBlank;
 
-@Getter
-@Setter
-@NoArgsConstructor
-public class CreateVendorCommand {
-    private String name;
-    private String address;
-    private String contactNumber;
-    private String panNumber;
-
-
+public record CreateVendorCommand(
+        @NotBlank(message = "Vendor name is required") String name,
+        String address,
+        String contactNumber,
+        String panNumber) {
 }

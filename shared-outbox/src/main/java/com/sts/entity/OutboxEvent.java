@@ -1,5 +1,6 @@
 package com.sts.entity;
 
+import com.sts.enums.AggregateType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -22,13 +23,14 @@ public class OutboxEvent {
     private UUID id;
 
     @Column(name = "aggregate_type", nullable = false)
-    private String aggregateType; // e.g., PURCHASE, STOCK
+    @Enumerated(EnumType.STRING)
+    private AggregateType aggregateType; // e.g., PURCHASE, STOCK
 
     @Column(name = "topic")
     private String topic;
 
     @Column(name = "aggregate_id", nullable = false)
-    private String aggregateId;
+    private UUID aggregateId;
 
     @Column(name = "event_type", nullable = false)
     @Enumerated(EnumType.STRING)

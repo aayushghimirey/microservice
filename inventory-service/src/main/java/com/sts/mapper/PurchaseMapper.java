@@ -1,23 +1,24 @@
 package com.sts.mapper;
 
+import java.math.BigDecimal;
+
+import org.springframework.stereotype.Component;
+
 import com.sts.dto.request.CreatePurchaseCommand;
 import com.sts.dto.response.PurchaseResponse;
 import com.sts.model.purchase.Purchase;
 import com.sts.model.purchase.PurchaseItem;
 import com.sts.model.vendor.Vendor;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
 
 @Component
 @AllArgsConstructor
 public class PurchaseMapper {
 
-
     public Purchase buildPurchase(CreatePurchaseCommand command, Vendor vendor) {
-        if (command == null) return null;
+        if (command == null)
+            return null;
 
         Purchase purchase = Purchase.builder()
                 .invoiceNumber(command.invoiceNumber())
@@ -42,7 +43,8 @@ public class PurchaseMapper {
     }
 
     private PurchaseItem buildPurchaseItem(CreatePurchaseCommand.PurchaseItemCommand itemCmd) {
-        if (itemCmd == null) return null;
+        if (itemCmd == null)
+            return null;
 
         return PurchaseItem.builder()
                 .variantId(itemCmd.variantId())
@@ -52,7 +54,6 @@ public class PurchaseMapper {
                 .discountAmount(itemCmd.discountAmount() != null ? itemCmd.discountAmount() : BigDecimal.ZERO)
                 .build();
     }
-
 
     // -- response mapper -----------------------------
     public PurchaseResponse toResponse(Purchase purchase) {
@@ -67,8 +68,7 @@ public class PurchaseMapper {
                 purchase.getGrossTotal(),
                 purchase.getPurchaseItems().stream()
                         .map(this::toItemResponse)
-                        .collect(Collectors.toList())
-        );
+                        .toList());
     }
 
     private PurchaseResponse.PurchaseItemResponse toItemResponse(PurchaseItem item) {
@@ -79,7 +79,6 @@ public class PurchaseMapper {
                 item.getPerUnitPrice(),
                 item.getDiscountAmount(),
                 item.getSubTotal(),
-                item.getNetTotal()
-        );
+                item.getNetTotal());
     }
 }

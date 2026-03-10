@@ -1,4 +1,4 @@
-package com.sts.constant.enums;
+package com.sts.utils.enums;
 
 public enum TransactionReference {
     PURCHASE, SALES, ADJUSTMENT

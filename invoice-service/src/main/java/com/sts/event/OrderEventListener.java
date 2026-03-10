@@ -1,21 +1,20 @@
 package com.sts.event;
 
+import java.math.BigDecimal;
 
-import com.sts.model.InvoiceItem;
-import com.sts.utils.constant.AppConstants;
-import com.sts.utils.enums.InvoiceStatus;
-import com.sts.model.Invoice;
-import com.sts.repository.InvoiceRepository;
-import com.sts.topics.KafkaProperties;
-import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
+import com.sts.model.Invoice;
+import com.sts.model.InvoiceItem;
+import com.sts.repository.InvoiceRepository;
+import com.sts.topics.KafkaProperties;
+import com.sts.utils.enums.InvoiceStatus;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
@@ -26,14 +25,11 @@ public class OrderEventListener {
     private final InvoiceRepository invoiceRepository;
 
     @Transactional
-    @KafkaListener(
-            topics = "#{@kafkaProperties.getTopic('order-event')}",
-            groupId = "#{@kafkaProperties.getGroup('invoice-group')}"
-    )
+    @KafkaListener(topics = "#{@kafkaProperties.getTopic('order-event')}", groupId = "#{@kafkaProperties.getGroup('invoice-group')}")
     public void listen(OrderCreatedEvent event, Acknowledgment acknowledgment) {
 
         try {
-            log.info(String.format(AppConstants.LOG_MESSAGES.ORDER_EVENT_MESSAGE, event.getSessionId()));
+            log.info("Order event received for session: {}", event.getSessionId());
 
             Invoice invoice = invoiceRepository.findBySessionId(event.getSessionId());
 
@@ -45,7 +41,7 @@ public class OrderEventListener {
 
             invoiceRepository.save(invoice);
 
-            log.info(String.format(AppConstants.LOG_MESSAGES.INVOICE_PROCESSED_SUCCESS, event.getSessionId()));
+            log.info("Invoice processed successfully for session: {}", event.getSessionId());
 
             acknowledgment.acknowledge();
 
@@ -80,8 +76,7 @@ public class OrderEventListener {
                 .reservationTime(event.getReservationTime())
                 .build();
 
-        event.getItems().forEach(item ->
-        {
+        event.getItems().forEach(item -> {
             InvoiceItem invoiceItem = new InvoiceItem();
             invoiceItem.setMenuItemId(item.getMenuId());
             invoiceItem.setQuantity(item.getQuantity());

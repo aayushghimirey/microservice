@@ -1,21 +1,20 @@
 package com.sts.mapper;
 
+import java.math.BigDecimal;
+
+import org.springframework.stereotype.Component;
+
 import com.sts.dto.request.CreateStockCommand;
 import com.sts.dto.response.StockResponse;
 import com.sts.model.stock.Stock;
 import com.sts.model.stock.StockVariant;
 import com.sts.model.stock.VariantUnit;
+
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
-
-import java.math.BigDecimal;
-import java.util.stream.Collectors;
-
 
 @Component
 @AllArgsConstructor
 public class StockMapper {
-
 
     public Stock buildStock(CreateStockCommand command) {
         Stock stock = Stock.builder()
@@ -55,7 +54,6 @@ public class StockMapper {
                 .build();
     }
 
-
     public StockResponse toResponse(Stock stock) {
         if (stock == null)
             return null;
@@ -66,7 +64,7 @@ public class StockMapper {
                 stock.getType(),
                 stock.getVariants().stream()
                         .map(this::toVariantResponse)
-                        .collect(Collectors.toList()));
+                        .toList());
     }
 
     public StockResponse.VariantResponse toVariantResponse(StockVariant variant) {
@@ -78,7 +76,7 @@ public class StockMapper {
                 variant.getCurrentStock(),
                 variant.getUnits().stream()
                         .map(this::toUnitResponse)
-                        .collect(Collectors.toList()));
+                        .toList());
     }
 
     private StockResponse.UnitResponse toUnitResponse(VariantUnit unit) {

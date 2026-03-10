@@ -1,21 +1,18 @@
 package com.sts.event;
 
-import com.sts.model.PurchaseRecord;
-import com.sts.repository.PurchaseRecordRepository;
-import com.sts.event.PurchaseCreatedEvent;
-import com.sts.topics.KafkaProperties;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.math.BigDecimal;
+
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
+import com.sts.model.PurchaseRecord;
+import com.sts.repository.PurchaseRecordRepository;
+import com.sts.utils.constant.AppConstants;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
@@ -23,38 +20,37 @@ import java.math.BigDecimal;
 public class PurchaseEventListener {
 
     private final PurchaseRecordRepository purchaseRecordRepository;
-    private final KafkaProperties kafkaProperties;
 
-    @KafkaListener(
-            topics = "#{@kafkaProperties.getTopic('purchase-event')}",
-            containerFactory = "purchaseKafkaListenerContainerFactory"
-    )
-    public void listen(
-            ConsumerRecord<String, PurchaseCreatedEvent> record,
-            Acknowledgment acknowledgment
-    ) {
-        log.info("Message received from topic {}, offset {}",
-                record.topic(), record.offset());
+    @KafkaListener(topics = "#{@kafkaProperties.getTopic('purchase-event')}",
+            containerFactory = "purchaseKafkaListenerContainerFactory")
+    public void listen(PurchaseCreatedEvent event, Acknowledgment acknowledgment) {
+
+        log.info(AppConstants.LOG_MESSAGES.PURCHASE_EVENT_RECEIVED, event.getPurchaseId());
 
         try {
-            PurchaseCreatedEvent value = record.value();
-
-            PurchaseRecord purchaseRecord = new PurchaseRecord();
-            purchaseRecord.setPurchaseId(value.getPurchaseId());
-            purchaseRecord.setBillingType(value.getBillingType());
-            purchaseRecord.setMoneyTransaction(value.getMoneyTransaction());
-            purchaseRecord.setVatAmount(
-                    value.getVatAmount() != null ? value.getVatAmount() : BigDecimal.ZERO
-            );
-            purchaseRecord.setGrossTotal(value.getGrossTotal());
+            PurchaseRecord purchaseRecord = buildPurchaseRecord(event);
 
             purchaseRecordRepository.save(purchaseRecord);
+
             acknowledgment.acknowledge();
 
-            log.info("Purchase record saved for purchaseId {}", value.getPurchaseId());
+            log.info(AppConstants.LOG_MESSAGES.PURCHASE_RECORD_SAVED, event.getPurchaseId());
 
         } catch (Exception e) {
-            log.error("Failed at offset {}", record.offset(), e);
+            log.error(AppConstants.LOG_MESSAGES.PURCHASE_EVENT_FAILED, event.getPurchaseId(), e);
+            throw e;
         }
     }
+
+    // -- private helper
+    public PurchaseRecord buildPurchaseRecord(PurchaseCreatedEvent event) {
+        return PurchaseRecord.builder()
+                .purchaseId(event.getPurchaseId())
+                .billingType(event.getBillingType())
+                .moneyTransaction(event.getMoneyTransaction())
+                .vatAmount(event.getVatAmount() != null ? event.getVatAmount() : BigDecimal.ZERO)
+                .grossTotal(event.getGrossTotal())
+                .build();
+    }
+
 }

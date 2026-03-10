@@ -3,11 +3,10 @@ package com.sts.model.stock;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import com.sts.constant.enums.TransactionReference;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.sts.domain.Audit;
-
+import com.sts.utils.enums.TransactionReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -5,50 +5,37 @@ import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.sts.dto.request.CreateStockCommand;
 import com.sts.dto.request.GetStockQueryRequest;
 import com.sts.dto.request.StockAdjustmentCommand;
 import com.sts.dto.request.UpdateStockCommand;
 import com.sts.dto.response.StockResponse;
-import com.sts.dto.response.StockTransactionResponse;
 import com.sts.pagination.PageRequestDto;
 import com.sts.response.ApiResponse;
 import com.sts.response.AppResponse;
 import com.sts.response.PagedResponse;
 import com.sts.service.StockService;
-import com.sts.service.StockTransactionService;
-import com.sts.utils.contant.AppConstants;
+import com.sts.utils.constant.AppConstants;
 
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-/*
-POST   /stocks  (create-stock)
-POST   /stocks/{stockId}  (update-stock)
-POST   /stocks/adjustments (create-adjustment)
-
-GET    /stocks (get-all-stocks)
-GET    /stocks/search (search-stocks)
-GET    /stocks/{stockId}/variants (get-stock-variants)
-
-GET    /stocks/variants/{variantId}/units/{unitId}/exists (validate-stock-id-and-unit-id)
-
-GET    /stocks/transactions (get-all-stock-transactions)
-GET    /stocks/transactions/{variantId} (get-stock-transactions-by-variant)
-*/
 
 @Slf4j
 @Validated
 @RestController
 @RequestMapping(AppConstants.STOCK_BASE_PATH)
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class StockController {
 
     private final StockService stockService;
-    private final StockTransactionService stockTransactionService;
 
     /*
      * Commands
@@ -135,33 +122,8 @@ public class StockController {
 
         log.info(AppConstants.LOG_MESSAGES.VALIDATING_VARIANT, variantId, unitId);
 
-        var exists = stockService.validateVariantIdWithUnitId(variantId, unitId);
+        var exists = stockService.existsByVariantIdAndUnitId(variantId, unitId);
 
         return AppResponse.success(exists, AppConstants.SUCCESS_MESSAGES.VARIANTS_FETCHED);
-    }
-
-    /*
-     * Transactions
-     */
-
-    @GetMapping("/transactions")
-    public ResponseEntity<PagedResponse<List<StockTransactionResponse>>> getAllStockTransactions(
-            PageRequestDto pageRequestDto) {
-
-        var transactions = stockTransactionService.getAllTransaction(pageRequestDto.buildPageable());
-
-        return AppResponse.success(transactions, AppConstants.SUCCESS_MESSAGES.TRANSACTIONS_FETCHED);
-    }
-
-    @GetMapping("/transactions/{variantId}")
-    public ResponseEntity<PagedResponse<List<StockTransactionResponse>>> getStockTransactionsByVariant(
-            @PathVariable UUID variantId,
-            PageRequestDto pageRequestDto) {
-
-        var transactions = stockTransactionService.getAllTransactionByVariantId(
-                variantId,
-                pageRequestDto.buildPageable());
-
-        return AppResponse.success(transactions, AppConstants.SUCCESS_MESSAGES.TRANSACTIONS_FETCHED);
     }
 }

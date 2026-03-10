@@ -25,7 +25,6 @@ import com.sts.utils.feign.InventoryClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 class MenuServiceImpl implements MenuService {
@@ -39,7 +38,6 @@ class MenuServiceImpl implements MenuService {
     @Override
     @Transactional
     public MenuResponse createMenu(CreateMenuRequest request) {
-        log.debug(AppConstants.LOG_MESSAGES.CREATING_MENU, request.category());
 
 
         if (menuRepository.existsByName(request.name())) {
@@ -56,7 +54,7 @@ class MenuServiceImpl implements MenuService {
         Menu menu = menuMapper.toEntity(request);
         Menu saved = menuRepository.save(menu);
 
-        log.debug(AppConstants.LOG_MESSAGES.MENU_CREATED, saved.getId());
+
         return menuMapper.toResponse(saved);
     }
 

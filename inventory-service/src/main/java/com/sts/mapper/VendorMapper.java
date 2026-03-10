@@ -1,22 +1,21 @@
 package com.sts.mapper;
 
+import org.springframework.stereotype.Component;
+
 import com.sts.dto.request.CreateVendorCommand;
 import com.sts.dto.response.VendorResponse;
 import com.sts.model.vendor.Vendor;
-import org.springframework.stereotype.Component;
 
 @Component
 public class VendorMapper {
 
     public Vendor buildVendor(CreateVendorCommand command) {
-        Vendor vendor = new Vendor();
-        vendor.setName(command.getName());
-        vendor.setAddress(command.getAddress());
-        vendor.setPanNumber(command.getPanNumber());
-        vendor.setContactNumber(command.getContactNumber());
-
-        return vendor;
-
+        return Vendor.builder()
+                .name(command.name())
+                .address(command.address())
+                .contactNumber(command.contactNumber())
+                .panNumber(command.panNumber())
+                .build();
     }
 
     public VendorResponse toResponse(Vendor vendor) {
@@ -29,6 +28,5 @@ public class VendorMapper {
                 .build();
 
     }
-
 
 }

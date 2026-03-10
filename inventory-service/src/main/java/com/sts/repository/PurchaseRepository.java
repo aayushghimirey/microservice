@@ -1,10 +1,11 @@
 package com.sts.repository;
 
-import com.sts.model.purchase.Purchase;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.UUID;
 
-public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.sts.model.purchase.Purchase;
+
+public interface PurchaseRepository extends JpaRepository<Purchase, UUID> {
     boolean existsByInvoiceNumber(String invoiceNumber);
 }

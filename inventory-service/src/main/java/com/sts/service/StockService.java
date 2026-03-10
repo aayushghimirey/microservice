@@ -1,6 +1,5 @@
 package com.sts.service;
 
-
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -28,7 +27,6 @@ public interface StockService {
     Page<StockResponse.VariantResponse> getAllVariantByStockId(UUID stockId, Pageable pageable);
 
     // id validators
-    boolean validateVariantIdWithUnitId(UUID variantId, UUID unitId);
-
+    boolean existsByVariantIdAndUnitId(UUID variantId, UUID unitId);
 
 }

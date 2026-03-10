@@ -1,24 +1,23 @@
 package com.sts.event;
 
-import com.sts.utils.enums.StockUpdateSource;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
+import com.sts.utils.enums.StockUpdateSource;
+
 public record StockUpdateEvent(
-        UUID purchaseId,
-        UUID invoiceId,
-        List<Info> event
-) {
+                UUID purchaseId,
+                UUID invoiceId,
+                List<Item> items) {
 
-    public record Info(
-            UUID variantId,
-            UUID unitId,
-            BigDecimal quantity,
-            StockUpdateSource source
+        public record Item(
+                        UUID variantId,
+                        UUID unitId,
+                        BigDecimal quantity,
+                        StockUpdateSource source
 
-    ) {
-    }
+        ) {
+        }
 
 }

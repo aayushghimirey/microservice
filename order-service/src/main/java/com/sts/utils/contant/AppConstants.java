@@ -4,8 +4,7 @@ import java.util.UUID;
 
 public interface AppConstants {
 
-    public static final UUID TEST_TENANT =
-            UUID.fromString("11111111-1111-1111-1111-111111111111");
+    public static final UUID TEST_TENANT = UUID.fromString("11111111-1111-1111-1111-111111111111");
 
     String TABLE_BASE_PATH = "/tables";
     String RESERVATION_BASE_PATH = "/reservations";
@@ -21,6 +20,7 @@ public interface AppConstants {
         String TABLE_NOT_FOUND = "Table not found with id '%s'";
         String TABLE_NOT_OPEN = "Table must be OPEN to proceed";
         String DUPLICATE_TABLE_NAME = "Table with name '%s' already exists";
+        String ORDER_PUBLISH_FAILED = "Error publishing order created event";
     }
 
     interface LOG_MESSAGES {
@@ -28,6 +28,11 @@ public interface AppConstants {
         String RESERVATION_CREATED = "Reservation created with id: {}";
         String CREATING_TABLE = "Creating table: {}";
         String TABLE_CREATED = "Table created with id: {}";
+        String INVOICE_EVENT_RECEIVED = "Invoice event received with id: {}";
+        String INVOICE_EVENT_FAILED = "Failed to process invoice event for id: {}";
+        String SESSION_NOT_FOUND = "No reservation found for session: {}";
+        String RESERVATION_COMPLETED = "Reservation completed for session: {}";
+        String OUTBOX_EVENT_FAILED = "Failed to create outbox event for reservation: {}";
     }
 
 }

@@ -1,22 +1,23 @@
 package com.sts.mapper;
 
-import com.sts.dto.request.StockAdjustmentCommand;
+import java.math.BigDecimal;
+import java.util.Optional;
+
+import org.springframework.stereotype.Component;
+
 import com.sts.dto.request.UpdateStockCommand;
 import com.sts.model.stock.Stock;
 import com.sts.model.stock.StockVariant;
 import com.sts.model.stock.VariantUnit;
-import org.springframework.stereotype.Component;
-
-import java.math.BigDecimal;
-import java.util.Optional;
 
 @Component
 public final class StockUpdateMapper {
 
-
     public void updateStock(Stock stock, UpdateStockCommand command) {
-        if (command.name() != null) stock.setName(command.name());
-        if (command.type() != null) stock.setType(command.type());
+        if (command.name() != null)
+            stock.setName(command.name());
+        if (command.type() != null)
+            stock.setType(command.type());
 
         if (command.variants() != null) {
             for (var variantCmd : command.variants()) {
@@ -40,20 +41,11 @@ public final class StockUpdateMapper {
         }
     }
 
-    // stock adjustment
-    public void adjustStock(StockVariant variant, VariantUnit variantUnit, StockAdjustmentCommand command) {
-        BigDecimal currentStock = variant.getCurrentStock();
-        BigDecimal adjustmentQuantity = command.quantity().multiply(variantUnit.getConversionRate());
-
-        if (adjustmentQuantity.compareTo(BigDecimal.ZERO) > 0) {
-            variant.setCurrentStock(currentStock.subtract(adjustmentQuantity));
-        }
-
-
-    }
+    // stock adjustment logic removed, relies on events directly
 
     private void updateVariant(StockVariant variant, UpdateStockCommand.VariantItemUpdate cmd) {
-        if (cmd.baseUnit() != null) variant.setBaseUnit(cmd.baseUnit());
+        if (cmd.baseUnit() != null)
+            variant.setBaseUnit(cmd.baseUnit());
         if (cmd.openingStock() != null && cmd.openingStock().compareTo(BigDecimal.ZERO) > 0) {
             variant.setOpeningStock(cmd.openingStock());
             if (variant.getCurrentStock() == null || variant.getCurrentStock().compareTo(BigDecimal.ZERO) <= 0) {
@@ -69,8 +61,10 @@ public final class StockUpdateMapper {
 
                 if (existingUnit.isPresent()) {
                     VariantUnit unit = existingUnit.get();
-                    if (unitCmd.conversionRate() != null) unit.setConversionRate(unitCmd.conversionRate());
-                    if (unitCmd.unitType() != null) unit.setUnitType(unitCmd.unitType());
+                    if (unitCmd.conversionRate() != null)
+                        unit.setConversionRate(unitCmd.conversionRate());
+                    if (unitCmd.unitType() != null)
+                        unit.setUnitType(unitCmd.unitType());
                 } else {
                     VariantUnit newUnit = buildUnit(unitCmd);
                     variant.addUnit(newUnit);

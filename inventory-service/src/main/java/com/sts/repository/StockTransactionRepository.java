@@ -1,14 +1,15 @@
 package com.sts.repository;
 
-import com.sts.dto.response.StockTransactionResponse;
-import com.sts.model.stock.StockTransaction;
+import java.util.UUID;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.UUID;
+import com.sts.dto.response.StockTransactionResponse;
+import com.sts.model.stock.StockTransaction;
 
 public interface StockTransactionRepository extends JpaRepository<StockTransaction, UUID> {
 
@@ -29,9 +30,7 @@ public interface StockTransactionRepository extends JpaRepository<StockTransacti
                 ON tx.variant_id = sr.id
             JOIN variant_unit vu
                 ON tx.unit_id = vu.id
-            """,
-            countQuery = "SELECT COUNT(*) FROM stock_transaction",
-            nativeQuery = true)
+            """, countQuery = "SELECT COUNT(*) FROM stock_transaction", nativeQuery = true)
     Page<StockTransactionResponse> findAllTransactions(Pageable pageable);
 
     @Query(value = """
@@ -52,11 +51,8 @@ public interface StockTransactionRepository extends JpaRepository<StockTransacti
             JOIN variant_unit vu
                 ON tx.unit_id = vu.id
                 WHERE tx.variant_id = :variantId
-            """,
-            countQuery = "SELECT COUNT(*) FROM stock_transaction",
-            nativeQuery = true)
+            """, countQuery = "SELECT COUNT(*) FROM stock_transaction WHERE variant_id = :variantId", nativeQuery = true)
     Page<StockTransactionResponse> findAllTransactionsByVariantId(
             @Param("variantId") UUID variantId,
-            Pageable pageable
-    );
+            Pageable pageable);
 }

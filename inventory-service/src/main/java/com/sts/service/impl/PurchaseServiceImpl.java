@@ -1,139 +1,107 @@
 package com.sts.service.impl;
 
-import com.sts.dto.request.CreatePurchaseCommand;
-import com.sts.dto.response.PurchaseResponse;
-import com.sts.entity.OutboxEvent;
-import com.sts.entity.OutboxEventType;
-import com.sts.event.PurchaseCreatedEvent;
-import com.sts.event.StockUpdateEventBuilder;
-import com.sts.exception.BusinessValidationException;
-import com.sts.exception.DuplicateResourceException;
-import com.sts.exception.ResourceNotFoundException;
-import com.sts.mapper.OutboxMapper;
-import com.sts.mapper.PurchaseMapper;
-import com.sts.model.purchase.Purchase;
-import com.sts.model.stock.VariantUnit;
-import com.sts.model.vendor.Vendor;
-import com.sts.repository.*;
-import com.sts.service.PurchaseService;
-import com.sts.topics.KafkaProperties;
-import com.sts.utils.contant.AppConstants;
-import com.sts.utils.enums.UnitType;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.sts.dto.request.CreatePurchaseCommand;
+import com.sts.dto.response.PurchaseResponse;
+import com.sts.entity.OutboxEventType;
+import com.sts.enums.AggregateType;
+import com.sts.event.PurchaseCreatedEvent;
+import com.sts.event.PurchaseEventFactory;
+import com.sts.event.StockUpdateEvent;
+import com.sts.event.StockUpdateEventFactory;
+import com.sts.exception.DuplicateResourceException;
+import com.sts.mapper.PurchaseMapper;
+import com.sts.model.purchase.Purchase;
+import com.sts.model.vendor.Vendor;
+import com.sts.repository.PurchaseRepository;
+import com.sts.service.PurchaseService;
+import com.sts.support.OutboxPublisher;
+import com.sts.support.ReferenceResolver;
+import com.sts.support.VariantUnitResolver;
+import com.sts.support.event.DomainEventPublisher;
+import com.sts.topics.KafkaProperties;
+import com.sts.utils.constant.AppConstants;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class PurchaseServiceImpl implements PurchaseService {
 
-
     private final PurchaseRepository purchaseRepository;
-    private final PurchaseMapper purchaseMapper;
-    private final OutboxMapper outboxMapper;
-    private final OutboxEventRepository outboxEventRepository;
-    private final KafkaProperties kafkaProperties;
-    private final ObjectMapper objectMapper;
-    private final ApplicationEventPublisher publisher;
-    private final StockUpdateEventBuilder stockUpdateEventBuilder;
 
-    private final StockVariantRepository stockVariantRepository;
-    private final VariantUnitRepository variantUnitRepository;
-    private final VendorRepository vendorRepository;
+    private final PurchaseMapper purchaseMapper;
+
+    private final VariantUnitResolver variantUnitResolver;
+    private final ReferenceResolver referenceResolver;
+
+    private final DomainEventPublisher domainEventPublisher;
+    private final OutboxPublisher outboxPublisher;
+
+    private final PurchaseEventFactory purchaseEventFactory;
+    private final StockUpdateEventFactory stockUpdateEventFactory;
+    private final KafkaProperties kafkaProperties;
 
     @Override
     @Transactional
     public PurchaseResponse createPurchase(CreatePurchaseCommand command) {
 
-        if (purchaseRepository.existsByInvoiceNumber(command.invoiceNumber())) {
-            throw new DuplicateResourceException(
-                    String.format(AppConstants.ERROR_MESSAGES.INVOICE_NUMBER_EXISTS, command.invoiceNumber()));
-        }
+        validateInvoiceNumber(command.invoiceNumber());
 
-        Vendor vendor = vendorRepository.findById(command.vendorId()).orElseThrow(
-                () -> new ResourceNotFoundException(
-                        String.format(AppConstants.ERROR_MESSAGES.VARIANT_NOT_FOUND, command.vendorId())
-                )
-        );
+        Vendor vendor = referenceResolver.getVendorOrThrow(command.vendorId());
 
-        validateItems(command);
+        command.items().forEach(item -> variantUnitResolver.getVariantUnitOrThrow(item.variantId(), item.unitId()));
 
-        Purchase purchase = purchaseMapper.buildPurchase(command, vendor);
-        purchaseRepository.save(purchase);
+        log.info("Creating purchase for vendor {}", vendor.getId()); // Added logging
 
-        createPurchaseOutboxEvent(purchase);
+        Purchase purchase = purchaseRepository.save(
+                purchaseMapper.buildPurchase(command, vendor));
 
+        publishStockUpdate(purchase);
 
-        // publish to application
-        publisher.publishEvent(stockUpdateEventBuilder.buildFromPurchase(purchase));
-
+        publishOutboxEvent(purchase);
 
         return purchaseMapper.toResponse(purchase);
-
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<PurchaseResponse> getAllPurchases(Pageable pageable) {
-        return purchaseRepository.findAll(pageable).map(purchaseMapper::toResponse);
+        return purchaseRepository
+                .findAll(pageable)
+                .map(purchaseMapper::toResponse);
     }
 
-    // ------------- HELPER / BUILDER ----------------
+    // ---------- PRIVATE HELPERS ----------
 
-    private void validateItems(CreatePurchaseCommand command) {
-        for (var item : command.items()) {
-
-            log.info("Received variantId: {}", item.variantId());
-
-            if (!stockVariantRepository.existsById(item.variantId())) {
-                throw new ResourceNotFoundException(
-                        String.format(AppConstants.ERROR_MESSAGES.VARIANT_NOT_FOUND, item.variantId()));
-            }
-
-            VariantUnit variantUnit = variantUnitRepository.findById(item.unitId())
-                    .orElseThrow(() -> new ResourceNotFoundException(
-                            String.format(AppConstants.ERROR_MESSAGES.UNIT_NOT_FOUND, item.unitId())));
-
-            if (variantUnit.getUnitType() == UnitType.SELL) {
-                throw new BusinessValidationException(
-                        String.format(AppConstants.ERROR_MESSAGES.INVALID_UNIT_TYPE, variantUnit.getUnitType()));
-            }
+    private void validateInvoiceNumber(String invoiceNumber) {
+        if (purchaseRepository.existsByInvoiceNumber(invoiceNumber)) {
+            throw new DuplicateResourceException(
+                    String.format(AppConstants.ERROR_MESSAGES.INVOICE_NUMBER_EXISTS, invoiceNumber));
         }
     }
 
+    private void publishStockUpdate(Purchase purchase) {
+        // publish stock update application event
+        StockUpdateEvent stockUpdateEvent = stockUpdateEventFactory.buildFromPurchase(purchase);
+        domainEventPublisher.publish(stockUpdateEvent);
+    }
 
-    private void createPurchaseOutboxEvent(Purchase purchase) {
+    private void publishOutboxEvent(Purchase purchase) {
+        // serialize to outbox
+        PurchaseCreatedEvent purchaseCreatedEvent = purchaseEventFactory.buildPurchaseCreatedEvent(purchase);
 
-        PurchaseCreatedEvent event = new PurchaseCreatedEvent(
+        outboxPublisher.publish(
+                AggregateType.PURCHASE,
                 purchase.getId(),
-                purchase.getBillingType(),
-                purchase.getMoneyTransaction(),
-                purchase.getVatAmount(),
-                purchase.getGrossTotal());
-
-        String payload;
-
-        try {
-            payload = objectMapper.writeValueAsString(event);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to serialize purchase event", e);
-        }
-
-        OutboxEvent outboxEvent = outboxMapper.map(
-                "PURCHASE",
-                purchase.getId().toString(),
                 OutboxEventType.CREATED,
-                payload,
+                purchaseCreatedEvent,
                 kafkaProperties.getTopic("purchase-event"));
-
-        outboxEventRepository.save(outboxEvent);
     }
-
 }

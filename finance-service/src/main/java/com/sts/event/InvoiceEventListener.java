@@ -1,13 +1,15 @@
 package com.sts.event;
 
-
-import com.sts.model.InvoiceRecord;
-import com.sts.repository.InvoiceRecordRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
+
+import com.sts.model.InvoiceRecord;
+import com.sts.repository.InvoiceRecordRepository;
+import com.sts.utils.constant.AppConstants;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
@@ -16,24 +18,34 @@ public class InvoiceEventListener {
 
     private final InvoiceRecordRepository invoiceRecordRepository;
 
-    @KafkaListener(
-            topics = "#{@kafkaProperties.getTopic('invoice-event')}",
-            containerFactory = "invoiceKafkaListenerContainerFactory"
-    )
+    @KafkaListener(topics = "#{@kafkaProperties.getTopic('invoice-event')}",
+            containerFactory = "invoiceKafkaListenerContainerFactory")
     public void listenInvoice(InvoiceEvent event, Acknowledgment acknowledgment) {
 
-        log.info("Invoice event received with id {}", event.getInvoiceId());
+        log.info(AppConstants.LOG_MESSAGES.INVOICE_EVENT_RECEIVED, event.getInvoiceId());
 
+        try {
+            InvoiceRecord invoiceRecord = buildInvoiceRecord(event);
 
-        InvoiceRecord invoiceRecord = InvoiceRecord.builder()
+            invoiceRecordRepository.save(invoiceRecord);
+
+            acknowledgment.acknowledge();
+
+            log.info(AppConstants.LOG_MESSAGES.INVOICE_RECORD_SAVED, event.getInvoiceId());
+
+        } catch (Exception e) {
+            log.error(AppConstants.LOG_MESSAGES.INVOICE_EVENT_FAILED, event.getInvoiceId(), e);
+            throw e;
+        }
+    }
+
+    // -- private helper
+    public InvoiceRecord buildInvoiceRecord(InvoiceEvent event) {
+        return InvoiceRecord.builder()
                 .invoiceId(event.getInvoiceId())
                 .reservationTime(event.getReservationTime())
-                .reservationTime(event.getReservationEndTime())
+                .reservationEndTime(event.getReservationEndTime())
                 .grossTotal(event.getGrossTotal()).build();
-
-        invoiceRecordRepository.save(invoiceRecord);
-
-        acknowledgment.acknowledge();
-
     }
+
 }

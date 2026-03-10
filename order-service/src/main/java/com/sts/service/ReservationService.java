@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import com.sts.utils.PushPendingReservations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +24,7 @@ import com.sts.repository.OutboxEventRepository;
 import com.sts.repository.ReservationRepository;
 import com.sts.repository.TableRepository;
 import com.sts.topics.KafkaProperties;
+import com.sts.utils.PushPendingReservations;
 import com.sts.utils.contant.AppConstants;
 import com.sts.utils.enums.ReservationStatus;
 import com.sts.utils.enums.TableStatus;
@@ -72,12 +72,11 @@ public class ReservationService {
         return reservationMapper.toResponse(reservation);
     }
 
-
-
-
-    /* --------------------------------------------------
-       Private helpers
-     -------------------------------------------------- */
+    /*
+     * --------------------------------------------------
+     * Private helpers
+     * --------------------------------------------------
+     */
 
     private Table validateTable(UUID tableId) {
 
@@ -109,8 +108,7 @@ public class ReservationService {
 
             MenuResponse menu = fetchMenu(itemRequest.menuId());
 
-            ReservationOrders orders =
-                    reservationMapper.buildReservationOrders(itemRequest, menu);
+            ReservationOrders orders = reservationMapper.buildReservationOrders(itemRequest, menu);
 
             reservation.addReservationOrder(orders);
         }
@@ -147,8 +145,8 @@ public class ReservationService {
             outboxEventRepository.save(outboxEvent);
 
         } catch (Exception e) {
-            log.error("Failed to create reservation outbox event", e);
-            throw new RuntimeException("Error publishing order created event", e);
+            log.error(AppConstants.LOG_MESSAGES.OUTBOX_EVENT_FAILED, reservation.getId(), e);
+            throw new RuntimeException(AppConstants.ERROR_MESSAGES.ORDER_PUBLISH_FAILED, e);
         }
     }
 
@@ -166,13 +164,12 @@ public class ReservationService {
         List<OrderCreatedEvent.MenuItem> items = reservation.getReservationOrders().stream()
                 .map(item -> new OrderCreatedEvent.MenuItem(
                         item.getMenuItemId(),
-                        item.getQuantity()
-                )).toList();
+                        item.getQuantity()))
+                .toList();
 
         event.setItems(items);
 
         return event;
     }
-
 
 }
