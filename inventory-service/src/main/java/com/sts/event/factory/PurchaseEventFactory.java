@@ -1,7 +1,8 @@
-package com.sts.event;
+package com.sts.event.factory;
 
 import org.springframework.stereotype.Component;
 
+import com.sts.event.PurchaseCreatedEvent;
 import com.sts.model.purchase.Purchase;
 
 @Component

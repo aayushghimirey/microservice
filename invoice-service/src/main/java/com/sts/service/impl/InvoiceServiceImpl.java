@@ -3,6 +3,10 @@ package com.sts.service.impl;
 import java.util.List;
 import java.util.UUID;
 
+import com.sts.enums.AggregateType;
+import com.sts.event.factory.InvoiceEventFactory;
+import com.sts.service.resolver.ReferenceResolver;
+import com.sts.shared.outbox.OutboxPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -33,6 +37,12 @@ import tools.jackson.databind.ObjectMapper;
 @AllArgsConstructor
 public class InvoiceServiceImpl implements InvoiceService {
 
+    private final ReferenceResolver referenceResolver;
+
+    private final OutboxPublisher outboxPublisher;
+
+    private final InvoiceEventFactory invoiceEventFactory;
+
     private final InvoiceMapper invoiceMapper;
     private final InvoiceRepository invoiceRepository;
     private final KafkaTemplate<String, Object> kafkaTemplate;
@@ -44,17 +54,12 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     @Transactional
     public InvoiceResponse proceedInvoice(UUID invoiceId) {
-        log.info(AppConstants.LOG_MESSAGES.PROCESSING_INVOICE, invoiceId);
 
-        Invoice invoice = invoiceRepository.findById(invoiceId).orElseThrow(
-                () -> new ResourceNotFoundException(
-                        String.format(AppConstants.ERROR_MESSAGES.INVOICE_NOT_FOUND, invoiceId)));
+        Invoice invoice = referenceResolver.getOrThrow(invoiceId);
 
         invoice.setStatus(InvoiceStatus.PAID);
 
-        createInvoiceOutboxEvent(invoice);
-
-        log.info(AppConstants.LOG_MESSAGES.INVOICE_PAID, invoiceId);
+        publishOutboxEvent(invoice);
 
         return invoiceMapper.toResponse(invoice);
     }
@@ -74,39 +79,18 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     // -- private helper
-    private void createInvoiceOutboxEvent(Invoice invoice) {
+    private void publishOutboxEvent(Invoice invoice) {
 
-        try {
-            InvoiceEvent invoiceEvent = InvoiceEvent.builder()
-                    .invoiceId(invoice.getId())
-                    .sessionId(invoice.getSessionId())
-                    .grossTotal(invoice.getGrossTotal())
-                    .reservationTime(invoice.getReservationTime())
-                    .reservationEndTime(invoice.getReservationEndTime()).build();
+        InvoiceEvent event = invoiceEventFactory.buildInvoiceEvent(invoice);
 
-            invoice.getItems().forEach(
-                    item -> {
-                        InvoiceEvent.InvoiceMenuItem menuItem = new InvoiceEvent.InvoiceMenuItem();
-                        menuItem.setMenuId(item.getMenuItemId());
-                        menuItem.setQuantity(item.getQuantity());
+        outboxPublisher.publish(
+                AggregateType.INVOICE,
+                invoice.getId(),
+                OutboxEventType.CREATED,
+                event,
+                kafkaProperties.getTopic(AppConstants.KAFKA_TOPIC_INVOICE_EVENT)
+        );
 
-                        invoiceEvent.addItem(menuItem);
-                    });
-
-            String payload = objectMapper.writeValueAsString(invoiceEvent);
-
-            OutboxEvent outboxEvent = outboxMapper.map(
-                    "INVOICE",
-                    invoice.getId().toString(),
-                    OutboxEventType.CREATED,
-                    payload,
-                    kafkaProperties.getTopic("invoice-event"));
-
-            outboxEventRepository.save(outboxEvent);
-        } catch (Exception e) {
-            log.error("Failed to create outbox event for invoice id: {}", invoice.getId(), e);
-            throw new RuntimeException("Error publishing invoice event", e);
-        }
     }
 
 }

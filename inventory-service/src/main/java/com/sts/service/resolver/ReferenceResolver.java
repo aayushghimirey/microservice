@@ -1,4 +1,4 @@
-package com.sts.support;
+package com.sts.service.resolver;
 
 import com.sts.exception.ResourceNotFoundException;
 import com.sts.model.stock.Stock;
@@ -7,7 +7,7 @@ import com.sts.model.vendor.Vendor;
 import com.sts.repository.StockRepository;
 import com.sts.repository.StockVariantRepository;
 import com.sts.repository.VendorRepository;
-import com.sts.utils.contant.AppConstants;
+import com.sts.utils.constant.AppConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

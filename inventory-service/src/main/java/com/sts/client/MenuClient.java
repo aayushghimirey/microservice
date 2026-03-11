@@ -1,4 +1,4 @@
-package com.sts.integration.menu;
+package com.sts.client;
 
 import java.util.List;
 import java.util.UUID;

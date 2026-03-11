@@ -10,10 +10,7 @@ import com.sts.model.stock.Stock;
 import com.sts.model.stock.StockVariant;
 import com.sts.model.stock.VariantUnit;
 
-import lombok.AllArgsConstructor;
-
 @Component
-@AllArgsConstructor
 public class StockMapper {
 
     public Stock buildStock(CreateStockCommand command) {

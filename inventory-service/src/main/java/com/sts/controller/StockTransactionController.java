@@ -3,6 +3,7 @@ package com.sts.controller;
 import java.util.List;
 import java.util.UUID;
 
+import com.sts.utils.constant.AppConstants;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,15 +15,12 @@ import com.sts.pagination.PageRequestDto;
 import com.sts.response.AppResponse;
 import com.sts.response.PagedResponse;
 import com.sts.service.StockTransactionService;
-import com.sts.utils.contant.AppConstants;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping(AppConstants.STOCK_BASE_PATH)
 @RequiredArgsConstructor
-@Slf4j
 public class StockTransactionController {
 
     private final StockTransactionService stockTransactionService;

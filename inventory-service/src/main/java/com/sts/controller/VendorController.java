@@ -2,6 +2,7 @@ package com.sts.controller;
 
 import java.util.List;
 
+import com.sts.utils.constant.AppConstants;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,16 +17,15 @@ import com.sts.response.ApiResponse;
 import com.sts.response.AppResponse;
 import com.sts.response.PagedResponse;
 import com.sts.service.VendorService;
-import com.sts.utils.contant.AppConstants;
 
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
 @RequestMapping(AppConstants.VENDOR_BASE_PATH)
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class VendorController {
 
     private final VendorService vendorService;
@@ -33,7 +33,7 @@ public class VendorController {
     @PostMapping
     public ResponseEntity<ApiResponse<VendorResponse>> createVendor(
             @Valid @RequestBody CreateVendorCommand command) {
-        log.info(AppConstants.LOG_MESSAGES.CREATING_VENDOR, command);
+        log.info(AppConstants.LOG_MESSAGES.CREATING_VENDOR, command.name());
         return AppResponse.success(vendorService.createVendor(command),
                 AppConstants.SUCCESS_MESSAGES.VENDOR_CREATED);
     }

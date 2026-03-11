@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface PurchaseService {
 
-
     PurchaseResponse createPurchase(CreatePurchaseCommand command);
 
     Page<PurchaseResponse> getAllPurchases(Pageable pageable);

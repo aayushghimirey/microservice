@@ -33,6 +33,14 @@ public class GlobalExceptionHandler {
         return build(HttpStatus.CONFLICT, ex.getMessage(), request.getRequestURI());
     }
 
+    @ExceptionHandler(MenuIntegrationException.class)
+    public ResponseEntity<ErrorResponse> handleMenuIntegrationException(
+            DuplicateResourceException ex, HttpServletRequest request) {
+        log.warn("MenuIntegrationException resource: {}", ex.getMessage());
+        return build(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), request.getRequestURI());
+    }
+
+
     @ExceptionHandler(BusinessValidationException.class)
     public ResponseEntity<ErrorResponse> handleBusinessValidation(
             BusinessValidationException ex, HttpServletRequest request) {

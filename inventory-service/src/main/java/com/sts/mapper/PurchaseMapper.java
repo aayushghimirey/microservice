@@ -10,10 +10,7 @@ import com.sts.model.purchase.Purchase;
 import com.sts.model.purchase.PurchaseItem;
 import com.sts.model.vendor.Vendor;
 
-import lombok.AllArgsConstructor;
-
 @Component
-@AllArgsConstructor
 public class PurchaseMapper {
 
     public Purchase buildPurchase(CreatePurchaseCommand command, Vendor vendor) {

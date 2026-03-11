@@ -1,7 +1,9 @@
-package com.sts.event;
+package com.sts.event.listener;
 
 import java.math.BigDecimal;
 
+import com.sts.event.OrderCreatedEvent;
+import com.sts.utils.constant.AppConstants;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
@@ -28,9 +30,9 @@ public class OrderEventListener {
     @KafkaListener(topics = "#{@kafkaProperties.getTopic('order-event')}", groupId = "#{@kafkaProperties.getGroup('invoice-group')}")
     public void listen(OrderCreatedEvent event, Acknowledgment acknowledgment) {
 
-        try {
-            log.info("Order event received for session: {}", event.getSessionId());
+        log.info(AppConstants.LOG_MESSAGES.ORDER_EVENT_MESSAGE, event.getSessionId());
 
+        try {
             Invoice invoice = invoiceRepository.findBySessionId(event.getSessionId());
 
             if (invoice != null) {

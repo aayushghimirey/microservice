@@ -10,4 +10,6 @@ import com.sts.model.stock.Stock;
 public interface StockRepository extends JpaRepository<Stock, UUID>, JpaSpecificationExecutor<Stock> {
 
     boolean existsByName(String name);
+
+    boolean existsByNameAndIdNot(String name, UUID id);
 }

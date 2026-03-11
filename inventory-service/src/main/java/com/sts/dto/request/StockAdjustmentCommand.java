@@ -1,7 +1,7 @@
 package com.sts.dto.request;
 
 
-import com.sts.utils.contant.AppConstants;
+import com.sts.utils.constant.AppConstants;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;

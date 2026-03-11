@@ -21,6 +21,9 @@ public class StockTransactionServiceImpl implements StockTransactionService {
 
     private final StockTransactionRepository stockTransactionRepository;
 
+    /*
+     * Queries
+     * */
     @Override
     @Transactional(readOnly = true)
     public Page<StockTransactionResponse> getAllTransaction(Pageable pageable) {

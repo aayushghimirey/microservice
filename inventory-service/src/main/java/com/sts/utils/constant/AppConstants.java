@@ -6,6 +6,8 @@ public interface AppConstants {
     String PURCHASE_BASE_PATH = "/purchases";
     String VENDOR_BASE_PATH = "/vendors";
 
+    String KAFKA_TOPIC_PURCHASE_EVENT = "purchase-event";
+
     java.math.BigDecimal VAT_RATE_PERCENT = new java.math.BigDecimal("13");
 
     interface SUCCESS_MESSAGES {
@@ -15,6 +17,7 @@ public interface AppConstants {
         String STOCK_UPDATED = "Stock updated successfully";
         String STOCKS_FETCHED = "Stocks fetched successfully";
         String VARIANTS_FETCHED = "Variants fetched successfully";
+        String STOCK_VERIFIED = "Stock verification completed";
         String TRANSACTIONS_FETCHED = "Transactions fetched successfully";
         String VENDOR_CREATED = "Vendor created successfully";
         String VENDORS_FETCHED = "Vendors fetched successfully";
@@ -29,21 +32,26 @@ public interface AppConstants {
         String STOCK_NOT_FOUND = "Stock not found with id '%s'";
         String INVALID_UNIT_TYPE = "Invalid unit type '%s' for purchase";
         String EVENT_SERIALIZATION_FAILED = "Error while serialization";
+        String OUTBOX_SERIALIZATION_FAILED = "Failed to serialize data";
+        String OUTBOX_PUBLISH_FAILED = "Failed to process Outbox payload";
+        String MENU_NOT_FOUND = "Menu not found or has no ingredients for menuId '%s'";
+        String MENU_INTEGRATION_FAILED = "Error fetching menu ingredients for menuId '%s': %s";
     }
 
     interface LOG_MESSAGES {
         String CREATING_PURCHASE = "Creating purchase with invoice: {}";
         String FETCHING_PURCHASE = "Fetching purchase with in page {} and size {}";
-        String PURCHASE_CREATED = "Purchase created successfully with id: {}";
         String CREATING_STOCK = "Creating stock with name: {}";
-        String STOCK_CREATED = "Stock created successfully with id: {}";
+        String APPLICATION_EVENT_PUBLISHING = "Publishing event type {}";
         String UPDATING_STOCK = "Updating stock with id: {}";
         String CREATING_ADJUSTMENT = "Creating adjustment for variant: {}, unit: {}, quantity: {}";
         String VALIDATING_VARIANT = "Validating variantId {} with unitId {}";
         String CREATING_VENDOR = "Creating vendor: {}";
         String VENDOR_CREATED = "Vendor created successfully: {}";
+        String FAILED_TO_PROCESS_INVOICE = "Failed to process invoice event invoiceId {}";
         String INVOICE_EVENT_RECEIVED = "Invoice event received with id {}";
-        String STOCK_UPDATE_EVENT_RECEIVED = "Stock update event received";
+        String FETCHING_MENU_INGREDIENTS = "Fetching ingredients for menuId={}";
+        String PROCESSING_STOCK_UPDATE = "Processing StockUpdateEvent with {} items";
     }
 
     interface VALIDATION_MESSAGES {

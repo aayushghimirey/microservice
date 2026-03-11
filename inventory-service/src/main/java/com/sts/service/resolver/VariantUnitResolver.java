@@ -1,14 +1,14 @@
-package com.sts.support;
+package com.sts.service.resolver;
 
 import java.util.UUID;
 
+import com.sts.utils.constant.AppConstants;
 import org.springframework.stereotype.Component;
 
 import com.sts.exception.ResourceNotFoundException;
 import com.sts.model.stock.VariantUnit;
 import com.sts.repository.StockVariantRepository;
 import com.sts.repository.VariantUnitRepository;
-import com.sts.utils.contant.AppConstants;
 
 import lombok.RequiredArgsConstructor;
 

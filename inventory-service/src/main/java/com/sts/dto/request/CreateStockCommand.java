@@ -1,6 +1,6 @@
 package com.sts.dto.request;
 
-import com.sts.utils.contant.AppConstants;
+import com.sts.utils.constant.AppConstants;
 import com.sts.utils.enums.UnitType;
 import com.sts.utils.enums.StockType;
 import jakarta.validation.Valid;

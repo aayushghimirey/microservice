@@ -2,6 +2,7 @@ package com.sts.controller;
 
 import java.util.List;
 
+import com.sts.utils.constant.AppConstants;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,33 +17,22 @@ import com.sts.response.ApiResponse;
 import com.sts.response.AppResponse;
 import com.sts.response.PagedResponse;
 import com.sts.service.PurchaseService;
-import com.sts.utils.contant.AppConstants;
 
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
 @RequestMapping(AppConstants.PURCHASE_BASE_PATH)
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PurchaseController {
 
     private final PurchaseService purchaseService;
 
-    /*
-     * In purchase , vat amount should not be included, it will be auto calculated.
-     * Like eg:
-     * Got vat bill,
-     * item A - price 500
-     * item B - price 600
-     *
-     * Bill type is vat.
-     * Mean automatically vat 13 % will be added
-     * like 500 + 600 = 1100 this is sub-total.
-     * now system will add 13 % vat on 1100 which is Rs.143
-     * Therefore: Gross Total is subTotal + vat = 1100 + 143 = 1,243
-     *
+    /**
+     * Creates a new purchase. VAT (13%) is automatically calculated and added to the sub-total
+     * to derive the final Gross Total.
      */
     @PostMapping
     public ResponseEntity<ApiResponse<PurchaseResponse>> createPurchase(
@@ -57,7 +47,7 @@ public class PurchaseController {
     public ResponseEntity<PagedResponse<List<PurchaseResponse>>> getAllPurchases(
             PageRequestDto pageRequestDto) {
 
-        log.info(AppConstants.LOG_MESSAGES.FETCHING_PURCHASE, pageRequestDto.getPage(), pageRequestDto.getSize());
+        log.debug(AppConstants.LOG_MESSAGES.FETCHING_PURCHASE, pageRequestDto.getPage(), pageRequestDto.getSize());
 
         return AppResponse.success(purchaseService.getAllPurchases(pageRequestDto.buildPageable()),
                 AppConstants.SUCCESS_MESSAGES.PURCHASE_FETCHED);

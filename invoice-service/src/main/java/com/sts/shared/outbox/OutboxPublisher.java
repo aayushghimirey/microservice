@@ -1,8 +1,4 @@
-package com.sts.support;
-
-import java.util.UUID;
-
-import org.springframework.stereotype.Component;
+package com.sts.shared.outbox;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,9 +8,12 @@ import com.sts.enums.AggregateType;
 import com.sts.exception.OutboxPublishException;
 import com.sts.mapper.OutboxMapper;
 import com.sts.repository.OutboxEventRepository;
-
+import com.sts.utils.constant.AppConstants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -28,13 +27,13 @@ public class OutboxPublisher {
     /**
      * Serialize event to JSON
      */
-    public String serialize(Object event) {
+    private String serialize(Object event) {
 
         try {
             return objectMapper.writeValueAsString(event);
         } catch (JsonProcessingException e) {
-            log.error("Failed to serialize data", e);
-            throw new OutboxPublishException("Failed to process Outbox payload");
+            log.error(AppConstants.ERROR_MESSAGES.OUTBOX_SERIALIZATION_FAILED, e);
+            throw new OutboxPublishException(AppConstants.ERROR_MESSAGES.OUTBOX_PUBLISH_FAILED);
         }
     }
 

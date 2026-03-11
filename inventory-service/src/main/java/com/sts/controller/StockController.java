@@ -6,7 +6,9 @@ import java.util.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,19 +39,16 @@ public class StockController {
 
     private final StockService stockService;
 
-    /*
-     * Commands
-     */
-
     @PostMapping
     public ResponseEntity<ApiResponse<StockResponse>> createStock(
             @Valid @RequestBody CreateStockCommand command) {
 
         log.info(AppConstants.LOG_MESSAGES.CREATING_STOCK, command.name());
 
-        var stock = stockService.createStock(command);
-
-        return AppResponse.success(stock, AppConstants.SUCCESS_MESSAGES.STOCK_CREATED);
+        return AppResponse.success(
+                stockService.createStock(command),
+                AppConstants.SUCCESS_MESSAGES.STOCK_CREATED
+        );
     }
 
     @PostMapping("/{stockId}")
@@ -59,71 +58,60 @@ public class StockController {
 
         log.info(AppConstants.LOG_MESSAGES.UPDATING_STOCK, stockId);
 
-        var stock = stockService.updateStock(stockId, command);
-
-        return AppResponse.success(stock, AppConstants.SUCCESS_MESSAGES.STOCK_UPDATED);
+        return AppResponse.success(
+                stockService.updateStock(stockId, command),
+                AppConstants.SUCCESS_MESSAGES.STOCK_UPDATED
+        );
     }
 
     @PostMapping("/adjustments")
-    public ResponseEntity<ApiResponse<Void>> createAdjustment(
+    public ResponseEntity<ApiResponse<Void>> adjustStock(
             @Valid @RequestBody StockAdjustmentCommand command) {
 
-        log.info(AppConstants.LOG_MESSAGES.CREATING_ADJUSTMENT,
+        log.info(
+                AppConstants.LOG_MESSAGES.CREATING_ADJUSTMENT,
                 command.variantId(),
                 command.unitId(),
-                command.quantity());
+                command.quantity()
+        );
 
         stockService.adjustStock(command);
 
         return AppResponse.noContent();
     }
 
-    /*
-     * Queries
-     */
-
     @GetMapping
-    public ResponseEntity<PagedResponse<List<StockResponse>>> getAllStocks(
-            PageRequestDto pageRequestDto) {
+    public ResponseEntity<PagedResponse<List<StockResponse>>> getStocks(
+            @ModelAttribute PageRequestDto pageRequestDto,
+            @Valid @ModelAttribute GetStockQueryRequest queryRequest) {
 
-        var stocks = stockService.getAllStock(pageRequestDto.buildPageable());
-
-        return AppResponse.success(stocks, AppConstants.SUCCESS_MESSAGES.STOCKS_FETCHED);
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<PagedResponse<List<StockResponse>>> searchStocks(
-            PageRequestDto pageRequestDto,
-            GetStockQueryRequest queryRequest) {
-
-        var stocks = stockService.getAllQueryStock(queryRequest, pageRequestDto.buildPageable());
-
-        return AppResponse.success(stocks, AppConstants.SUCCESS_MESSAGES.STOCKS_FETCHED);
+        return AppResponse.success(
+                stockService.getAllQueryStock(queryRequest, pageRequestDto.buildPageable()),
+                AppConstants.SUCCESS_MESSAGES.STOCKS_FETCHED
+        );
     }
 
     @GetMapping("/{stockId}/variants")
     public ResponseEntity<PagedResponse<List<StockResponse.VariantResponse>>> getStockVariants(
             @PathVariable UUID stockId,
-            PageRequestDto pageRequestDto) {
+            @ModelAttribute PageRequestDto pageRequestDto) {
 
-        var variants = stockService.getAllVariantByStockId(stockId, pageRequestDto.buildPageable());
-
-        return AppResponse.success(variants, AppConstants.SUCCESS_MESSAGES.VARIANTS_FETCHED);
+        return AppResponse.success(
+                stockService.getAllVariantByStockId(stockId, pageRequestDto.buildPageable()),
+                AppConstants.SUCCESS_MESSAGES.VARIANTS_FETCHED
+        );
     }
 
-    /*
-     * External validation API (used by menu service)
-     */
-
     @GetMapping("/variants/{variantId}/units/{unitId}/exists")
-    public ResponseEntity<ApiResponse<Boolean>> validateStock(
+    public ResponseEntity<ApiResponse<Boolean>> existsVariantUnit(
             @PathVariable UUID variantId,
             @PathVariable UUID unitId) {
 
         log.info(AppConstants.LOG_MESSAGES.VALIDATING_VARIANT, variantId, unitId);
 
-        var exists = stockService.existsByVariantIdAndUnitId(variantId, unitId);
-
-        return AppResponse.success(exists, AppConstants.SUCCESS_MESSAGES.VARIANTS_FETCHED);
+        return AppResponse.success(
+                stockService.existsByVariantIdAndUnitId(variantId, unitId),
+                AppConstants.SUCCESS_MESSAGES.STOCK_VERIFIED
+        );
     }
 }

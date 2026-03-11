@@ -2,7 +2,7 @@ package com.sts.dto.request;
 
 import com.sts.enums.BillingType;
 import com.sts.enums.MoneyTransaction;
-import com.sts.utils.contant.AppConstants;
+import com.sts.utils.constant.AppConstants;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 

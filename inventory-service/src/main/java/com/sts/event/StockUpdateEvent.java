@@ -7,17 +7,17 @@ import java.util.UUID;
 import com.sts.utils.enums.StockUpdateSource;
 
 public record StockUpdateEvent(
-                UUID purchaseId,
-                UUID invoiceId,
-                List<Item> items) {
+        UUID purchaseId,
+        UUID invoiceId,
+        List<StockUpdateItem> items) {
 
-        public record Item(
-                        UUID variantId,
-                        UUID unitId,
-                        BigDecimal quantity,
-                        StockUpdateSource source
+    public record StockUpdateItem(
+            UUID variantId,
+            UUID unitId,
+            BigDecimal quantity,
+            StockUpdateSource source
 
-        ) {
-        }
+    ) {
+    }
 
 }

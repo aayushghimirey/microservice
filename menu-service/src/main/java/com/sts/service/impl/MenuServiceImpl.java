@@ -27,18 +27,16 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 class MenuServiceImpl implements MenuService {
 
     private final MenuRepository menuRepository;
     private final InventoryClient inventoryClient;
     private final MenuMapper menuMapper;
 
-    // ── Commands ────────────────────────────────────────────────────────────
-
     @Override
     @Transactional
     public MenuResponse createMenu(CreateMenuRequest request) {
-
 
         if (menuRepository.existsByName(request.name())) {
             throw new DuplicateResourceException(String.format(AppConstants.ERROR_MESSAGES.DUPLICATE_MENU_NAME, request.name()));
@@ -51,8 +49,7 @@ class MenuServiceImpl implements MenuService {
 
         validateIngredients(request);
 
-        Menu menu = menuMapper.toEntity(request);
-        Menu saved = menuRepository.save(menu);
+        Menu menu = menuMapper.toEntity(request);a
 
 
         return menuMapper.toResponse(saved);

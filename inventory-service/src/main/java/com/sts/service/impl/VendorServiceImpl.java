@@ -16,7 +16,6 @@ import com.sts.utils.constant.AppConstants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class VendorServiceImpl implements VendorService {
@@ -24,20 +23,22 @@ public class VendorServiceImpl implements VendorService {
     private final VendorRepository vendorRepository;
     private final VendorMapper vendorMapper;
 
+    /*
+     * Commands
+     * */
     @Override
     @Transactional
     public VendorResponse createVendor(CreateVendorCommand command) {
-        log.info(AppConstants.LOG_MESSAGES.CREATING_VENDOR, command.name());
 
         Vendor vendor = vendorMapper.buildVendor(command);
 
-        VendorResponse response = vendorMapper.toResponse(vendorRepository.save(vendor));
-
-        log.info(AppConstants.LOG_MESSAGES.VENDOR_CREATED, response.getId());
-        return response;
+        return vendorMapper.toResponse(vendorRepository.save(vendor));
 
     }
 
+    /*
+     * Queries
+     * */
     @Override
     @Transactional(readOnly = true)
     public Page<VendorResponse> getAllVendors(Pageable pageable) {
