@@ -1,5 +1,8 @@
 spring:
 
+  profiles:
+    active: prod
+
   application:
     name: inventory-service
 

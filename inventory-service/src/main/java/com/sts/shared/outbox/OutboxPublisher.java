@@ -60,6 +60,8 @@ public class OutboxPublisher {
                 topic);
 
         outboxEventRepository.save(outboxEvent);
+
+        log.info("Outbox saved ofo topic {}", outboxEvent.getTopic());
     }
 
 }

@@ -5,50 +5,57 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ab18d2d-25ec-4bf1-8ae3-75379509bd42" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/invoice-service/src/main/java/com/sts/shared/outbox/OutboxPublisher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shared-core/src/main/java/com/sts/exception/MenuIntegrationException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/service/PurchaseRecordService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inventory-service/src/main/resources/application-dev.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inventory-service/src/test/java/com/sts/repository/StockRepositoryTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inventory-service/src/test/java/com/sts/service/impl/PurchaseServiceImplTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-gateway/src/main/java/com/sts/ApiGatewayApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/src/main/java/com/sts/ApiGatewayApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-gateway/target/api-gateway.jar" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/target/api-gateway.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-gateway/target/api-gateway.jar.original" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/target/api-gateway.jar.original" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-gateway/target/classes/com/sts/ApiGatewayApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/target/classes/com/sts/ApiGatewayApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-gateway/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-gateway/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/config/KafkaProducerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/config/KafkaProducerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/event/PurchaseEventListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/event/PurchaseEventListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/.idea/copilot.data.migration.agent.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/.idea/copilot.data.migration.ask.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/.idea/copilot.data.migration.ask2agent.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/.idea/copilot.data.migration.edit.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/.idea/material_theme_project_new.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/build.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/client/MenuClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/client/MenuClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/config/KafkaProducerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/config/KafkaProducerConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/controller/PurchaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/controller/PurchaseController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/controller/StockController.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/controller/StockController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/controller/StockTransactionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/controller/StockTransactionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/controller/VendorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/controller/VendorController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/dto/request/CreatePurchaseCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/dto/request/CreatePurchaseCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/dto/request/CreateStockCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/dto/request/CreateStockCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/dto/request/StockAdjustmentCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/dto/request/StockAdjustmentCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/event/InvoiceStockUpdateResolver.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/event/PurchaseEventFactory.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/event/StockUpdateEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/event/StockUpdateEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/event/StockUpdateEventFactory.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/event/listener/InvoiceEventListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/event/listener/InvoiceEventListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/event/listener/StockUpdateListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/event/listener/StockUpdateListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/event/listener/StockUpdateProcessor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/exception/OutboxPublishException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/integration/menu/MenuClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/client/MenuClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/integration/menu/MenuGateway.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/client/MenuGateway.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/mapper/PurchaseMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/mapper/PurchaseMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/mapper/StockMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/mapper/StockMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/repository/StockRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/repository/StockRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/repository/StockVariantRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/repository/StockVariantRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/PurchaseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/PurchaseService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/StockService.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/StockService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/PurchaseServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/PurchaseServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/mapper/PurchaseEventFactory.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/StockServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/StockServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/StockTransactionServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/StockTransactionServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/VendorServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/VendorServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/shared/outbox/OutboxPublisher.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/support/OutboxPublisher.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/support/ReferenceResolver.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/support/VariantUnitResolver.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/support/event/DomainEventPublisher.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/utils/constant/AppConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/utils/constant/AppConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/utils/contant/AppConstants.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/utils/feign/MenuClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/invoice-service/src/main/java/com/sts/event/OrderEventListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/invoice-service/src/main/java/com/sts/event/listener/OrderEventListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/shared/outbox/OutboxPublisher.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/shared/outbox/OutboxPublisher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/invoice-service/src/main/java/com/sts/config/KafkaProducerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/invoice-service/src/main/java/com/sts/config/KafkaProducerConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/invoice-service/src/main/java/com/sts/service/impl/InvoiceServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/invoice-service/src/main/java/com/sts/service/impl/InvoiceServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/invoice-service/src/main/java/com/sts/utils/constant/AppConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/invoice-service/src/main/java/com/sts/utils/constant/AppConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/menu-service/src/main/java/com/sts/controller/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/menu-service/src/main/java/com/sts/controller/MenuController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/menu-service/src/main/java/com/sts/service/impl/MenuServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/menu-service/src/main/java/com/sts/service/impl/MenuServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared-core/src/main/java/com/sts/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared-core/src/main/java/com/sts/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/menu-service/src/main/java/com/sts/utils/feign/InventoryClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/menu-service/src/main/java/com/sts/client/InventoryClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sts/config/KafkaProducerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sts/config/KafkaProducerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sts/service/ReservationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sts/service/ReservationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sts/utils/contant/AppConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sts/utils/contant/AppConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sts/utils/feign/MenuClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sts/utils/feign/MenuClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-core/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/shared-core/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-core/src/main/java/com/sts/enums/AggregateType.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared-core/src/main/java/com/sts/enums/AggregateType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-outbox/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/shared-outbox/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,6 +73,7 @@
         <option value="Dockerfile" />
         <option value="Interface" />
         <option value="Enum" />
+        <option value="JUnit5 Test Class" />
         <option value="Class" />
       </list>
     </option>
@@ -81,27 +89,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.ApiGatewayApplication.executor": "Run",
-    "Application.EurekaApplication.executor": "Run",
-    "Application.FinanceApplication.executor": "Run",
-    "Application.InventoryApplication.executor": "Run",
-    "Application.InvoiceApplication.executor": "Run",
-    "Application.MenuApplication.executor": "Run",
-    "Application.OrderApplication.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_directory_selection": "A:/re-microservice/inventory-service/src/main/java/com/sts/shared/outbox",
-    "last_opened_file_path": "A:/re-microservice/invoice-service/src/main/java/com/sts/shared",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15722656",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "settings.editor.splitter.proportion": "0.26358974"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.ApiGatewayApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.EurekaApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.FinanceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.InventoryApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.InvoiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MenuApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.OrderApplication.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PurchaseServiceImplTest.createPurchase.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PurchaseServiceImplTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StockRepositoryTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StockRepositoryTest.existsByName.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StockServiceImplTest.adjustStock.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StockServiceImplTest.createStock_shouldThrowDuplicateResourceException_whenNameExists.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StockServiceImplTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StockServiceImplTest.shouldCreateStockSuccessfully.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_directory_selection&quot;: &quot;A:/re-microservice/inventory-service/src/main/java/com/sts/shared/outbox&quot;,
+    &quot;last_opened_file_path&quot;: &quot;A:/re-microservice/invoice-service/src/main/java/com/sts/shared&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15722656&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor&quot;,
+    &quot;settings.editor.splitter.proportion&quot;: &quot;0.26358974&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.sts.service.specification" />
@@ -115,86 +135,113 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="A:\re-microservice" />
     </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.sts.service.impl" />
+      <recent name="com.sts.repository" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.sts.exception" />
       <recent name="com.sts.config" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.InventoryApplication">
-    <configuration name="ApiGatewayApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.sts.ApiGatewayApplication" />
-      <module name="api-gateway" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.sts.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="EurekaApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.sts.EurekaApplication" />
-      <module name="eureka-service" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.sts.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="FinanceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.sts.FinanceApplication" />
-      <module name="finance-service" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.sts.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="InventoryApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.sts.InventoryApplication" />
+  <component name="RunManager" selected="JUnit.PurchaseServiceImplTest.createPurchase">
+    <configuration name="PurchaseServiceImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="inventory-service" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.sts.*" />
+          <option name="PATTERN" value="com.sts.service.impl.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="com.sts.service.impl" />
+      <option name="MAIN_CLASS_NAME" value="com.sts.service.impl.PurchaseServiceImplTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="InvoiceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.sts.InvoiceApplication" />
-      <module name="invoice-service" />
+    <configuration name="PurchaseServiceImplTest.createPurchase" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="inventory-service" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.sts.*" />
+          <option name="PATTERN" value="com.sts.service.impl.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="com.sts.service.impl" />
+      <option name="MAIN_CLASS_NAME" value="com.sts.service.impl.PurchaseServiceImplTest" />
+      <option name="METHOD_NAME" value="createPurchase" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StockRepositoryTest.existsByName" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="inventory-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.sts.repository.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.sts.repository" />
+      <option name="MAIN_CLASS_NAME" value="com.sts.repository.StockRepositoryTest" />
+      <option name="METHOD_NAME" value="existsByName" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StockServiceImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="inventory-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.sts.service.impl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.sts.service.impl" />
+      <option name="MAIN_CLASS_NAME" value="com.sts.service.impl.StockServiceImplTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StockServiceImplTest.createStock_shouldThrowDuplicateResourceException_whenNameExists" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="inventory-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.sts.service.impl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.sts.service.impl" />
+      <option name="MAIN_CLASS_NAME" value="com.sts.service.impl.StockServiceImplTest" />
+      <option name="METHOD_NAME" value="createStock_shouldThrowDuplicateResourceException_whenNameExists" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.InventoryApplication" />
-        <item itemvalue="Application.ApiGatewayApplication" />
-        <item itemvalue="Application.EurekaApplication" />
-        <item itemvalue="Application.FinanceApplication" />
-        <item itemvalue="Application.InvoiceApplication" />
+        <item itemvalue="JUnit.PurchaseServiceImplTest.createPurchase" />
+        <item itemvalue="JUnit.PurchaseServiceImplTest" />
+        <item itemvalue="JUnit.StockServiceImplTest" />
+        <item itemvalue="JUnit.StockRepositoryTest.existsByName" />
+        <item itemvalue="JUnit.StockServiceImplTest.createStock_shouldThrowDuplicateResourceException_whenNameExists" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.31033.145" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">

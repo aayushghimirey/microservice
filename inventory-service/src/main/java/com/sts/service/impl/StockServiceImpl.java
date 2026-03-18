@@ -39,7 +39,6 @@ import com.sts.utils.enums.TransactionReference;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class StockServiceImpl implements StockService {
@@ -123,7 +122,6 @@ public class StockServiceImpl implements StockService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void processStockUpdates(StockUpdateEvent event) {
-        log.info(AppConstants.LOG_MESSAGES.PROCESSING_STOCK_UPDATE, event.items().size());
 
         UUID referenceId = resolveReferenceId(event);
 
@@ -209,7 +207,6 @@ public class StockServiceImpl implements StockService {
 
     private void publishStockUpdate(UUID variantId, UUID unitId, BigDecimal quantity) {
         StockUpdateEvent event = stockUpdateEventFactory.buildFromAdjustment(variantId, unitId, quantity);
-        log.info(AppConstants.LOG_MESSAGES.APPLICATION_EVENT_PUBLISHING, event.getClass().getSimpleName());
         eventPublisher.publish(event);
     }
 }

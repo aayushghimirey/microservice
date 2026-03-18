@@ -5,11 +5,13 @@ import com.sts.enums.MoneyTransaction;
 import com.sts.utils.constant.AppConstants;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
+import lombok.Builder;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
+@Builder
 public record CreatePurchaseCommand(
 
         @NotBlank(message = AppConstants.VALIDATION_MESSAGES.INVOICE_NUMBER_REQUIRED)
@@ -33,6 +35,7 @@ public record CreatePurchaseCommand(
 
 ) {
 
+    @Builder
     public record PurchaseItemCommand(
 
             @NotNull(message = AppConstants.VALIDATION_MESSAGES.VARIANT_ID_REQUIRED)

@@ -20,7 +20,7 @@ public class ApiGatewayApplication {
                                                 .path("/stocks/**", "/purchases/**", "/vendors/**")
                                                 .uri("lb://inventory-service"))
                                 .route("finance-service", predicateSpec -> predicateSpec
-                                                .path("/finance/**")
+                                                .path("/finances/**")
                                                 .uri("lb://finance-service"))
                                 .route("menu-service", predicateSpec -> predicateSpec
                                                 .path("/menus/**")

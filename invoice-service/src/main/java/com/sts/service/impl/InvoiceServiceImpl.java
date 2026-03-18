@@ -39,17 +39,13 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     private final ReferenceResolver referenceResolver;
 
-    private final OutboxPublisher outboxPublisher;
-
-    private final InvoiceEventFactory invoiceEventFactory;
-
-    private final InvoiceMapper invoiceMapper;
     private final InvoiceRepository invoiceRepository;
-    private final KafkaTemplate<String, Object> kafkaTemplate;
-    private final ObjectMapper objectMapper;
-    private final OutboxMapper outboxMapper;
-    private final KafkaProperties kafkaProperties;
-    private final OutboxEventRepository outboxEventRepository;
+    private final InvoiceMapper invoiceMapper;
+
+    private final OutboxPublisher outboxPublisher;
+    private final InvoiceEventFactory invoiceEventFactory;
+      private final KafkaProperties kafkaProperties;
+
 
     @Override
     @Transactional

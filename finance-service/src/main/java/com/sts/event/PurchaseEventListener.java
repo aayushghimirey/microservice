@@ -1,8 +1,9 @@
 package com.sts.event;
 
-import java.math.BigDecimal;
 
-import org.apache.kafka.clients.consumer.ConsumerRecord;
+import com.sts.mapper.PurchaseRecordMapper;
+
+import com.sts.topics.KafkaProperties;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 public class PurchaseEventListener {
 
     private final PurchaseRecordRepository purchaseRecordRepository;
+    private final PurchaseRecordMapper purchaseRecordMapper;
+    private final KafkaProperties kafkaProperties;
 
     @KafkaListener(topics = "#{@kafkaProperties.getTopic('purchase-event')}",
             containerFactory = "purchaseKafkaListenerContainerFactory")
@@ -28,7 +31,7 @@ public class PurchaseEventListener {
         log.info(AppConstants.LOG_MESSAGES.PURCHASE_EVENT_RECEIVED, event.getPurchaseId());
 
         try {
-            PurchaseRecord purchaseRecord = buildPurchaseRecord(event);
+            PurchaseRecord purchaseRecord = purchaseRecordMapper.buildPurchaseRecord(event);
 
             purchaseRecordRepository.save(purchaseRecord);
 
@@ -42,15 +45,12 @@ public class PurchaseEventListener {
         }
     }
 
-    // -- private helper
-    public PurchaseRecord buildPurchaseRecord(PurchaseCreatedEvent event) {
-        return PurchaseRecord.builder()
-                .purchaseId(event.getPurchaseId())
-                .billingType(event.getBillingType())
-                .moneyTransaction(event.getMoneyTransaction())
-                .vatAmount(event.getVatAmount() != null ? event.getVatAmount() : BigDecimal.ZERO)
-                .grossTotal(event.getGrossTotal())
-                .build();
+
+    @KafkaListener(topics = "PURCHASE_EVENT", groupId = "debug-group",
+            containerFactory = "purchaseKafkaListenerContainerFactory"
+    )
+    public void debug(String msg) {
+        System.out.println("MSG: " + msg);
     }
 
 }

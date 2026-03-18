@@ -8,6 +8,8 @@
     <file url="file://$PROJECT_DIR$/invoice-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/menu-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/order-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/shared-outbox/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/shared-outbox/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>

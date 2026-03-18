@@ -3,6 +3,7 @@ package com.sts.controller;
 import java.util.List;
 import java.util.UUID;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,12 +29,14 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping(AppConstants.MENU_BASE_PATH)
 @RequiredArgsConstructor
+@Slf4j
 public class MenuController {
 
     private final MenuService menuService;
 
     @PostMapping
     public ResponseEntity<ApiResponse<MenuResponse>> createMenu(@Valid @RequestBody CreateMenuRequest request) {
+        log.info(AppConstants.LOG_MESSAGES.CREATING_MENU, request.category());
         var menu = menuService.createMenu(request);
         return AppResponse.success(menu, AppConstants.SUCCESS_MESSAGES.MENU_CREATED);
     }
@@ -41,6 +44,7 @@ public class MenuController {
     @GetMapping
     public ResponseEntity<PagedResponse<List<MenuResponse>>> getAllMenus(
             @ModelAttribute PageRequestDto pageRequestDto) {
+        log.info(AppConstants.LOG_MESSAGES.FETCHING_ALL_MENUS, pageRequestDto.getPage(), pageRequestDto.getSize());
         var menus = menuService.getAllMenus(pageRequestDto.buildPageable());
         return AppResponse.success(menus, AppConstants.SUCCESS_MESSAGES.MENUS_FETCHED);
     }
@@ -53,6 +57,7 @@ public class MenuController {
 
     @GetMapping("/{menuId}/ingredients")
     public ResponseEntity<ApiResponse<List<MenuIngredientResponse>>> getMenuIngredientsById(@PathVariable UUID menuId) {
+        log.info(AppConstants.LOG_MESSAGES.FETCHING_MENU_INGREDIENTS, menuId);
         var menuIngredients = menuService.getMenuIngredientsById(menuId);
         return AppResponse.success(menuIngredients, AppConstants.SUCCESS_MESSAGES.MENU_INGREDIENTS_FETCHED);
     }

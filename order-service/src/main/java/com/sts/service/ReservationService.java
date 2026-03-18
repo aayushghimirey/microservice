@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import com.sts.enums.AggregateType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,7 +51,6 @@ public class ReservationService {
 
     private final PushPendingReservations pushPendingReservations;
 
-    private final ReservationSseService reservationSseService;
 
     @Transactional
     public ReservationResponse createReservation(CreateReservationCommand request) {
@@ -136,11 +136,11 @@ public class ReservationService {
             String payload = objectMapper.writeValueAsString(event);
 
             OutboxEvent outboxEvent = outboxMapper.map(
-                    "ORDER",
-                    reservation.getId().toString(),
+                    AggregateType.ORDER,
+                    reservation.getId(),
                     OutboxEventType.CREATED,
                     payload,
-                    kafkaProperties.getTopic("order-event"));
+                    kafkaProperties.getTopic(AppConstants.ORDER_KAFKA_EVENT_TOPIC));
 
             outboxEventRepository.save(outboxEvent);
 

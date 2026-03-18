@@ -47,7 +47,7 @@ public class PurchaseController {
     public ResponseEntity<PagedResponse<List<PurchaseResponse>>> getAllPurchases(
             PageRequestDto pageRequestDto) {
 
-        log.debug(AppConstants.LOG_MESSAGES.FETCHING_PURCHASE, pageRequestDto.getPage(), pageRequestDto.getSize());
+        log.info(AppConstants.LOG_MESSAGES.FETCHING_PURCHASE, pageRequestDto.getPage(), pageRequestDto.getSize());
 
         return AppResponse.success(purchaseService.getAllPurchases(pageRequestDto.buildPageable()),
                 AppConstants.SUCCESS_MESSAGES.PURCHASE_FETCHED);

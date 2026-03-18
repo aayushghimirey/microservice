@@ -16,5 +16,4 @@ public interface MenuClient {
 
     @GetMapping("/{menuId}/ingredients")
     ResponseEntity<ApiResponse<List<MenuIngredientResponse>>> getMenuIngredientsById(@PathVariable UUID menuId);
-
 }

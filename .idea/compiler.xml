@@ -9,8 +9,6 @@
         <outputRelativeToContentRoot value="true" />
         <module name="api-gateway" />
         <module name="eureka-service" />
-        <module name="shared-outbox" />
-        <module name="shared-core" />
       </profile>
       <profile name="Annotation profile for microservice-parent" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -20,10 +18,12 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
         </processorPath>
         <module name="inventory-service" />
-        <module name="order-service" />
-        <module name="menu-service" />
+        <module name="shared-outbox" />
         <module name="finance-service" />
         <module name="invoice-service" />
+        <module name="order-service" />
+        <module name="menu-service" />
+        <module name="shared-core" />
       </profile>
     </annotationProcessing>
   </component>
