@@ -5,66 +5,37 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ab18d2d-25ec-4bf1-8ae3-75379509bd42" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/service/PurchaseRecordService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/inventory-service/src/main/resources/application-dev.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/inventory-service/src/test/java/com/sts/repository/StockRepositoryTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/inventory-service/src/test/java/com/sts/service/impl/PurchaseServiceImplTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api-gateway/src/main/java/com/sts/ApiGatewayApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/src/main/java/com/sts/ApiGatewayApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api-gateway/target/api-gateway.jar" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/target/api-gateway.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api-gateway/target/api-gateway.jar.original" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/target/api-gateway.jar.original" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api-gateway/target/classes/com/sts/ApiGatewayApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/target/classes/com/sts/ApiGatewayApplication.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api-gateway/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api-gateway/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/config/KafkaProducerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/config/KafkaProducerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/event/PurchaseEventListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/event/PurchaseEventListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/.idea/copilot.data.migration.agent.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/.idea/copilot.data.migration.ask.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/.idea/copilot.data.migration.ask2agent.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/.idea/copilot.data.migration.edit.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/.idea/material_theme_project_new.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/build.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/client/MenuClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/client/MenuClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/config/KafkaProducerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/config/KafkaProducerConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/controller/PurchaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/controller/PurchaseController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/dto/request/CreatePurchaseCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/dto/request/CreatePurchaseCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/dto/request/CreateStockCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/dto/request/CreateStockCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/dto/request/StockAdjustmentCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/dto/request/StockAdjustmentCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/mapper/PurchaseEventFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/controller/StockController.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/controller/StockController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/controller/VendorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/controller/VendorController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/PurchaseServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/PurchaseServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/StockServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/StockServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/StockTransactionServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/StockTransactionServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/VendorServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/VendorServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/resolver/ReferenceResolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/resolver/ReferenceResolver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/resolver/VariantUnitResolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/resolver/VariantUnitResolver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/shared/event/DomainEventPublisher.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/shared/event/DomainEventPublisher.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/shared/outbox/OutboxPublisher.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/shared/outbox/OutboxPublisher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/invoice-service/src/main/java/com/sts/config/KafkaProducerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/invoice-service/src/main/java/com/sts/config/KafkaProducerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/invoice-service/src/main/java/com/sts/service/impl/InvoiceServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/invoice-service/src/main/java/com/sts/service/impl/InvoiceServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/menu-service/src/main/java/com/sts/controller/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/menu-service/src/main/java/com/sts/controller/MenuController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/menu-service/src/main/java/com/sts/service/impl/MenuServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/menu-service/src/main/java/com/sts/service/impl/MenuServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/menu-service/src/main/java/com/sts/utils/feign/InventoryClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/menu-service/src/main/java/com/sts/client/InventoryClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sts/config/KafkaProducerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sts/config/KafkaProducerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sts/service/ReservationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sts/service/ReservationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sts/utils/contant/AppConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sts/utils/contant/AppConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sts/utils/feign/MenuClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sts/utils/feign/MenuClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared-core/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/shared-core/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared-core/src/main/java/com/sts/enums/AggregateType.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared-core/src/main/java/com/sts/enums/AggregateType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared-outbox/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/shared-outbox/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/utils/constant/AppConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/utils/constant/AppConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/menu-service/src/main/java/com/sts/config/FeignConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/menu-service/src/main/java/com/sts/config/FeignConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
   <component name="CopilotPersistence">
     <persistenceIdMap>
       <entry key="_A:/re-microservice" value="3AO2o0GxBFZ5slu6lt0jw27TccA" />
+      <entry key="_C:/Users/Lenovo/Desktop/ayush/microservice" value="3BD6PZFio4KilySBh7HTNIvMS1O" />
     </persistenceIdMap>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -109,6 +80,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
@@ -118,8 +90,10 @@
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15722656&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor&quot;,
-    &quot;settings.editor.splitter.proportion&quot;: &quot;0.26358974&quot;
+    &quot;settings.editor.splitter.proportion&quot;: &quot;0.26358974&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -146,6 +120,16 @@
       <recent name="com.sts.exception" />
       <recent name="com.sts.config" />
     </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="KtorApplicationConfigurationType" />
+        <option value="MicronautRunConfigurationType" />
+        <option value="QuarkusRunConfigurationType" />
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
   </component>
   <component name="RunManager" selected="JUnit.PurchaseServiceImplTest.createPurchase">
     <configuration name="PurchaseServiceImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
@@ -226,6 +210,55 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ApiGatewayApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="api-gateway" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sts.ApiGatewayApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EurekaApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="eureka-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sts.EurekaApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FinanceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="finance-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sts.FinanceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="InventoryApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="inventory-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sts.InventoryApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="InvoiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="invoice-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sts.InvoiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MenuApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="menu-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sts.MenuApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrderApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="order-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sts.OrderApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.PurchaseServiceImplTest.createPurchase" />
@@ -240,6 +273,7 @@
     <attachedChunks>
       <set>
         <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.31033.145" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.31033.145" />
       </set>
     </attachedChunks>
   </component>
@@ -251,8 +285,13 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1772449466682</updated>
+      <workItem from="1774011224451" duration="468000" />
+      <workItem from="1774018011763" duration="4077000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

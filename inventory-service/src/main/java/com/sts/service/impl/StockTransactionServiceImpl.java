@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sts.dto.response.StockTransactionResponse;
 import com.sts.repository.StockTransactionRepository;
 import com.sts.service.StockTransactionService;
+import com.sts.utils.constant.AppConstants;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,16 +24,18 @@ public class StockTransactionServiceImpl implements StockTransactionService {
 
     /*
      * Queries
-     * */
+     */
     @Override
     @Transactional(readOnly = true)
     public Page<StockTransactionResponse> getAllTransaction(Pageable pageable) {
+        log.info(AppConstants.LOG_MESSAGES.FETCHING_TRANSACTIONS);
         return stockTransactionRepository.findAllTransactions(pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<StockTransactionResponse> getAllTransactionByVariantId(UUID variantId, Pageable pageable) {
+        log.info(AppConstants.LOG_MESSAGES.FETCHING_TRANSACTIONS_BY_VARIANT, variantId);
         return stockTransactionRepository.findAllTransactionsByVariantId(variantId, pageable);
     }
 

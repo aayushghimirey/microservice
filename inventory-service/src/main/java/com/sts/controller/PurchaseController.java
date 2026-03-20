@@ -3,6 +3,7 @@ package com.sts.controller;
 import java.util.List;
 
 import com.sts.utils.constant.AppConstants;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,26 +32,42 @@ public class PurchaseController {
     private final PurchaseService purchaseService;
 
     /**
-     * Creates a new purchase. VAT (13%) is automatically calculated and added to the sub-total
+     * Creates a new purchase. VAT (13%) is automatically calculated and added to
+     * the sub-total
      * to derive the final Gross Total.
      */
     @PostMapping
     public ResponseEntity<ApiResponse<PurchaseResponse>> createPurchase(
             @Valid @RequestBody CreatePurchaseCommand command) {
 
-        log.info(AppConstants.LOG_MESSAGES.CREATING_PURCHASE, command.invoiceNumber());
+        log.info(AppConstants.Request.CREATE_PURCHASE_START,
+                command.items().size());
 
-        return AppResponse.success(purchaseService.createPurchase(command), AppConstants.SUCCESS_MESSAGES.PURCHASE_CREATED);
+        PurchaseResponse purchase = purchaseService.createPurchase(command);
+
+        log.info(AppConstants.Request.CREATE_PURCHASE_END, purchase.items().size());
+
+        return AppResponse.success(
+                purchase,
+                AppConstants.Response.PURCHASE_CREATED);
     }
 
     @GetMapping
     public ResponseEntity<PagedResponse<List<PurchaseResponse>>> getAllPurchases(
             PageRequestDto pageRequestDto) {
 
-        log.info(AppConstants.LOG_MESSAGES.FETCHING_PURCHASE, pageRequestDto.getPage(), pageRequestDto.getSize());
+        log.info(AppConstants.Request.FETCH_PURCHASE_START,
+                pageRequestDto.getPage(), pageRequestDto.getSize());
 
-        return AppResponse.success(purchaseService.getAllPurchases(pageRequestDto.buildPageable()),
-                AppConstants.SUCCESS_MESSAGES.PURCHASE_FETCHED);
+        Page<PurchaseResponse> purchases = purchaseService.getAllPurchases(
+                pageRequestDto.buildPageable());
+
+        log.info(AppConstants.Request.FETCH_PURCHASE_END,
+                purchases.getPageable().getOffset(), purchases.getPageable().getPageSize());
+
+        return AppResponse.success(
+                purchases,
+                AppConstants.Response.FETCHED_PURCHASES);
     }
 
 }

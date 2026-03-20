@@ -33,16 +33,26 @@ public class VendorController {
     @PostMapping
     public ResponseEntity<ApiResponse<VendorResponse>> createVendor(
             @Valid @RequestBody CreateVendorCommand command) {
-        log.info(AppConstants.LOG_MESSAGES.CREATING_VENDOR, command.name());
-        return AppResponse.success(vendorService.createVendor(command),
+        log.info(AppConstants.REQUEST_MESSAGES.START_CREATE_VENDOR);
+
+        ResponseEntity<ApiResponse<VendorResponse>> response = AppResponse.success(vendorService.createVendor(command),
                 AppConstants.SUCCESS_MESSAGES.VENDOR_CREATED);
+
+        log.info(AppConstants.REQUEST_MESSAGES.END_CREATE_VENDOR);
+        return response;
     }
 
     @GetMapping
     public ResponseEntity<PagedResponse<List<VendorResponse>>> getAllVendors(
             PageRequestDto pageRequestDto) {
-        return AppResponse.success(vendorService.getAllVendors(pageRequestDto.buildPageable()),
+        log.info(AppConstants.REQUEST_MESSAGES.START_FETCH_VENDOR);
+
+        ResponseEntity<PagedResponse<List<VendorResponse>>> response = AppResponse.success(
+                vendorService.getAllVendors(pageRequestDto.buildPageable()),
                 AppConstants.SUCCESS_MESSAGES.VENDORS_FETCHED);
+
+        log.info(AppConstants.REQUEST_MESSAGES.END_FETCH_VENDOR);
+        return response;
     }
 
 }

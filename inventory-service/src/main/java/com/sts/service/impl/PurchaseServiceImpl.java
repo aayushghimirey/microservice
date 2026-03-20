@@ -1,5 +1,6 @@
 package com.sts.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ import com.sts.utils.constant.AppConstants;
 
 import lombok.RequiredArgsConstructor;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 class PurchaseServiceImpl implements PurchaseService {
@@ -49,12 +51,16 @@ class PurchaseServiceImpl implements PurchaseService {
     @Override
     @Transactional
     public PurchaseResponse createPurchase(CreatePurchaseCommand command) {
+        log.info(AppConstants.Logs.CREATING_PURCHASE, command.invoiceNumber());
 
         checkInvoiceNumberUniqueness(command.invoiceNumber());
 
+        log.info(AppConstants.Logs.RESOLVING_VENDOR, command.vendorId());
         Vendor vendor = referenceResolver.getVendorOrThrow(command.vendorId());
 
-        command.items().forEach(item -> variantUnitResolver.getVariantUnitOrThrow(item.variantId(), item.unitId()));
+        log.info(AppConstants.Logs.VALIDATING_PURCHASE_ITEMS, command.items().size());
+        command.items().forEach(item ->
+                variantUnitResolver.getVariantUnitOrThrow(item.variantId(), item.unitId()));
 
         Purchase purchase = purchaseRepository.save(
                 purchaseMapper.buildPurchase(command, vendor));
@@ -69,30 +75,35 @@ class PurchaseServiceImpl implements PurchaseService {
     @Override
     @Transactional(readOnly = true)
     public Page<PurchaseResponse> getAllPurchases(Pageable pageable) {
+        log.info(AppConstants.Logs.FETCHING_PURCHASE,
+                pageable.getPageNumber(), pageable.getPageSize());
         return purchaseRepository
                 .findAll(pageable)
                 .map(purchaseMapper::toResponse);
     }
 
-
     // -------------------- Helpers ----------------------
 
     private void checkInvoiceNumberUniqueness(String invoiceNumber) {
         if (purchaseRepository.existsByInvoiceNumber(invoiceNumber)) {
+            log.error(String.format(AppConstants.ErrorMessages.INVOICE_NUMBER_EXISTS, invoiceNumber));
             throw new DuplicateResourceException(
-                    String.format(AppConstants.ERROR_MESSAGES.INVOICE_NUMBER_EXISTS, invoiceNumber));
+                    String.format(AppConstants.ErrorMessages.INVOICE_NUMBER_EXISTS, invoiceNumber));
         }
     }
 
     // application event
     private void publishStockUpdate(Purchase purchase) {
+        log.info(AppConstants.Logs.PUBLISHING_STOCK_UPDATE_EVENT, purchase.getId());
         StockUpdateEvent stockUpdateEvent = stockUpdateEventFactory.buildFromPurchase(purchase);
         domainEventPublisher.publish(stockUpdateEvent);
     }
 
     // for finance service to record that purchase
     private void publishOutboxEvent(Purchase purchase) {
-        PurchaseCreatedEvent purchaseCreatedEvent = purchaseEventFactory.buildPurchaseCreatedEvent(purchase);
+        log.info(AppConstants.Logs.SAVING_PURCHASE_OUTBOX_EVENT, purchase.getId());
+        PurchaseCreatedEvent purchaseCreatedEvent = purchaseEventFactory
+                .buildPurchaseCreatedEvent(purchase);
 
         outboxPublisher.publish(
                 AggregateType.PURCHASE,

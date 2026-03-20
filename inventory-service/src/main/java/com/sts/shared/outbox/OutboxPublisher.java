@@ -35,8 +35,8 @@ public class OutboxPublisher {
         try {
             return objectMapper.writeValueAsString(event);
         } catch (JsonProcessingException e) {
-            log.error(AppConstants.ERROR_MESSAGES.OUTBOX_SERIALIZATION_FAILED, e);
-            throw new OutboxPublishException(AppConstants.ERROR_MESSAGES.OUTBOX_PUBLISH_FAILED);
+            log.error(AppConstants.ErrorMessages.OUTBOX_SERIALIZATION_FAILED, e);
+            throw new OutboxPublishException(AppConstants.ErrorMessages.OUTBOX_PUBLISH_FAILED);
         }
     }
 
@@ -61,7 +61,7 @@ public class OutboxPublisher {
 
         outboxEventRepository.save(outboxEvent);
 
-        log.info("Outbox saved ofo topic {}", outboxEvent.getTopic());
+        log.info(AppConstants.Logs.OUTBOX_SAVED, outboxEvent.getTopic());
     }
 
 }

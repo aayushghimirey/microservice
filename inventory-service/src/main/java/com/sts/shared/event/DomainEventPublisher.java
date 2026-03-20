@@ -14,7 +14,7 @@ public class DomainEventPublisher {
     private final ApplicationEventPublisher publisher;
 
     public void publish(Object event) {
-        log.info(AppConstants.LOG_MESSAGES.APPLICATION_EVENT_PUBLISHING, event.getClass().getSimpleName());
+        log.info(AppConstants.Logs.APPLICATION_EVENT_PUBLISHING, event.getClass().getSimpleName());
         publisher.publishEvent(event);
     }
 }

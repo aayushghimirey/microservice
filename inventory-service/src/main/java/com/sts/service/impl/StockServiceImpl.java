@@ -39,6 +39,7 @@ import com.sts.utils.enums.TransactionReference;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class StockServiceImpl implements StockService {
@@ -60,6 +61,7 @@ public class StockServiceImpl implements StockService {
     @Override
     @Transactional
     public StockResponse createStock(CreateStockCommand command) {
+        log.info(AppConstants.LOG_MESSAGES.CREATING_STOCK, command.name());
         checkStockNameUniqueness(command.name());
 
         Stock stock = stockRepository.save(stockMapper.buildStock(command));
@@ -70,6 +72,7 @@ public class StockServiceImpl implements StockService {
     @Override
     @Transactional
     public StockResponse updateStock(UUID stockId, UpdateStockCommand updateCommand) {
+        log.info(AppConstants.LOG_MESSAGES.UPDATING_STOCK, stockId);
         checkStockNameUniquenessForUpdate(stockId, updateCommand.name());
 
         Stock stock = referenceResolver.getStockOrThrow(stockId);
@@ -83,6 +86,7 @@ public class StockServiceImpl implements StockService {
     @Override
     @Transactional
     public void adjustStock(StockAdjustmentCommand command) {
+        log.info(AppConstants.LOG_MESSAGES.ADJUSTING_STOCK, command.variantId(), command.unitId(), command.quantity());
         StockVariant stockVariant = referenceResolver.getVariantOrThrow(command.variantId());
         VariantUnit variantUnit = variantUnitResolver
                 .getVariantUnitOrThrow(stockVariant.getId(), command.unitId());
@@ -116,6 +120,7 @@ public class StockServiceImpl implements StockService {
     @Override
     @Transactional(readOnly = true)
     public boolean existsByVariantIdAndUnitId(UUID variantId, UUID unitId) {
+        log.info(AppConstants.LOG_MESSAGES.VALIDATING_VARIANT, variantId, unitId);
         return stockVariantRepository.existsByIdAndUnits_Id(variantId, unitId);
     }
 
@@ -130,21 +135,21 @@ public class StockServiceImpl implements StockService {
         }
     }
 
-
     // -------------------- Helpers ----------------------
-
 
     private void processStockUpdateItem(StockUpdateEvent.StockUpdateItem item, UUID referenceId) {
         StockVariant variant = referenceResolver.getVariantOrThrow(item.variantId());
         VariantUnit unit = variantUnitResolver.getVariantUnitOrThrow(item.variantId(), item.unitId());
 
         BigDecimal stockDelta = calculateStockDelta(item.quantity(), unit.getConversionRate(), item.source());
+        log.info(AppConstants.LOG_MESSAGES.CALCULATING_STOCK_DELTA, stockDelta, item.variantId(), item.source());
         BigDecimal updatedBalance = variant.getCurrentStock().add(stockDelta);
 
         variant.setCurrentStock(updatedBalance);
         stockVariantRepository.save(variant);
 
         StockTransaction transaction = buildTransaction(item, referenceId, stockDelta, updatedBalance);
+        log.info(AppConstants.LOG_MESSAGES.CREATING_STOCK_TRANSACTION, item.variantId(), updatedBalance);
         stockTransactionRepository.save(transaction);
     }
 
@@ -158,8 +163,7 @@ public class StockServiceImpl implements StockService {
             StockUpdateEvent.StockUpdateItem item,
             UUID referenceId,
             BigDecimal stockDelta,
-            BigDecimal balanceAfter
-    ) {
+            BigDecimal balanceAfter) {
         return StockTransaction.builder()
                 .variantId(item.variantId())
                 .unitId(item.unitId())
@@ -206,6 +210,7 @@ public class StockServiceImpl implements StockService {
     }
 
     private void publishStockUpdate(UUID variantId, UUID unitId, BigDecimal quantity) {
+        log.info(AppConstants.LOG_MESSAGES.PUBLISHING_ADJUSTMENT_EVENT, variantId);
         StockUpdateEvent event = stockUpdateEventFactory.buildFromAdjustment(variantId, unitId, quantity);
         eventPublisher.publish(event);
     }
