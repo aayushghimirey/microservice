@@ -31,7 +31,7 @@ public class StockTransactionController {
 
         var transactions = stockTransactionService.getAllTransaction(pageRequestDto.buildPageable());
 
-        return AppResponse.success(transactions, AppConstants.SUCCESS_MESSAGES.TRANSACTIONS_FETCHED);
+        return AppResponse.success(transactions, AppConstants.Response.FETCHED_TRANSACTION);
     }
 
     @GetMapping("/transactions/{variantId}")
@@ -43,6 +43,6 @@ public class StockTransactionController {
                 variantId,
                 pageRequestDto.buildPageable());
 
-        return AppResponse.success(transactions, AppConstants.SUCCESS_MESSAGES.TRANSACTIONS_FETCHED);
+        return AppResponse.success(transactions, AppConstants.Response.FETCHED_TRANSACTION);
     }
 }

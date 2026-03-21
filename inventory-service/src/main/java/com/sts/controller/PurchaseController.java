@@ -40,12 +40,7 @@ public class PurchaseController {
     public ResponseEntity<ApiResponse<PurchaseResponse>> createPurchase(
             @Valid @RequestBody CreatePurchaseCommand command) {
 
-        log.info(AppConstants.Request.CREATE_PURCHASE_START,
-                command.items().size());
-
         PurchaseResponse purchase = purchaseService.createPurchase(command);
-
-        log.info(AppConstants.Request.CREATE_PURCHASE_END, purchase.items().size());
 
         return AppResponse.success(
                 purchase,
@@ -56,14 +51,8 @@ public class PurchaseController {
     public ResponseEntity<PagedResponse<List<PurchaseResponse>>> getAllPurchases(
             PageRequestDto pageRequestDto) {
 
-        log.info(AppConstants.Request.FETCH_PURCHASE_START,
-                pageRequestDto.getPage(), pageRequestDto.getSize());
-
         Page<PurchaseResponse> purchases = purchaseService.getAllPurchases(
                 pageRequestDto.buildPageable());
-
-        log.info(AppConstants.Request.FETCH_PURCHASE_END,
-                purchases.getPageable().getOffset(), purchases.getPageable().getPageSize());
 
         return AppResponse.success(
                 purchases,

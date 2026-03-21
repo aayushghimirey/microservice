@@ -55,10 +55,8 @@ class PurchaseServiceImpl implements PurchaseService {
 
         checkInvoiceNumberUniqueness(command.invoiceNumber());
 
-        log.info(AppConstants.Logs.RESOLVING_VENDOR, command.vendorId());
         Vendor vendor = referenceResolver.getVendorOrThrow(command.vendorId());
 
-        log.info(AppConstants.Logs.VALIDATING_PURCHASE_ITEMS, command.items().size());
         command.items().forEach(item ->
                 variantUnitResolver.getVariantUnitOrThrow(item.variantId(), item.unitId()));
 
@@ -75,8 +73,6 @@ class PurchaseServiceImpl implements PurchaseService {
     @Override
     @Transactional(readOnly = true)
     public Page<PurchaseResponse> getAllPurchases(Pageable pageable) {
-        log.info(AppConstants.Logs.FETCHING_PURCHASE,
-                pageable.getPageNumber(), pageable.getPageSize());
         return purchaseRepository
                 .findAll(pageable)
                 .map(purchaseMapper::toResponse);
@@ -86,7 +82,6 @@ class PurchaseServiceImpl implements PurchaseService {
 
     private void checkInvoiceNumberUniqueness(String invoiceNumber) {
         if (purchaseRepository.existsByInvoiceNumber(invoiceNumber)) {
-            log.error(String.format(AppConstants.ErrorMessages.INVOICE_NUMBER_EXISTS, invoiceNumber));
             throw new DuplicateResourceException(
                     String.format(AppConstants.ErrorMessages.INVOICE_NUMBER_EXISTS, invoiceNumber));
         }
@@ -94,14 +89,12 @@ class PurchaseServiceImpl implements PurchaseService {
 
     // application event
     private void publishStockUpdate(Purchase purchase) {
-        log.info(AppConstants.Logs.PUBLISHING_STOCK_UPDATE_EVENT, purchase.getId());
         StockUpdateEvent stockUpdateEvent = stockUpdateEventFactory.buildFromPurchase(purchase);
         domainEventPublisher.publish(stockUpdateEvent);
     }
 
     // for finance service to record that purchase
     private void publishOutboxEvent(Purchase purchase) {
-        log.info(AppConstants.Logs.SAVING_PURCHASE_OUTBOX_EVENT, purchase.getId());
         PurchaseCreatedEvent purchaseCreatedEvent = purchaseEventFactory
                 .buildPurchaseCreatedEvent(purchase);
 

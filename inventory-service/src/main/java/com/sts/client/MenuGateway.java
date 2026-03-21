@@ -23,7 +23,7 @@ public class MenuGateway {
     private final MenuClient menuClient;
 
     public List<MenuIngredientResponse> getIngredientsOrThrow(UUID menuId) {
-        log.info(AppConstants.LOG_MESSAGES.FETCHING_MENU_INGREDIENTS, menuId);
+        log.info(AppConstants.Logs.FETCHING_MENU_INGREDIENTS, menuId);
 
         try {
             ResponseEntity<ApiResponse<List<MenuIngredientResponse>>> response = menuClient
@@ -31,13 +31,13 @@ public class MenuGateway {
 
             if (response.getBody() == null || response.getBody().getData() == null) {
                 throw new MenuIntegrationException(
-                        String.format(AppConstants.ERROR_MESSAGES.MENU_NOT_FOUND, menuId));
+                        String.format(AppConstants.ErrorMessages.MENU_NOT_FOUND, menuId));
             }
 
             return response.getBody().getData();
         } catch (Exception e) {
             throw new MenuIntegrationException(
-                    String.format(AppConstants.ERROR_MESSAGES.MENU_INTEGRATION_FAILED, menuId, e.getMessage()));
+                    String.format(AppConstants.ErrorMessages.MENU_INTEGRATION_FAILED, menuId, e.getMessage()));
         }
     }
 }

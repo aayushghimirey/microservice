@@ -29,7 +29,7 @@ public class InvoiceEventListener {
 
     @KafkaListener(topics = "#{@kafkaProperties.getTopic('invoice-event')}", containerFactory = "invoiceKafkaListenerContainerFactory")
     public void listen(InvoiceEvent event, Acknowledgment acknowledgment) {
-        log.info(AppConstants.LOG_MESSAGES.INVOICE_EVENT_RECEIVED, event.getInvoiceId());
+        log.info(AppConstants.Logs.INVOICE_EVENT_RECEIVED, event.getInvoiceId());
 
         try {
             var stockUpdateEvent = resolver.resolve(event);
@@ -37,7 +37,7 @@ public class InvoiceEventListener {
 
             acknowledgment.acknowledge();
         } catch (Exception e) {
-            log.error(AppConstants.LOG_MESSAGES.FAILED_TO_PROCESS_INVOICE, event.getInvoiceId(), e);
+            log.error(AppConstants.Logs.FAILED_TO_PROCESS_INVOICE, event.getInvoiceId(), e);
             throw e;
         }
     }

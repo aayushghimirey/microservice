@@ -37,91 +37,81 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class StockController {
 
-        private final StockService stockService;
+    private final StockService stockService;
 
-        @PostMapping
-        public ResponseEntity<ApiResponse<StockResponse>> createStock(
-                        @Valid @RequestBody CreateStockCommand command) {
+    @PostMapping
+    public ResponseEntity<ApiResponse<StockResponse>> createStock(
+            @Valid @RequestBody CreateStockCommand command) {
 
-                log.info(AppConstants.REQUEST_MESSAGES.START_CREATE_STOCK);
+        log.info(AppConstants.Request.CREATE_STOCK_START, command.type());
 
-                ResponseEntity<ApiResponse<StockResponse>> response = AppResponse.success(
-                                stockService.createStock(command),
-                                AppConstants.SUCCESS_MESSAGES.STOCK_CREATED);
+        StockResponse stock = stockService.createStock(command);
 
-                log.info(AppConstants.REQUEST_MESSAGES.END_CREATE_STOCK);
-                return response;
-        }
+        log.info(AppConstants.Request.CREATE_STOCK_END, stock.id());
 
-        @PostMapping("/{stockId}")
-        public ResponseEntity<ApiResponse<StockResponse>> updateStock(
-                        @PathVariable UUID stockId,
-                        @Valid @RequestBody UpdateStockCommand command) {
+        return AppResponse.success(stock, AppConstants.Response.STOCK_CREATED);
+    }
 
-                log.info(AppConstants.REQUEST_MESSAGES.START_UPDATE_STOCK);
+    @PostMapping("/{stockId}")
+    public ResponseEntity<ApiResponse<StockResponse>> updateStock(
+            @PathVariable UUID stockId,
+            @Valid @RequestBody UpdateStockCommand command) {
 
-                ResponseEntity<ApiResponse<StockResponse>> response = AppResponse.success(
-                                stockService.updateStock(stockId, command),
-                                AppConstants.SUCCESS_MESSAGES.STOCK_UPDATED);
+        log.info(AppConstants.Request.UPDATE_STOCK_START, stockId);
 
-                log.info(AppConstants.REQUEST_MESSAGES.END_UPDATE_STOCK);
-                return response;
-        }
+        StockResponse stock = stockService.updateStock(stockId, command);
 
-        @PostMapping("/adjustments")
-        public ResponseEntity<ApiResponse<Void>> adjustStock(
-                        @Valid @RequestBody StockAdjustmentCommand command) {
+        log.info(AppConstants.Request.UPDATE_STOCK_END, stock.id());
 
-                log.info(AppConstants.REQUEST_MESSAGES.START_ADJUST_STOCK);
+        return AppResponse.success(stock, AppConstants.Response.STOCK_UPDATED);
+    }
 
-                stockService.adjustStock(command);
+    @PostMapping("/adjustments")
+    public ResponseEntity<ApiResponse<Void>> adjustStock(
+            @Valid @RequestBody StockAdjustmentCommand command) {
 
-                log.info(AppConstants.REQUEST_MESSAGES.END_ADJUST_STOCK);
-                return AppResponse.noContent();
-        }
+        log.info(AppConstants.Request.CREATE_ADJUSTMENT_START, command.variantId());
 
-        @GetMapping
-        public ResponseEntity<PagedResponse<List<StockResponse>>> getStocks(
-                        @ModelAttribute PageRequestDto pageRequestDto,
-                        @Valid @ModelAttribute GetStockQueryRequest queryRequest) {
+        stockService.adjustStock(command);
 
-                log.info(AppConstants.REQUEST_MESSAGES.START_FETCH_STOCK);
+        log.info(AppConstants.Request.CREATE_ADJUSTMENT_END, command.variantId());
+        return AppResponse.noContent();
+    }
 
-                ResponseEntity<PagedResponse<List<StockResponse>>> response = AppResponse.success(
-                                stockService.getAllQueryStock(queryRequest, pageRequestDto.buildPageable()),
-                                AppConstants.SUCCESS_MESSAGES.STOCKS_FETCHED);
+    @GetMapping
+    public ResponseEntity<PagedResponse<List<StockResponse>>> getStocks(
+            @ModelAttribute PageRequestDto pageRequestDto,
+            @Valid @ModelAttribute GetStockQueryRequest queryRequest) {
 
-                log.info(AppConstants.REQUEST_MESSAGES.END_FETCH_STOCK);
-                return response;
-        }
 
-        @GetMapping("/{stockId}/variants")
-        public ResponseEntity<PagedResponse<List<StockResponse.VariantResponse>>> getStockVariants(
-                        @PathVariable UUID stockId,
-                        @ModelAttribute PageRequestDto pageRequestDto) {
+        return AppResponse.success(
+                stockService.getAllQueryStock(queryRequest, pageRequestDto.buildPageable()),
+                AppConstants.Response.FETCHED_STOCKS);
 
-                log.info(AppConstants.REQUEST_MESSAGES.START_FETCH_STOCK_VARIANTS);
+    }
 
-                ResponseEntity<PagedResponse<List<StockResponse.VariantResponse>>> response = AppResponse.success(
-                                stockService.getAllVariantByStockId(stockId, pageRequestDto.buildPageable()),
-                                AppConstants.SUCCESS_MESSAGES.VARIANTS_FETCHED);
+    @GetMapping("/{stockId}/variants")
+    public ResponseEntity<PagedResponse<List<StockResponse.VariantResponse>>> getStockVariants(
+            @PathVariable UUID stockId,
+            @ModelAttribute PageRequestDto pageRequestDto) {
 
-                log.info(AppConstants.REQUEST_MESSAGES.END_FETCH_STOCK_VARIANTS);
-                return response;
-        }
 
-        @GetMapping("/variants/{variantId}/units/{unitId}/exists")
-        public ResponseEntity<ApiResponse<Boolean>> existsVariantUnit(
-                        @PathVariable UUID variantId,
-                        @PathVariable UUID unitId) {
+        return AppResponse.success(
+                stockService.getAllVariantByStockId(stockId, pageRequestDto.buildPageable()),
+                AppConstants.Response.FETCHED_STOCK_VARIANTS);
 
-                log.info(AppConstants.REQUEST_MESSAGES.START_VERIFY_VARIANT);
+    }
 
-                ResponseEntity<ApiResponse<Boolean>> response = AppResponse.success(
-                                stockService.existsByVariantIdAndUnitId(variantId, unitId),
-                                AppConstants.SUCCESS_MESSAGES.STOCK_VERIFIED);
+    @GetMapping("/variants/{variantId}/units/{unitId}/exists")
+    public ResponseEntity<ApiResponse<Boolean>> existsVariantUnit(
+            @PathVariable UUID variantId,
+            @PathVariable UUID unitId) {
 
-                log.info(AppConstants.REQUEST_MESSAGES.END_VERIFY_VARIANT);
-                return response;
-        }
+        log.info(AppConstants.Request.START_VERIFY_VARIANT, variantId, unitId);
+
+        return AppResponse.success(
+                stockService.existsByVariantIdAndUnitId(variantId, unitId),
+                AppConstants.Response.STOCK_VERIFIED);
+
+    }
 }

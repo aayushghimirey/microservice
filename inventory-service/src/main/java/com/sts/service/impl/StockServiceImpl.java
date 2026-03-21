@@ -1,6 +1,8 @@
 package com.sts.service.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -61,7 +63,8 @@ public class StockServiceImpl implements StockService {
     @Override
     @Transactional
     public StockResponse createStock(CreateStockCommand command) {
-        log.info(AppConstants.LOG_MESSAGES.CREATING_STOCK, command.name());
+        log.info(AppConstants.Logs.CREATING_STOCK, command.name());
+
         checkStockNameUniqueness(command.name());
 
         Stock stock = stockRepository.save(stockMapper.buildStock(command));
@@ -72,7 +75,8 @@ public class StockServiceImpl implements StockService {
     @Override
     @Transactional
     public StockResponse updateStock(UUID stockId, UpdateStockCommand updateCommand) {
-        log.info(AppConstants.LOG_MESSAGES.UPDATING_STOCK, stockId);
+        log.info(AppConstants.Logs.UPDATING_STOCK, stockId);
+
         checkStockNameUniquenessForUpdate(stockId, updateCommand.name());
 
         Stock stock = referenceResolver.getStockOrThrow(stockId);
@@ -86,8 +90,11 @@ public class StockServiceImpl implements StockService {
     @Override
     @Transactional
     public void adjustStock(StockAdjustmentCommand command) {
-        log.info(AppConstants.LOG_MESSAGES.ADJUSTING_STOCK, command.variantId(), command.unitId(), command.quantity());
+        log.info(AppConstants.Logs.ADJUSTING_STOCK,
+                command.variantId(), command.unitId(), command.quantity());
+
         StockVariant stockVariant = referenceResolver.getVariantOrThrow(command.variantId());
+
         VariantUnit variantUnit = variantUnitResolver
                 .getVariantUnitOrThrow(stockVariant.getId(), command.unitId());
 
@@ -120,7 +127,9 @@ public class StockServiceImpl implements StockService {
     @Override
     @Transactional(readOnly = true)
     public boolean existsByVariantIdAndUnitId(UUID variantId, UUID unitId) {
-        log.info(AppConstants.LOG_MESSAGES.VALIDATING_VARIANT, variantId, unitId);
+
+        log.info(AppConstants.Logs.VALIDATING_VARIANT_WITH_UNIT, variantId, unitId);
+
         return stockVariantRepository.existsByIdAndUnits_Id(variantId, unitId);
     }
 
@@ -129,34 +138,41 @@ public class StockServiceImpl implements StockService {
     public void processStockUpdates(StockUpdateEvent event) {
 
         UUID referenceId = resolveReferenceId(event);
+        List<StockVariant> variantsToUpdate = new ArrayList<>();
+        List<StockTransaction> transactionsToSave = new ArrayList<>();
 
         for (var item : event.items()) {
-            processStockUpdateItem(item, referenceId);
+            processStockUpdateItem(item, referenceId, variantsToUpdate, transactionsToSave);
         }
+
+        stockVariantRepository.saveAll(variantsToUpdate);
+        stockTransactionRepository.saveAll(transactionsToSave);
     }
 
     // -------------------- Helpers ----------------------
 
-    private void processStockUpdateItem(StockUpdateEvent.StockUpdateItem item, UUID referenceId) {
+    private void processStockUpdateItem(
+            StockUpdateEvent.StockUpdateItem item,
+            UUID referenceId,
+            List<StockVariant> variantsToUpdate,
+            List<StockTransaction> transactionsToSave) {
         StockVariant variant = referenceResolver.getVariantOrThrow(item.variantId());
         VariantUnit unit = variantUnitResolver.getVariantUnitOrThrow(item.variantId(), item.unitId());
 
         BigDecimal stockDelta = calculateStockDelta(item.quantity(), unit.getConversionRate(), item.source());
-        log.info(AppConstants.LOG_MESSAGES.CALCULATING_STOCK_DELTA, stockDelta, item.variantId(), item.source());
         BigDecimal updatedBalance = variant.getCurrentStock().add(stockDelta);
+        log.debug(AppConstants.Logs.CALCULATE_STOCK_DELTA, item.variantId(), item.source(), stockDelta);
 
         variant.setCurrentStock(updatedBalance);
-        stockVariantRepository.save(variant);
+        variantsToUpdate.add(variant);
 
         StockTransaction transaction = buildTransaction(item, referenceId, stockDelta, updatedBalance);
-        log.info(AppConstants.LOG_MESSAGES.CREATING_STOCK_TRANSACTION, item.variantId(), updatedBalance);
-        stockTransactionRepository.save(transaction);
+        log.debug(AppConstants.Logs.CREATING_STOCK_TRANSACTION, item.variantId(), updatedBalance);
+        transactionsToSave.add(transaction);
     }
 
     private BigDecimal calculateStockDelta(BigDecimal quantity, BigDecimal conversionRate, StockUpdateSource source) {
-        BigDecimal delta = quantity.multiply(conversionRate);
-        boolean isAddition = source == StockUpdateSource.PURCHASE || source == StockUpdateSource.RETURN;
-        return isAddition ? delta : delta.negate();
+        return quantity.multiply(conversionRate).multiply(source.getMultiplier());
     }
 
     private StockTransaction buildTransaction(
@@ -194,7 +210,7 @@ public class StockServiceImpl implements StockService {
 
         if (stockRepository.existsByName(name)) {
             throw new DuplicateResourceException(
-                    String.format(AppConstants.ERROR_MESSAGES.STOCK_ALREADY_EXISTS, name));
+                    String.format(AppConstants.ErrorMessages.STOCK_ALREADY_EXISTS, name));
         }
     }
 
@@ -205,12 +221,11 @@ public class StockServiceImpl implements StockService {
 
         if (stockRepository.existsByNameAndIdNot(name, stockId)) {
             throw new DuplicateResourceException(
-                    String.format(AppConstants.ERROR_MESSAGES.STOCK_ALREADY_EXISTS, name));
+                    String.format(AppConstants.ErrorMessages.STOCK_ALREADY_EXISTS, name));
         }
     }
 
     private void publishStockUpdate(UUID variantId, UUID unitId, BigDecimal quantity) {
-        log.info(AppConstants.LOG_MESSAGES.PUBLISHING_ADJUSTMENT_EVENT, variantId);
         StockUpdateEvent event = stockUpdateEventFactory.buildFromAdjustment(variantId, unitId, quantity);
         eventPublisher.publish(event);
     }

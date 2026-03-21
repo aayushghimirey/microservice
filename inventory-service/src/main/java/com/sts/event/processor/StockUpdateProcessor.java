@@ -19,7 +19,7 @@ public class StockUpdateProcessor {
     private final StockService stockService;
 
     public void process(StockUpdateEvent event) {
-        log.info(AppConstants.LOG_MESSAGES.PROCESSING_STOCK_UPDATE, event.items().size());
+        log.info(AppConstants.Logs.PROCESSING_STOCK_UPDATE, event.items().size());
 
         stockService.processStockUpdates(event);
     }

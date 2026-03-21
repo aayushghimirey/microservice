@@ -126,7 +126,7 @@ class StockServiceImplTest {
                 () -> stockService.createStock(command));
 
         assertEquals(
-                String.format(AppConstants.ERROR_MESSAGES.STOCK_ALREADY_EXISTS, command.name()),
+                String.format(AppConstants.ErrorMessages.STOCK_ALREADY_EXISTS, command.name()),
                 ex.getMessage()
         );
 
