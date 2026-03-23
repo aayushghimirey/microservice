@@ -43,5 +43,6 @@ public interface AppConstants {
         String FETCHING_ALL_MENUS = "Fetching all menus — page: {}, size: {}";
         String FETCHING_MENU_BY_ID = "Fetching menu with id: {}";
         String FETCHING_MENU_INGREDIENTS = "Fetching menu ingredients for id: {}";
+        String CALLING_INVENTORY_SERVICE = "Calling inventory service to validate ingredient — variantId: {}, unitId: {}";
     }
 }

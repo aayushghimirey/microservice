@@ -1,5 +1,6 @@
 package com.sts.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,7 +39,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     private final OutboxPublisher outboxPublisher;
     private final InvoiceEventFactory invoiceEventFactory;
-      private final KafkaProperties kafkaProperties;
+    private final KafkaProperties kafkaProperties;
 
 
     @Override
@@ -48,6 +49,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         Invoice invoice = referenceResolver.getOrThrow(invoiceId);
 
         invoice.setStatus(InvoiceStatus.PAID);
+        invoice.setReservationEndTime(LocalDateTime.now());
 
         publishOutboxEvent(invoice);
 

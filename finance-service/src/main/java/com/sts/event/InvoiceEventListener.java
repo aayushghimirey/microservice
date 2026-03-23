@@ -1,5 +1,6 @@
 package com.sts.event;
 
+import com.sts.mapper.InvoiceRecordMapper;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 public class InvoiceEventListener {
 
     private final InvoiceRecordRepository invoiceRecordRepository;
+    private final InvoiceRecordMapper invoiceRecordMapper;
 
     @KafkaListener(topics = "#{@kafkaProperties.getTopic('invoice-event')}",
             containerFactory = "invoiceKafkaListenerContainerFactory")
@@ -25,7 +27,7 @@ public class InvoiceEventListener {
         log.info(AppConstants.LOG_MESSAGES.INVOICE_EVENT_RECEIVED, event.getInvoiceId());
 
         try {
-            InvoiceRecord invoiceRecord = buildInvoiceRecord(event);
+            InvoiceRecord invoiceRecord = invoiceRecordMapper.buildInvoiceRecord(event);
 
             invoiceRecordRepository.save(invoiceRecord);
 
@@ -39,13 +41,5 @@ public class InvoiceEventListener {
         }
     }
 
-    // -- private helper
-    public InvoiceRecord buildInvoiceRecord(InvoiceEvent event) {
-        return InvoiceRecord.builder()
-                .invoiceId(event.getInvoiceId())
-                .reservationTime(event.getReservationTime())
-                .reservationEndTime(event.getReservationEndTime())
-                .grossTotal(event.getGrossTotal()).build();
-    }
 
 }
