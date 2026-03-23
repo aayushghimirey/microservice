@@ -33,7 +33,7 @@ import com.sts.service.StockService;
 import com.sts.service.resolver.ReferenceResolver;
 import com.sts.service.resolver.VariantUnitResolver;
 import com.sts.service.specification.StockSpecification;
-import com.sts.shared.event.DomainEventPublisher;
+import com.sts.helper.event.DomainEventPublisher;
 import com.sts.utils.constant.AppConstants;
 import com.sts.utils.enums.StockUpdateSource;
 import com.sts.utils.enums.TransactionReference;

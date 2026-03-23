@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.sts.event.InvoiceEvent;
 import com.sts.event.resolver.InvoiceStockUpdateResolver;
-import com.sts.shared.event.DomainEventPublisher;
+import com.sts.helper.event.DomainEventPublisher;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

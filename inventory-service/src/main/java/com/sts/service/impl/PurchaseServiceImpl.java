@@ -20,10 +20,10 @@ import com.sts.model.purchase.Purchase;
 import com.sts.model.vendor.Vendor;
 import com.sts.repository.PurchaseRepository;
 import com.sts.service.PurchaseService;
-import com.sts.shared.outbox.OutboxPublisher;
+import com.sts.helper.outbox.OutboxPublisher;
 import com.sts.service.resolver.ReferenceResolver;
 import com.sts.service.resolver.VariantUnitResolver;
-import com.sts.shared.event.DomainEventPublisher;
+import com.sts.helper.event.DomainEventPublisher;
 import com.sts.topics.KafkaProperties;
 import com.sts.utils.constant.AppConstants;
 

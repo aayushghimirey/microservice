@@ -1,4 +1,4 @@
-package com.sts.shared.outbox;
+package com.sts.helper.outbox;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

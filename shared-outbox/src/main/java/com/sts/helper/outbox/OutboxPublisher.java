@@ -1,22 +1,17 @@
-package com.sts.shared.outbox;
+package com.sts.helper.outbox;
 
-import java.util.UUID;
 
-import org.springframework.stereotype.Component;
-
-import com.sts.utils.constant.AppConstants;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sts.entity.OutboxEvent;
-import com.sts.entity.OutboxEventType;
 import com.sts.enums.AggregateType;
 import com.sts.exception.OutboxPublishException;
 import com.sts.mapper.OutboxMapper;
 import com.sts.repository.OutboxEventRepository;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+import tools.jackson.databind.ObjectMapper;
+
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -28,15 +23,14 @@ public class OutboxPublisher {
     private final OutboxEventRepository outboxEventRepository;
 
     /**
-     * Serialize event to JSON
+     * Serialize event
      */
     public String serialize(Object event) {
 
         try {
             return objectMapper.writeValueAsString(event);
-        } catch (JsonProcessingException e) {
-            log.error(AppConstants.ErrorMessages.OUTBOX_SERIALIZATION_FAILED, e);
-            throw new OutboxPublishException(AppConstants.ErrorMessages.OUTBOX_PUBLISH_FAILED);
+        } catch (Exception e) {
+            throw new OutboxPublishException("Exception occurs while processing json");
         }
     }
 
@@ -46,7 +40,7 @@ public class OutboxPublisher {
     public void publish(
             AggregateType aggregateType,
             UUID aggregateId,
-            OutboxEventType eventType,
+            com.sts.entity.OutboxEventType eventType,
             Object eventPayload,
             String topic) {
 
@@ -61,7 +55,7 @@ public class OutboxPublisher {
 
         outboxEventRepository.save(outboxEvent);
 
-        log.info(AppConstants.Logs.OUTBOX_SAVED, outboxEvent.getTopic());
+        log.info("Saved outbox event for topic: {}", outboxEvent.getTopic());
     }
 
 }

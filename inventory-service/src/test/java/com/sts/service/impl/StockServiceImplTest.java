@@ -15,7 +15,7 @@ import com.sts.repository.StockVariantRepository;
 import com.sts.repository.VariantUnitRepository;
 import com.sts.service.resolver.ReferenceResolver;
 import com.sts.service.resolver.VariantUnitResolver;
-import com.sts.shared.event.DomainEventPublisher;
+import com.sts.helper.event.DomainEventPublisher;
 import com.sts.utils.constant.AppConstants;
 import com.sts.utils.enums.StockType;
 import com.sts.utils.enums.UnitType;
@@ -24,11 +24,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.context.ApplicationEventPublisher;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

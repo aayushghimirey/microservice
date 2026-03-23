@@ -1,7 +1,6 @@
-package com.sts.shared.event;
+package com.sts.helper.event;
 
-import com.sts.utils.constant.AppConstants;
-import lombok.RequiredArgsConstructor;
+ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
@@ -14,7 +13,7 @@ public class DomainEventPublisher {
     private final ApplicationEventPublisher publisher;
 
     public void publish(Object event) {
-        log.info(AppConstants.Logs.APPLICATION_EVENT_PUBLISHING, event.getClass().getSimpleName());
+        log.info("Domain event publishing {}", event.getClass().getSimpleName());
         publisher.publishEvent(event);
     }
 }

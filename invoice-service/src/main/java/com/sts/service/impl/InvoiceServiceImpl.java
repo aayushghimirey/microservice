@@ -6,23 +6,18 @@ import java.util.UUID;
 import com.sts.enums.AggregateType;
 import com.sts.event.factory.InvoiceEventFactory;
 import com.sts.service.resolver.ReferenceResolver;
-import com.sts.shared.outbox.OutboxPublisher;
+import com.sts.helper.outbox.OutboxPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sts.dto.InvoiceResponse;
-import com.sts.entity.OutboxEvent;
 import com.sts.entity.OutboxEventType;
 import com.sts.event.InvoiceEvent;
-import com.sts.exception.ResourceNotFoundException;
 import com.sts.mapper.InvoiceMapper;
-import com.sts.mapper.OutboxMapper;
 import com.sts.model.Invoice;
 import com.sts.repository.InvoiceRepository;
-import com.sts.repository.OutboxEventRepository;
 import com.sts.service.InvoiceService;
 import com.sts.topics.KafkaProperties;
 import com.sts.utils.constant.AppConstants;
@@ -30,7 +25,6 @@ import com.sts.utils.enums.InvoiceStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import tools.jackson.databind.ObjectMapper;
 
 @Slf4j
 @Service
