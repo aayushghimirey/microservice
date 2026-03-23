@@ -18,6 +18,7 @@
         <module>menu-service</module>
         <module>finance-service</module>
         <module>invoice-service</module>
+        <module>auth-service</module>
         <module>api-gateway</module>
     </modules>
 

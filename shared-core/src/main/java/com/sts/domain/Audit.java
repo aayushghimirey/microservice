@@ -3,10 +3,8 @@ package com.sts.domain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.UuidGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -19,6 +17,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@SuperBuilder
 public abstract class Audit {
 
     @Id
@@ -29,6 +28,8 @@ public abstract class Audit {
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdDateTime;
+
+    private UUID tenantId;
 
     @LastModifiedDate
     private LocalDateTime lastUpdateDateTime;
