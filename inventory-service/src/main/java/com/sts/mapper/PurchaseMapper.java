@@ -2,6 +2,7 @@ package com.sts.mapper;
 
 import java.math.BigDecimal;
 
+import com.sts.event.PurchaseCreatedEvent;
 import org.springframework.stereotype.Component;
 
 import com.sts.dto.request.CreatePurchaseCommand;
@@ -78,4 +79,14 @@ public class PurchaseMapper {
                 item.getSubTotal(),
                 item.getNetTotal());
     }
+
+    public PurchaseCreatedEvent toPurchaseEvent(Purchase purchase) {
+        return new PurchaseCreatedEvent(
+                purchase.getId(),
+                purchase.getBillingType(),
+                purchase.getMoneyTransaction(),
+                purchase.getVatAmount(),
+                purchase.getGrossTotal());
+    }
+
 }

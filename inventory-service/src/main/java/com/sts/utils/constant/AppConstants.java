@@ -11,6 +11,7 @@ public interface AppConstants {
     // --- Kafka ---
     String KAFKA_TOPIC_PURCHASE_EVENT = "purchase-event";
     String KAFKA_TOPIC_INVOICE_EVENT = "invoice-event";
+    String KAFKA_TOPIC_STOCK_EVENT = "stock-event";
 
     // --- VAT Rate ---
     java.math.BigDecimal VAT_RATE_PERCENT = new java.math.BigDecimal("13");

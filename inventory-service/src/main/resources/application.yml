@@ -28,6 +28,7 @@ app:
     topics:
       purchase-event: PURCHASE_EVENT
       invoice-event: INVOICE_EVENT
+      stock-event: STOCK_EVENT
     groups:
       inventory-group: inventory-group-consumer
 

@@ -1,5 +1,5 @@
 package com.sts.enums;
 
 public enum AggregateType {
-    PURCHASE, INVOICE, ORDER
+    PURCHASE, INVOICE, ORDER, STOCK
 }

@@ -1,5 +1,7 @@
 package com.sts.service.impl;
 
+import com.sts.event.factory.StockUpdateFactoryRegistry;
+import com.sts.shared.PurchaseOutboxPublisher;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,23 +10,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sts.dto.request.CreatePurchaseCommand;
 import com.sts.dto.response.PurchaseResponse;
-import com.sts.entity.OutboxEventType;
-import com.sts.enums.AggregateType;
-import com.sts.event.PurchaseCreatedEvent;
-import com.sts.event.factory.PurchaseEventFactory;
 import com.sts.event.StockUpdateEvent;
-import com.sts.event.factory.StockUpdateEventFactory;
 import com.sts.exception.DuplicateResourceException;
 import com.sts.mapper.PurchaseMapper;
 import com.sts.model.purchase.Purchase;
 import com.sts.model.vendor.Vendor;
 import com.sts.repository.PurchaseRepository;
 import com.sts.service.PurchaseService;
-import com.sts.helper.outbox.OutboxPublisher;
 import com.sts.service.resolver.ReferenceResolver;
 import com.sts.service.resolver.VariantUnitResolver;
 import com.sts.helper.event.DomainEventPublisher;
-import com.sts.topics.KafkaProperties;
+
 import com.sts.utils.constant.AppConstants;
 
 import lombok.RequiredArgsConstructor;
@@ -36,17 +32,14 @@ class PurchaseServiceImpl implements PurchaseService {
 
     private final PurchaseRepository purchaseRepository;
 
-    private final PurchaseMapper purchaseMapper;
-
     private final VariantUnitResolver variantUnitResolver;
     private final ReferenceResolver referenceResolver;
 
-    private final DomainEventPublisher domainEventPublisher;
-    private final OutboxPublisher outboxPublisher;
+    private final PurchaseMapper purchaseMapper;
+    private final StockUpdateFactoryRegistry stockFactoryRegistry;
 
-    private final PurchaseEventFactory purchaseEventFactory;
-    private final StockUpdateEventFactory stockUpdateEventFactory;
-    private final KafkaProperties kafkaProperties;
+    private final DomainEventPublisher domainEventPublisher;
+    private final PurchaseOutboxPublisher purchaseOutboxPublisher;
 
     @Override
     @Transactional
@@ -63,9 +56,13 @@ class PurchaseServiceImpl implements PurchaseService {
         Purchase purchase = purchaseRepository.save(
                 purchaseMapper.buildPurchase(command, vendor));
 
+        /**
+         publish domain event for stock update to update stock level,
+         this is listen by @StockUpdateListener and processed my StockService.processStockUpdates(event)
+         */
         publishStockUpdate(purchase);
 
-        publishOutboxEvent(purchase);
+        purchaseOutboxPublisher.publish(purchase);
 
         return purchaseMapper.toResponse(purchase);
     }
@@ -89,20 +86,9 @@ class PurchaseServiceImpl implements PurchaseService {
 
     // application event
     private void publishStockUpdate(Purchase purchase) {
-        StockUpdateEvent stockUpdateEvent = stockUpdateEventFactory.buildFromPurchase(purchase);
+        StockUpdateEvent stockUpdateEvent = stockFactoryRegistry.forPurchase(purchase);
         domainEventPublisher.publish(stockUpdateEvent);
     }
 
-    // for finance service to record that purchase
-    private void publishOutboxEvent(Purchase purchase) {
-        PurchaseCreatedEvent purchaseCreatedEvent = purchaseEventFactory
-                .buildPurchaseCreatedEvent(purchase);
 
-        outboxPublisher.publish(
-                AggregateType.PURCHASE,
-                purchase.getId(),
-                OutboxEventType.CREATED,
-                purchaseCreatedEvent,
-                kafkaProperties.getTopic(AppConstants.KAFKA_TOPIC_PURCHASE_EVENT));
-    }
 }

@@ -2,6 +2,7 @@ package com.sts.mapper;
 
 import java.math.BigDecimal;
 
+import com.sts.event.StockEvent;
 import org.springframework.stereotype.Component;
 
 import com.sts.dto.request.CreateStockCommand;
@@ -13,6 +14,7 @@ import com.sts.model.stock.VariantUnit;
 @Component
 public class StockMapper {
 
+    // -------- entity construction --------
     public Stock buildStock(CreateStockCommand command) {
         Stock stock = Stock.builder()
                 .name(command.name())
@@ -51,6 +53,7 @@ public class StockMapper {
                 .build();
     }
 
+    // -------- entity to response mapping --------
     public StockResponse toResponse(Stock stock) {
         if (stock == null)
             return null;
@@ -82,5 +85,36 @@ public class StockMapper {
                 unit.getName(),
                 unit.getConversionRate(),
                 unit.getUnitType());
+    }
+
+    // -------- entity event mapping --------
+    public StockEvent toStockEvent(Stock stock) {
+        return new StockEvent(
+                stock.getId(),
+                stock.getName(),
+                stock.getType().name(),
+                stock.getVariants().stream()
+                        .map(this::toVariantStockEvent)
+                        .toList());
+    }
+
+    private StockEvent.VariantStockEvent toVariantStockEvent(StockVariant variant) {
+        return new StockEvent.VariantStockEvent(
+                variant.getId(),
+                variant.getName(),
+                variant.getBaseUnit(),
+                variant.getOpeningStock(),
+                variant.getCurrentStock(),
+                variant.getUnits().stream()
+                        .map(this::toUnitStockEvent)
+                        .toList());
+    }
+
+    private StockEvent.UnitStockEvent toUnitStockEvent(VariantUnit unit) {
+        return new StockEvent.UnitStockEvent(
+                unit.getId(),
+                unit.getName(),
+                unit.getConversionRate(),
+                unit.getUnitType().name());
     }
 }

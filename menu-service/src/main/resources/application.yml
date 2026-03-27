@@ -16,9 +16,12 @@ server:
   port: ${SERVER_PORT:8082}
 
 app:
-  clients:
-    inventory-service:
-      url: ${INVENTORY_SERVICE_URL:http://localhost:8080}
+  kafka:
+    topics:
+      stock-event: STOCK_EVENT
+    groups:
+      menu-service-group: menu-service-group
+
 
 
 eureka:

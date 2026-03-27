@@ -21,7 +21,6 @@ public interface StockService {
     void adjustStock(StockAdjustmentCommand command);
 
     // -- query -----------------
-    Page<StockResponse> getAllStock(Pageable pageable);
 
     Page<StockResponse> getAllQueryStock(GetStockQueryRequest queryRequest, Pageable pageable);
 
@@ -30,6 +29,5 @@ public interface StockService {
     // id validators
     boolean existsByVariantIdAndUnitId(UUID variantId, UUID unitId);
 
-    void processStockUpdates(StockUpdateEvent event);
 
 }

@@ -29,34 +29,34 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class PurchaseController {
 
-    private final PurchaseService purchaseService;
+        private final PurchaseService purchaseService;
 
-    /**
-     * Creates a new purchase. VAT (13%) is automatically calculated and added to
-     * the sub-total
-     * to derive the final Gross Total.
-     */
-    @PostMapping
-    public ResponseEntity<ApiResponse<PurchaseResponse>> createPurchase(
-            @Valid @RequestBody CreatePurchaseCommand command) {
+        /**
+         * Creates a new purchase. VAT (13%) is automatically calculated and added to
+         * the sub-total
+         * to derive the final Gross Total.
+         */
+        @PostMapping
+        public ResponseEntity<ApiResponse<PurchaseResponse>> createPurchase(
+                        @Valid @RequestBody CreatePurchaseCommand command) {
 
-        PurchaseResponse purchase = purchaseService.createPurchase(command);
+                PurchaseResponse purchase = purchaseService.createPurchase(command);
 
-        return AppResponse.success(
-                purchase,
-                AppConstants.Response.PURCHASE_CREATED);
-    }
+                return AppResponse.success(
+                                purchase,
+                                AppConstants.Response.PURCHASE_CREATED);
+        }
 
-    @GetMapping
-    public ResponseEntity<PagedResponse<List<PurchaseResponse>>> getAllPurchases(
-            PageRequestDto pageRequestDto) {
+        @GetMapping
+        public ResponseEntity<PagedResponse<List<PurchaseResponse>>> getAllPurchases(
+                        PageRequestDto pageRequestDto) {
 
-        Page<PurchaseResponse> purchases = purchaseService.getAllPurchases(
-                pageRequestDto.buildPageable());
+                Page<PurchaseResponse> purchases = purchaseService.getAllPurchases(
+                                pageRequestDto.buildPageable());
 
-        return AppResponse.success(
-                purchases,
-                AppConstants.Response.FETCHED_PURCHASES);
-    }
+                return AppResponse.success(
+                                purchases,
+                                AppConstants.Response.FETCHED_PURCHASES);
+        }
 
 }

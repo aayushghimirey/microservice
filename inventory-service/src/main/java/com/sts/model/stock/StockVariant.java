@@ -17,6 +17,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,6 +33,9 @@ import lombok.Setter;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "stock_variant")
 public class StockVariant extends Audit {
+
+    @Version
+    private Long version;
 
     @Column(name = "name", nullable = false)
     private String name;

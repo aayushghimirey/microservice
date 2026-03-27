@@ -3,7 +3,9 @@ package com.sts.service.impl;
 import java.util.List;
 import java.util.UUID;
 
-import com.sts.client.InventoryGateway;
+import com.sts.model.VariantSnapshot;
+import com.sts.repository.StockSnapshotRepository;
+import com.sts.repository.VariantSnapshotRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -12,27 +14,23 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sts.dto.CreateMenuRequest;
 import com.sts.event.MenuIngredientResponse;
 import com.sts.event.MenuResponse;
-import com.sts.exception.BusinessValidationException;
 import com.sts.exception.DuplicateResourceException;
 import com.sts.exception.ResourceNotFoundException;
 import com.sts.mapper.MenuMapper;
 import com.sts.model.Menu;
 import com.sts.repository.MenuRepository;
-import com.sts.response.ApiResponse;
 import com.sts.service.MenuService;
 import com.sts.utils.constant.AppConstants;
-import com.sts.client.InventoryClient;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
 class MenuServiceImpl implements MenuService {
 
     private final MenuRepository menuRepository;
-
-    private final InventoryGateway inventoryGateway;
+    private final StockSnapshotRepository stockSnapshotRepository;
+    private final VariantSnapshotRepository variantSnapshotRepository;
 
     private final MenuMapper menuMapper;
 
@@ -91,7 +89,13 @@ class MenuServiceImpl implements MenuService {
     private void validateIngredients(CreateMenuRequest request) {
         if (request.ingredients() == null) return;
         request.ingredients().forEach(ingredient -> {
-            inventoryGateway.validateOrThrow(ingredient.variantId(), ingredient.unitId());
+            VariantSnapshot variantSnapshot = variantSnapshotRepository.findByVariantId(ingredient.variantId()).orElseThrow(() ->
+                    new ResourceNotFoundException(String.format("Variant not found with id %s", ingredient.variantId())));
+
+            variantSnapshot.getUnits().stream()
+                    .filter(unit -> unit.getUnitId().equals(ingredient.unitId()))
+                    .findFirst()
+                    .orElseThrow(() -> new ResourceNotFoundException(String.format("Unit with id %s not found for variant %s", ingredient.unitId(), ingredient.variantId())));
         });
     }
 

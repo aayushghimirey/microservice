@@ -52,7 +52,7 @@ public class StockController {
         return AppResponse.success(stock, AppConstants.Response.STOCK_CREATED);
     }
 
-    @PostMapping("/{stockId}")
+    @PatchMapping("/{stockId}")
     public ResponseEntity<ApiResponse<StockResponse>> updateStock(
             @PathVariable UUID stockId,
             @Valid @RequestBody UpdateStockCommand command) {
@@ -83,7 +83,6 @@ public class StockController {
             @ModelAttribute PageRequestDto pageRequestDto,
             @Valid @ModelAttribute GetStockQueryRequest queryRequest) {
 
-
         return AppResponse.success(
                 stockService.getAllQueryStock(queryRequest, pageRequestDto.buildPageable()),
                 AppConstants.Response.FETCHED_STOCKS);
@@ -94,7 +93,6 @@ public class StockController {
     public ResponseEntity<PagedResponse<List<StockResponse.VariantResponse>>> getStockVariants(
             @PathVariable UUID stockId,
             @ModelAttribute PageRequestDto pageRequestDto) {
-
 
         return AppResponse.success(
                 stockService.getAllVariantByStockId(stockId, pageRequestDto.buildPageable()),

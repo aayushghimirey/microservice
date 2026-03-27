@@ -1,10 +1,10 @@
 package com.sts.event.listener;
 
+import com.sts.service.StockUpdateProcessor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import com.sts.event.StockUpdateEvent;
-import com.sts.event.processor.StockUpdateProcessor;
 
 import lombok.RequiredArgsConstructor;
 
