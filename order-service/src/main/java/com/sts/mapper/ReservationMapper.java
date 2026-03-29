@@ -16,9 +16,10 @@ public class ReservationMapper {
 
 
     public ReservationOrders buildReservationOrders(CreateReservationCommand.ReservationItemRequest request,
-                                                     MenuResponse menuResponseDto) {
+                                                    MenuResponse menuResponseDto) {
         ReservationOrders orders = new ReservationOrders();
         orders.setMenuItemId(request.menuId());
+        orders.setMenuItemName(menuResponseDto.getName());
         orders.setQuantity(request.quantity());
         orders.setPrice(menuResponseDto.getPrice());
         return orders;

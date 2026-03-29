@@ -53,7 +53,9 @@ public class KafkaListenerConfig {
                 new ConcurrentKafkaListenerContainerFactory<>();
 
         factory.setConsumerFactory(invoiceConsumerFactory());
+
         configureFactory(factory);
+
         return factory;
     }
 

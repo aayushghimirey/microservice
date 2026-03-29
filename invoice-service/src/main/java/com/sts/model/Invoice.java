@@ -23,34 +23,32 @@ import java.util.UUID;
 public class Invoice extends Audit {
 
     private String billNumber;
-
     private UUID tableId;
-
     private UUID sessionId;
+    private UUID reservationId;
 
     @Enumerated(EnumType.STRING)
     private InvoiceStatus status;
 
     @Builder.Default
     private BigDecimal discountAmount = BigDecimal.ZERO;
-
     @Builder.Default
     private BigDecimal subTotal = BigDecimal.ZERO;
     @Builder.Default
     private BigDecimal grossTotal = BigDecimal.ZERO;
 
     private LocalDateTime reservationTime;
-
     private LocalDateTime reservationEndTime;
+
 
     @Builder.Default
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<InvoiceItem> items = new ArrayList<>();
 
+
     public void calculateGrossTotal() {
         BigDecimal sub = subTotal == null ? BigDecimal.ZERO : subTotal;
         BigDecimal discount = discountAmount == null ? BigDecimal.ZERO : discountAmount;
-
         this.grossTotal = sub.subtract(discount);
     }
 

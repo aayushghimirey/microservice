@@ -16,20 +16,20 @@ import java.util.UUID;
 public class InvoiceEvent {
 
     private UUID invoiceId;
-
     private UUID sessionId;
+    private UUID reservationId;
 
     @Builder.Default
     private BigDecimal grossTotal = BigDecimal.ZERO;
 
     private LocalDateTime reservationTime;
-
     private LocalDateTime reservationEndTime;
 
-    @Builder.Default
-    private List<InvoiceEvent.InvoiceMenuItem> items = new ArrayList<>();
 
-    public void addItem(InvoiceEvent.InvoiceMenuItem item) {
+    @Builder.Default
+    private List<InvoiceMenuItem> items = new ArrayList<>();
+
+    public void addItem(InvoiceMenuItem item) {
         items.add(item);
     }
 
@@ -41,8 +41,15 @@ public class InvoiceEvent {
     @Builder
     public static class InvoiceMenuItem {
         private UUID menuId;
-
         private double quantity;
+        private List<MenuIngredientResponse> ingredients;
+
+        public void addIngredient(MenuIngredientResponse ingredient) {
+            if (ingredients == null) {
+                ingredients = new ArrayList<>();
+            }
+            ingredients.add(ingredient);
+        }
     }
 
 }

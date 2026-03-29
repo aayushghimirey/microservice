@@ -3,6 +3,7 @@ package com.sts.event.listener;
 import java.math.BigDecimal;
 
 import com.sts.event.OrderCreatedEvent;
+import com.sts.model.InvoiceItemIngredient;
 import com.sts.utils.constant.AppConstants;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
@@ -71,6 +72,7 @@ public class OrderEventListener {
         Invoice invoice = Invoice.builder()
                 .billNumber(generateBillNumber())
                 .status(InvoiceStatus.PENDING)
+                .reservationId(event.getReservationId())
                 .subTotal(event.getBillAmount())
                 .discountAmount(BigDecimal.ZERO)
                 .sessionId(event.getSessionId())
@@ -84,6 +86,18 @@ public class OrderEventListener {
             invoiceItem.setQuantity(item.getQuantity());
 
             invoice.addItem(invoiceItem);
+
+            item.getIngredient().forEach(ing -> {
+                InvoiceItemIngredient ingredient = InvoiceItemIngredient.builder()
+                        .variantId(ing.getVariantId())
+                        .unitId(ing.getUnitId())
+                        .quantity(ing.getQuantity())
+                        .build();
+                invoiceItem.addIngredient(ingredient);
+            });
+
+            invoice.addItem(invoiceItem);
+
         });
 
         invoice.calculateGrossTotal();

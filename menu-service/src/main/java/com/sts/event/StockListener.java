@@ -1,21 +1,25 @@
 package com.sts.event;
 
 import com.sts.mapper.StockSnapshotMapper;
+import com.sts.model.StockSnapshot;
 import com.sts.repository.StockSnapshotRepository;
 import com.sts.topics.KafkaProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class StockListener {
 
-    private static final Logger log = LoggerFactory.getLogger(StockListener.class);
     private final StockSnapshotRepository stockSnapshotRepository;
     private final StockSnapshotMapper stockSnapshotMapper;
     private final KafkaProperties kafkaProperties;
@@ -23,21 +27,20 @@ public class StockListener {
 
     @KafkaListener(topics = "#{@kafkaProperties.getTopic('stock-event')}")
     public void onStockEvent(StockEvent event, Acknowledgment acknowledgment) {
-        log.info("Received StockEvent for stockId: {}", event.id());
+        log.info("Received StockEvent for stockId: {}", event.stockId());
 
-        stockSnapshotRepository.findByStockId(event.id())
-                .ifPresentOrElse(
-                        existingSnapshot -> {
-                            log.info("Updating existing StockSnapshot for stockId: {}", event.id());
-//                            var updatedSnapshot = stockSnapshotMapper.updateStockSnapshotFromEvent(existingSnapshot, event);
-//                            stockSnapshotRepository.save(updatedSnapshot);
-                        },
-                        () -> {
-                            log.info("Creating new StockSnapshot for stockId: {}", event.id());
-                            var snapshot = stockSnapshotMapper.buildStockSnapshotFromEvent(event);
-                            stockSnapshotRepository.save(snapshot);
-                        }
-                );
+        if (stockSnapshotRepository.existsByStockId(event.stockId())) {
+            log.warn("StockSnapshot already exists for stockId: {}. Skipping creation.", event.stockId());
+            throw new IllegalStateException("StockSnapshot already exists for stockId: " + event.stockId());
+        }
+
+        StockSnapshot stockSnapshot = stockSnapshotMapper.toStockSnapshot(event);
+
+        stockSnapshotRepository.save(stockSnapshot);
+
+        log.info("Saved StockSnapshot for stockId: {}", event.stockId());
+
+        acknowledgment.acknowledge();
 
 
     }

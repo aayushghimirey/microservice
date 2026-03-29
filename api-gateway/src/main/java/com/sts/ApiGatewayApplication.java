@@ -22,23 +22,23 @@ public class ApiGatewayApplication {
         return builder.routes()
                 .route("inventory-service", predicateSpec -> predicateSpec
                         .path("/stocks/**", "/purchases/**", "/vendors/**")
-                        .filters(filterSpec -> filterSpec.filter(requestNavigator.apply(new RequestNavigator.Config())))
+//                        .filters(filterSpec -> filterSpec.filter(requestNavigator.apply(new RequestNavigator.Config())))
                         .uri("lb://inventory-service"))
                 .route("finance-service", predicateSpec -> predicateSpec
                         .path("/finances/**")
-                        .filters(filterSpec -> filterSpec.filter(requestNavigator.apply(new RequestNavigator.Config())))
+//                        .filters(filterSpec -> filterSpec.filter(requestNavigator.apply(new RequestNavigator.Config())))
                         .uri("lb://finance-service"))
                 .route("menu-service", predicateSpec -> predicateSpec
                         .path("/menus/**")
-                        .filters(filterSpec -> filterSpec.filter(requestNavigator.apply(new RequestNavigator.Config())))
+//                        .filters(filterSpec -> filterSpec.filter(requestNavigator.apply(new RequestNavigator.Config())))
                         .uri("lb://menu-service"))
                 .route("order-service", predicateSpec -> predicateSpec
                         .path("/tables/**", "/reservations/**")
-                        .filters(filterSpec -> filterSpec.filter(requestNavigator.apply(new RequestNavigator.Config())))
+//                        .filters(filterSpec -> filterSpec.filter(requestNavigator.apply(new RequestNavigator.Config())))
                         .uri("lb://order-service"))
                 .route("invoice-service", predicateSpec -> predicateSpec
                         .path("/invoices/**")
-                        .filters(filterSpec -> filterSpec.filter(requestNavigator.apply(new RequestNavigator.Config())))
+//                        .filters(filterSpec -> filterSpec.filter(requestNavigator.apply(new RequestNavigator.Config())))
                         .uri("lb://invoice-service"))
                 .route("auth-service", predicateSpec -> predicateSpec
                         .path("/auth/public/**", "/auth/super/**")

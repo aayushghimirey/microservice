@@ -18,4 +18,5 @@ public class StockUpdateListener {
     public void on(StockUpdateEvent event) {
         processor.process(event);
     }
+
 }

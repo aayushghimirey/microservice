@@ -35,8 +35,12 @@ public final class MenuMapper {
                 menu.getName(),
                 menu.getCode(),
                 menu.getCategory().name(),
-                menu.getPrice()
+                menu.getPrice(),
+                menu.getIngredients().stream()
+                        .map(this::toMenuIngredientResponse)
+                        .toList()
         );
+
     }
 
     public MenuIngredientResponse toMenuIngredientResponse(MenuIngredient menuIngredient) {

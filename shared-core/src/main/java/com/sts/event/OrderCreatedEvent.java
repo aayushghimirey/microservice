@@ -48,6 +48,8 @@ public class OrderCreatedEvent {
         private UUID menuId;
 
         private double quantity;
+
+        private List<MenuIngredientResponse> ingredient;
     }
 
 }

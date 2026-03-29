@@ -1,6 +1,7 @@
 package com.sts.model;
 
 import com.sts.domain.Audit;
+import com.sts.pagination.PageRequestDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.JoinColumn;
@@ -21,6 +22,8 @@ import java.util.UUID;
 public class ReservationOrders extends Audit {
 
     private UUID menuItemId;
+
+    private String menuItemName;
 
     private BigDecimal price;
 

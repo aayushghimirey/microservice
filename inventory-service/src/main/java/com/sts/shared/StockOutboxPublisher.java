@@ -21,15 +21,15 @@ public class StockOutboxPublisher {
 
 
     /*
-     * This method is used to publish outbox events for stock changes or creation.
-     * this is used to save snapshot of stock for menu service
+     * This is used to publish and listen by menu service
+     * to save the stock information.
      * */
-    public void publish(Stock stock, OutboxEventType eventType) {
+    public void publish(Stock stock) {
         StockEvent event = stockMapper.toStockEvent(stock);
         outboxPublisher.publish(
                 AggregateType.STOCK,
                 stock.getId(),
-                eventType,
+                OutboxEventType.CREATED,
                 event,
                 kafkaProperties.getTopic(AppConstants.KAFKA_TOPIC_STOCK_EVENT));
     }

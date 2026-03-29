@@ -5,40 +5,42 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b17b2c76-4396-44bb-a00d-3c9536cd03a6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.ask2agent.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/sts/service/impl/StockUpdateProcessorImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/config/KafkaListenerConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/mapper/StockSnapshotMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/model/UnitSnapshot.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/model/VariantSnapshot.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/sts/service/impl/StockUpdateProcessorImplTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api-gateway/src/main/java/com/sts/ApiGatewayApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../api-gateway/src/main/java/com/sts/ApiGatewayApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api-gateway/target/api-gateway.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../api-gateway/target/api-gateway.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api-gateway/target/api-gateway.jar.original" beforeDir="false" afterPath="$PROJECT_DIR$/../api-gateway/target/api-gateway.jar.original" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/controller/PurchaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/controller/PurchaseController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/controller/StockController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/controller/StockController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/PurchaseEventFactory.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/StockUpdateEventAbstractFactory.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/StockUpdateEventFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/StockUpdateEventFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/InventoryApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/InventoryApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/client/MenuClient.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/client/MenuGateway.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/config/KafkaListenerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/config/KafkaListenerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/StockUpdateEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/event/StockUpdateEvent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/impl/AdjustmentEventFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/impl/AdjustmentEventFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/impl/InvoiceEventBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/impl/InvoiceEventFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/impl/PurchaseEventBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/impl/PurchaseEventFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/impl/InvoiceEventFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/impl/InvoiceEventFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/impl/PurchaseEventFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/impl/PurchaseEventFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/listener/InvoiceEventListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/event/listener/InvoiceEventListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/listener/StockUpdateListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/event/listener/StockUpdateListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/processor/StockUpdateProcessor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/resolver/InvoiceStockUpdateResolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/event/resolver/InvoiceStockUpdateResolver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/mapper/PurchaseMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/mapper/PurchaseMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/resolver/InvoiceStockUpdateResolver.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/mapper/StockMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/mapper/StockMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/model/stock/StockVariant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/model/stock/StockVariant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/service/StockService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/service/StockService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/service/impl/PurchaseServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/service/impl/PurchaseServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/service/impl/StockServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/service/impl/StockServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/service/resolver/VariantUnitResolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/service/resolver/VariantUnitResolver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/utils/constant/AppConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/utils/constant/AppConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/sts/service/impl/PurchaseServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/sts/service/impl/PurchaseServiceImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/service/impl/StockTransactionServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/service/impl/StockTransactionServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/service/impl/StockUpdateProcessorImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/service/impl/StockUpdateProcessorImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/shared/PurchaseOutboxPublisher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/shared/PurchaseOutboxPublisher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/shared/StockOutboxPublisher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/shared/StockOutboxPublisher.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/sts/service/impl/StockServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/sts/service/impl/StockServiceImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/config/KafkaListenerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/config/KafkaListenerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/event/StockListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/event/StockListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/mapper/StockSnapshotMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/mapper/StockSnapshotMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/model/StockSnapshot.java" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/model/StockSnapshot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/model/UnitSnapshot.java" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/model/UnitSnapshot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/model/VariantSnapshot.java" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/model/VariantSnapshot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/repository/StockSnapshotRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/repository/StockSnapshotRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/repository/VariantSnapshotRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/repository/VariantSnapshotRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/service/impl/MenuServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/service/impl/MenuServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../menu-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../shared-core/src/main/java/com/sts/enums/AggregateType.java" beforeDir="false" afterPath="$PROJECT_DIR$/../shared-core/src/main/java/com/sts/enums/AggregateType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shared-core/src/main/java/com/sts/event/StockEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../shared-core/src/main/java/com/sts/event/StockEvent.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,6 +61,7 @@
         <option value="Record" />
         <option value="Interface" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -76,7 +79,14 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.InventoryService.executor": "Run",
+    "JUnit.StockServiceImplTest.createStock_shouldReturnResponse_whenNameDoesNotExist.executor": "Run",
+    "JUnit.StockServiceImplTest.executor": "Run",
+    "JUnit.StockUpdateProcessorImplTest.executor": "Run",
+    "JUnit.StockUpdateProcessorImplTest.process_shouldUpdateStockAndSaveTransaction_whenValidEvent.executor": "Run",
+    "JUnit.StockUpdateProcessorImplTest.test.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "A:/re-microservice/menu-service",
@@ -89,24 +99,99 @@
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.sts.service.impl" />
     </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.sts.service.impl" />
+    </key>
   </component>
-  <component name="RunManager">
-    <configuration name="InventoryService" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.sts.InventoryService" />
+  <component name="RunManager" selected="JUnit.StockUpdateProcessorImplTest">
+    <configuration name="StockServiceImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="inventory-service" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.sts.*" />
+          <option name="PATTERN" value="com.sts.service.impl.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="com.sts.service.impl" />
+      <option name="MAIN_CLASS_NAME" value="com.sts.service.impl.StockServiceImplTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StockServiceImplTest.createStock_shouldReturnResponse_whenNameDoesNotExist" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="inventory-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.sts.service.impl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.sts.service.impl" />
+      <option name="MAIN_CLASS_NAME" value="com.sts.service.impl.StockServiceImplTest" />
+      <option name="METHOD_NAME" value="createStock_shouldReturnResponse_whenNameDoesNotExist" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StockUpdateProcessorImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="inventory-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.sts.service.impl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.sts.service.impl" />
+      <option name="MAIN_CLASS_NAME" value="com.sts.service.impl.StockUpdateProcessorImplTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StockUpdateProcessorImplTest.process_shouldUpdateStockAndSaveTransaction_whenValidEvent" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="inventory-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.sts.service.impl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.sts.service.impl" />
+      <option name="MAIN_CLASS_NAME" value="com.sts.service.impl.StockUpdateProcessorImplTest" />
+      <option name="METHOD_NAME" value="process_shouldUpdateStockAndSaveTransaction_whenValidEvent" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StockUpdateProcessorImplTest.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="inventory-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.sts.service.impl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.sts.service.impl" />
+      <option name="MAIN_CLASS_NAME" value="com.sts.service.impl.StockUpdateProcessorImplTest" />
+      <option name="METHOD_NAME" value="test" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.InventoryService" />
+        <item itemvalue="JUnit.StockUpdateProcessorImplTest" />
+        <item itemvalue="JUnit.StockServiceImplTest" />
+        <item itemvalue="JUnit.StockUpdateProcessorImplTest.test" />
+        <item itemvalue="JUnit.StockUpdateProcessorImplTest.process_shouldUpdateStockAndSaveTransaction_whenValidEvent" />
+        <item itemvalue="JUnit.StockServiceImplTest.createStock_shouldReturnResponse_whenNameDoesNotExist" />
       </list>
     </recent_temporary>
   </component>

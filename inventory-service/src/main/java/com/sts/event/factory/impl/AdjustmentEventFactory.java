@@ -24,7 +24,6 @@ public class AdjustmentEventFactory  implements StockUpdateEventFactory<Adjustme
                 List.of(new StockUpdateEvent.StockUpdateItem(
                         input.variantId,
                         input.unitId,
-                        input.quantity,
-                        StockUpdateSource.ADJUSTMENT)));
+                        input.quantity)));
     }
 }

@@ -1,9 +1,7 @@
 package com.sts.model;
 
 import com.sts.domain.Audit;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -20,19 +18,18 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-
 public class StockSnapshot extends Audit {
 
-    UUID stockId;
-    String name;
-    String type;
+    @Column(name = "stock_id")
+    private UUID stockId;
 
-    @OneToMany(mappedBy = "stockSnapshot")
-    List<VariantSnapshot> variants = new ArrayList<>();
+    @OneToMany(mappedBy = "stockSnapshot", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<VariantSnapshot> variants = new ArrayList<>();
 
     public void addVariant(VariantSnapshot variant) {
         if (variant == null) return;
         this.variants.add(variant);
+        variant.setStockSnapshot(this);
     }
 
 }

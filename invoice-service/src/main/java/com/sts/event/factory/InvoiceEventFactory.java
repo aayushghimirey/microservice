@@ -1,6 +1,7 @@
 package com.sts.event.factory;
 
 import com.sts.event.InvoiceEvent;
+import com.sts.event.MenuIngredientResponse;
 import com.sts.model.Invoice;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,7 @@ public class InvoiceEventFactory {
         InvoiceEvent invoiceEvent = InvoiceEvent.builder()
                 .invoiceId(invoice.getId())
                 .sessionId(invoice.getSessionId())
+                .reservationId(invoice.getReservationId())
                 .grossTotal(invoice.getGrossTotal())
                 .reservationTime(invoice.getReservationTime())
                 .reservationEndTime(invoice.getReservationEndTime()).build();
@@ -21,6 +23,15 @@ public class InvoiceEventFactory {
                     InvoiceEvent.InvoiceMenuItem menuItem = new InvoiceEvent.InvoiceMenuItem();
                     menuItem.setMenuId(item.getMenuItemId());
                     menuItem.setQuantity(item.getQuantity());
+
+                    item.getIngredients().forEach(ingredient -> {
+                        MenuIngredientResponse ingredientEvent = new MenuIngredientResponse();
+                        ingredientEvent.setVariantId(ingredient.getVariantId());
+                        ingredientEvent.setUnitId(ingredient.getUnitId());
+                        ingredientEvent.setQuantity(ingredient.getQuantity());
+
+                        menuItem.addIngredient(ingredientEvent);
+                    });
 
                     invoiceEvent.addItem(menuItem);
                 });

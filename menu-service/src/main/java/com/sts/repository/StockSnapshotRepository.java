@@ -8,7 +8,6 @@ import java.util.UUID;
 
 public interface StockSnapshotRepository extends JpaRepository<StockSnapshot, UUID> {
 
-    Optional<StockSnapshot> findByStockId(UUID stockId);
+    boolean existsByStockId(UUID stockId);
 
-    boolean existsByVariantIdAndUnitId(UUID variantId, UUID unitId);
 }

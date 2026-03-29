@@ -14,8 +14,7 @@ public record StockUpdateEvent(
     public record StockUpdateItem(
             UUID variantId,
             UUID unitId,
-            BigDecimal quantity,
-            StockUpdateSource source
+            BigDecimal quantity
 
     ) {
     }

@@ -8,9 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sts.mapper.ReservationMapper;
 import com.sts.model.Reservation;
 import com.sts.repository.ReservationRepository;
-import com.sts.service.ReservationSseService;
 import com.sts.topics.KafkaProperties;
-import com.sts.utils.PushPendingReservations;
 import com.sts.utils.contant.AppConstants;
 import com.sts.utils.enums.ReservationStatus;
 import com.sts.utils.enums.TableStatus;
@@ -26,9 +24,6 @@ public class InvoiceListener {
     private final KafkaProperties kafkaProperties;
     private final ReservationRepository reservationRepository;
     private final ReservationMapper reservationMapper;
-    private final PushPendingReservations pushPendingReservations;
-
-    private final ReservationSseService reservationSseService;
 
     @KafkaListener(topics = "#{@kafkaProperties.getTopic('invoice-event')}", containerFactory = "invoiceKafkaListenerContainerFactory")
     @Transactional
@@ -48,7 +43,6 @@ public class InvoiceListener {
 
             reservation.getTable().setStatus(TableStatus.OPEN);
 
-            pushPendingReservations.pushPendingReservations();
 
             acknowledgment.acknowledge();
             log.info(AppConstants.LOG_MESSAGES.RESERVATION_COMPLETED, event.getSessionId());

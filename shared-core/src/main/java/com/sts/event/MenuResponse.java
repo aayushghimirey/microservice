@@ -21,5 +21,7 @@ public class MenuResponse {
     private String category;
     private BigDecimal price;
 
+    private List<MenuIngredientResponse> ingredients;
+
 
 }

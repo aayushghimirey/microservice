@@ -65,7 +65,8 @@ public class StockServiceImpl implements StockService {
         assertStockNameUnique(command.name(), null);
 
         Stock stock = stockRepository.save(stockMapper.buildStock(command));
-        publishOutboxEvent(stock, OutboxEventType.CREATED);
+        // keep snapshot of the created stock for outbox event
+        stockOutboxPublisher.publish(stock);
 
         return stockMapper.toResponse(stock);
     }
@@ -79,9 +80,9 @@ public class StockServiceImpl implements StockService {
 
         Stock stock = referenceResolver.getStockOrThrow(stockId);
         stockUpdateMapper.updateStock(stock, command);
+
         Stock updated = stockRepository.save(stock);
 
-        publishOutboxEvent(updated, OutboxEventType.UPDATED);
 
         return stockMapper.toResponse(updated);
     }
@@ -142,9 +143,5 @@ public class StockServiceImpl implements StockService {
                 String.format(AppConstants.ErrorMessages.STOCK_ALREADY_EXISTS, name));
     }
 
-
-    private void publishOutboxEvent(Stock stock, OutboxEventType eventType) {
-        stockOutboxPublisher.publish(stock, eventType);
-    }
 
 }

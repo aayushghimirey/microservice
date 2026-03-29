@@ -6,7 +6,7 @@ import com.sts.event.PurchaseCreatedEvent;
 import com.sts.helper.outbox.OutboxPublisher;
 import com.sts.mapper.PurchaseMapper;
 import com.sts.model.purchase.Purchase;
- import com.sts.topics.KafkaProperties;
+import com.sts.topics.KafkaProperties;
 import com.sts.utils.constant.AppConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

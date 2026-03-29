@@ -2,6 +2,7 @@ package com.sts.mapper;
 
 import java.math.BigDecimal;
 
+import com.sts.domain.Audit;
 import com.sts.event.StockEvent;
 import org.springframework.stereotype.Component;
 
@@ -91,30 +92,21 @@ public class StockMapper {
     public StockEvent toStockEvent(Stock stock) {
         return new StockEvent(
                 stock.getId(),
-                stock.getName(),
-                stock.getType().name(),
                 stock.getVariants().stream()
-                        .map(this::toVariantStockEvent)
+                        .map(this::toVariantEvent)
                         .toList());
+
     }
 
-    private StockEvent.VariantStockEvent toVariantStockEvent(StockVariant variant) {
+    private StockEvent.VariantStockEvent toVariantEvent(StockVariant variant) {
         return new StockEvent.VariantStockEvent(
                 variant.getId(),
-                variant.getName(),
-                variant.getBaseUnit(),
-                variant.getOpeningStock(),
-                variant.getCurrentStock(),
                 variant.getUnits().stream()
-                        .map(this::toUnitStockEvent)
-                        .toList());
+                        .map(Audit::getId)
+                        .toList()
+        );
+
     }
 
-    private StockEvent.UnitStockEvent toUnitStockEvent(VariantUnit unit) {
-        return new StockEvent.UnitStockEvent(
-                unit.getId(),
-                unit.getName(),
-                unit.getConversionRate(),
-                unit.getUnitType().name());
-    }
+
 }

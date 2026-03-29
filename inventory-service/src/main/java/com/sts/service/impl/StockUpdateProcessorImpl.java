@@ -1,12 +1,8 @@
 package com.sts.service.impl;
 
 import com.sts.entity.OutboxEventType;
-import com.sts.enums.AggregateType;
-import com.sts.event.StockEvent;
 import com.sts.event.StockUpdateEvent;
 import com.sts.exception.ResourceNotFoundException;
-import com.sts.helper.outbox.OutboxPublisher;
-import com.sts.mapper.StockMapper;
 import com.sts.model.stock.Stock;
 import com.sts.model.stock.StockTransaction;
 import com.sts.model.stock.StockVariant;
@@ -39,11 +35,9 @@ public class StockUpdateProcessorImpl implements StockUpdateProcessor {
     private final VariantUnitRepository variantUnitRepository;
     private final StockTransactionRepository stockTransactionRepository;
 
-    private final StockOutboxPublisher stockOutboxPublisher;
-
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.MANDATORY)
     public void process(StockUpdateEvent event) {
         UUID referenceId = resolveReferenceId(event);
 
@@ -52,20 +46,17 @@ public class StockUpdateProcessorImpl implements StockUpdateProcessor {
 
         List<StockVariant> variantsToUpdate = new ArrayList<>();
         List<StockTransaction> transactionsToSave = new ArrayList<>();
-        Set<Stock> affectedStocks = new LinkedHashSet<>();
 
         for (var item : event.items()) {
             processItem(item, referenceId, variantMap, unitMap,
-                    variantsToUpdate, transactionsToSave, affectedStocks);
+                    variantsToUpdate, transactionsToSave);
         }
 
         stockVariantRepository.saveAll(variantsToUpdate);
         stockTransactionRepository.saveAll(transactionsToSave);
 
-        // publish once per unique stock — consumed by menu-service to update IngredientStock snapshot
-        affectedStocks.forEach(stock -> publishOutboxEvent(stock, OutboxEventType.UPDATED));
-    }
 
+    }
 
     private Map<UUID, StockVariant> batchFetchVariants(List<StockUpdateEvent.StockUpdateItem> items) {
         Set<UUID> ids = items.stream()
@@ -93,25 +84,25 @@ public class StockUpdateProcessorImpl implements StockUpdateProcessor {
             Map<UUID, StockVariant> variantMap,
             Map<UUID, VariantUnit> unitMap,
             List<StockVariant> variantsToUpdate,
-            List<StockTransaction> transactionsToSave,
-            Set<Stock> affectedStocks) {
+            List<StockTransaction> transactionsToSave) {
 
         StockVariant variant = variantMap.get(item.variantId());
-        if (variant == null) throw new ResourceNotFoundException(
-                String.format("Variant not found: %s", item.variantId()));
+        if (variant == null)
+            throw new ResourceNotFoundException(
+                    String.format("Variant not found: %s", item.variantId()));
 
         VariantUnit unit = unitMap.get(item.unitId());
-        if (unit == null) throw new ResourceNotFoundException(
-                String.format("Unit not found: %s", item.unitId()));
+        if (unit == null)
+            throw new ResourceNotFoundException(
+                    String.format("Unit not found: %s", item.unitId()));
 
-        BigDecimal delta = calculateDelta(item.quantity(), unit.getConversionRate(), item.source());
+        BigDecimal delta = calculateDelta(item.quantity(), unit.getConversionRate());
         BigDecimal newBalance = variant.getCurrentStock().add(delta);
 
-        log.debug(AppConstants.Logs.CALCULATE_STOCK_DELTA, item.variantId(), item.source(), delta);
+        log.debug(AppConstants.Logs.CALCULATE_STOCK_DELTA, item.variantId(), delta);
 
         variant.setCurrentStock(newBalance);
         variantsToUpdate.add(variant);
-        affectedStocks.add(variant.getStock());
 
         transactionsToSave.add(toTransaction(item, referenceId, delta, newBalance));
         log.debug(AppConstants.Logs.CREATING_STOCK_TRANSACTION, item.variantId(), newBalance);
@@ -119,8 +110,8 @@ public class StockUpdateProcessorImpl implements StockUpdateProcessor {
 
     // ── Calculation ───────────────────────────────────────────────────────────
 
-    private BigDecimal calculateDelta(BigDecimal quantity, BigDecimal conversionRate, StockUpdateSource source) {
-        return quantity.multiply(conversionRate).multiply(source.getMultiplier());
+    private BigDecimal calculateDelta(BigDecimal quantity, BigDecimal conversionRate) {
+        return quantity.multiply(conversionRate);
     }
 
     // ── Mapping ───────────────────────────────────────────────────────────────
@@ -136,33 +127,20 @@ public class StockUpdateProcessorImpl implements StockUpdateProcessor {
                 .quantityChange(delta)
                 .balanceAfter(balanceAfter)
                 .referenceId(referenceId)
-                .referenceType(toReferenceType(item.source()))
-                .remark(item.source().name())
+                .remark("Stock update ")
                 .build();
     }
 
-    private TransactionReference toReferenceType(StockUpdateSource source) {
-        return switch (source) {
-            case PURCHASE -> TransactionReference.PURCHASE;
-            case SALE -> TransactionReference.SALES;
-            case ADJUSTMENT,
-                 RETURN -> TransactionReference.ADJUSTMENT;
-        };
-    }
 
     // ── Reference resolution ──────────────────────────────────────────────────
 
     private UUID resolveReferenceId(StockUpdateEvent event) {
-        if (event.purchaseId() != null) return event.purchaseId();
-        if (event.invoiceId() != null) return event.invoiceId();
+        if (event.purchaseId() != null)
+            return event.purchaseId();
+        if (event.invoiceId() != null)
+            return event.invoiceId();
 
         return null;
     }
 
-    // ── Outbox publishing ─────────────────────────────────────────────────────
-
-    private void publishOutboxEvent(Stock stock, OutboxEventType eventType) {
-        stockOutboxPublisher.publish(stock, eventType);
-
-    }
 }

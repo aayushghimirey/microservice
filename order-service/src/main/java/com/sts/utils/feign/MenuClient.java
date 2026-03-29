@@ -17,5 +17,4 @@ public interface MenuClient {
     @GetMapping("/{menuId}")
     ResponseEntity<ApiResponse<MenuResponse>> getMenuById(@PathVariable UUID menuId);
 
-
 }

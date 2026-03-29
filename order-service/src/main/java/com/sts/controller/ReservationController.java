@@ -1,7 +1,6 @@
 package com.sts.controller;
 
-import com.sts.pagination.PageRequestDto;
-import com.sts.service.ReservationSseService;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +25,6 @@ import java.util.UUID;
 public class ReservationController {
 
     private final ReservationService reservationService;
-    private final ReservationSseService reservationSseService;
 
     @PostMapping
     public ResponseEntity<ApiResponse<ReservationResponse>> createReservation(
@@ -36,8 +34,8 @@ public class ReservationController {
                 AppConstants.SUCCESS_MESSAGES.RESERVATION_CREATED);
     }
 
-    @GetMapping(value = "/orders/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter getOrderStream(@RequestParam UUID tenantId) {
-        return reservationSseService.createEmitter(tenantId);
-    }
+//    @GetMapping(value = "/orders/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+//    public SseEmitter getOrderStream(@RequestParam UUID tenantId) {
+//        return reservationSseService.createEmitter(tenantId);
+//    }
 }

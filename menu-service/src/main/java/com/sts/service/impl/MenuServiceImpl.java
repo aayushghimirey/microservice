@@ -31,7 +31,6 @@ class MenuServiceImpl implements MenuService {
     private final MenuRepository menuRepository;
     private final StockSnapshotRepository stockSnapshotRepository;
     private final VariantSnapshotRepository variantSnapshotRepository;
-
     private final MenuMapper menuMapper;
 
     @Override
@@ -92,8 +91,8 @@ class MenuServiceImpl implements MenuService {
             VariantSnapshot variantSnapshot = variantSnapshotRepository.findByVariantId(ingredient.variantId()).orElseThrow(() ->
                     new ResourceNotFoundException(String.format("Variant not found with id %s", ingredient.variantId())));
 
-            variantSnapshot.getUnits().stream()
-                    .filter(unit -> unit.getUnitId().equals(ingredient.unitId()))
+            variantSnapshot.getUnitIds().stream()
+                    .filter(unit -> unit.equals(ingredient.unitId()))
                     .findFirst()
                     .orElseThrow(() -> new ResourceNotFoundException(String.format("Unit with id %s not found for variant %s", ingredient.unitId(), ingredient.variantId())));
         });

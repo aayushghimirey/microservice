@@ -28,13 +28,13 @@ public class StockTransactionServiceImpl implements StockTransactionService {
     @Override
     @Transactional(readOnly = true)
     public Page<StockTransactionResponse> getAllTransaction(Pageable pageable) {
-         return stockTransactionRepository.findAllTransactions(pageable);
+        return stockTransactionRepository.findAllTransactions(pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<StockTransactionResponse> getAllTransactionByVariantId(UUID variantId, Pageable pageable) {
-         return stockTransactionRepository.findAllTransactionsByVariantId(variantId, pageable);
+        return stockTransactionRepository.findAllTransactionsByVariantId(variantId, pageable);
     }
 
 }
