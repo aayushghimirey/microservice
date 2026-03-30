@@ -5,42 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b17b2c76-4396-44bb-a00d-3c9536cd03a6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/sts/service/impl/StockUpdateProcessorImplTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../api-gateway/src/main/java/com/sts/ApiGatewayApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../api-gateway/src/main/java/com/sts/ApiGatewayApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../api-gateway/target/api-gateway.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../api-gateway/target/api-gateway.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../api-gateway/target/api-gateway.jar.original" beforeDir="false" afterPath="$PROJECT_DIR$/../api-gateway/target/api-gateway.jar.original" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/InventoryApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/InventoryApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/client/MenuClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/client/MenuGateway.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/config/KafkaListenerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/config/KafkaListenerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/StockUpdateEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/event/StockUpdateEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/impl/AdjustmentEventFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/impl/AdjustmentEventFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/impl/InvoiceEventFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/impl/InvoiceEventFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/impl/PurchaseEventFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/impl/PurchaseEventFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/listener/InvoiceEventListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/event/listener/InvoiceEventListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/listener/StockUpdateListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/event/listener/StockUpdateListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/resolver/InvoiceStockUpdateResolver.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/mapper/StockMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/mapper/StockMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/service/impl/StockServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/service/impl/StockServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/service/impl/StockTransactionServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/service/impl/StockTransactionServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/service/impl/StockUpdateProcessorImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/service/impl/StockUpdateProcessorImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/shared/PurchaseOutboxPublisher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/shared/PurchaseOutboxPublisher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/shared/StockOutboxPublisher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/shared/StockOutboxPublisher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/sts/service/impl/StockServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/sts/service/impl/StockServiceImplTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/config/KafkaListenerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/config/KafkaListenerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/event/StockListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/event/StockListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/mapper/StockSnapshotMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/mapper/StockSnapshotMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/model/StockSnapshot.java" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/model/StockSnapshot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/model/UnitSnapshot.java" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/model/UnitSnapshot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/model/VariantSnapshot.java" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/model/VariantSnapshot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/repository/StockSnapshotRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/repository/StockSnapshotRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/repository/VariantSnapshotRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/repository/VariantSnapshotRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/service/impl/MenuServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/service/impl/MenuServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../shared-core/src/main/java/com/sts/event/StockEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../shared-core/src/main/java/com/sts/event/StockEvent.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

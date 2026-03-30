@@ -20,7 +20,7 @@ app:
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     groups:
-      inventory-group: inventory-group-consumer
+      order-group: order-group-consumer
     topics:
       order-event: ORDER_EVENT
       invoice-event: INVOICE_EVENT

@@ -34,7 +34,7 @@ public class StockTransaction extends Audit {
     private UUID referenceId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "reference_type", nullable = false, updatable = false)
+    @Column(name = "reference_type", updatable = false)
     private TransactionReference referenceType;
 
     @Column(name = "variant_id", nullable = false, updatable = false)

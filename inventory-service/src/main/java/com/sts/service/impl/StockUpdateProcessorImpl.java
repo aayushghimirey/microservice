@@ -39,6 +39,9 @@ public class StockUpdateProcessorImpl implements StockUpdateProcessor {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public void process(StockUpdateEvent event) {
+
+        log.info("Stock UPDATE event from {}", event.transactionReference());
+
         UUID referenceId = resolveReferenceId(event);
 
         Map<UUID, StockVariant> variantMap = batchFetchVariants(event.items());
@@ -49,7 +52,7 @@ public class StockUpdateProcessorImpl implements StockUpdateProcessor {
 
         for (var item : event.items()) {
             processItem(item, referenceId, variantMap, unitMap,
-                    variantsToUpdate, transactionsToSave);
+                    variantsToUpdate, transactionsToSave, event.transactionReference());
         }
 
         stockVariantRepository.saveAll(variantsToUpdate);
@@ -84,7 +87,7 @@ public class StockUpdateProcessorImpl implements StockUpdateProcessor {
             Map<UUID, StockVariant> variantMap,
             Map<UUID, VariantUnit> unitMap,
             List<StockVariant> variantsToUpdate,
-            List<StockTransaction> transactionsToSave) {
+            List<StockTransaction> transactionsToSave, TransactionReference transactionReference) {
 
         StockVariant variant = variantMap.get(item.variantId());
         if (variant == null)
@@ -97,9 +100,15 @@ public class StockUpdateProcessorImpl implements StockUpdateProcessor {
                     String.format("Unit not found: %s", item.unitId()));
 
         BigDecimal delta = calculateDelta(item.quantity(), unit.getConversionRate());
-        BigDecimal newBalance = variant.getCurrentStock().add(delta);
+        BigDecimal newBalance = switch (transactionReference) {
+            case PURCHASE, ADJUSTMENT -> variant.getCurrentStock().add(delta);
+            case SALES -> variant.getCurrentStock().subtract(delta);
+            default -> throw new IllegalArgumentException(
+                    "Unsupported transaction reference: " + transactionReference);
+        };
 
         log.debug(AppConstants.Logs.CALCULATE_STOCK_DELTA, item.variantId(), delta);
+
 
         variant.setCurrentStock(newBalance);
         variantsToUpdate.add(variant);

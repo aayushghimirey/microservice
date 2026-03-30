@@ -123,7 +123,7 @@ public class KafkaListenerConfig {
         Map<String, Object> props = new HashMap<>();
 
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaProperties.getBootstrapServers());
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaProperties.getGroups().get("finance-group"));
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaProperties.getGroup("finance-group"));
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
 

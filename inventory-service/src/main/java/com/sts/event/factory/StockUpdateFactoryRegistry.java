@@ -31,7 +31,7 @@ public class StockUpdateFactoryRegistry {
 
 
     public StockUpdateEvent forInvoice(InvoiceEvent event) {
-        return null;
+        return invoiceEventFactory.build(event);
     }
 
     public StockUpdateEvent forPurchase(Purchase input) {

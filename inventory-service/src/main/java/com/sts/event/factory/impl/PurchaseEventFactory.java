@@ -4,6 +4,7 @@ import com.sts.event.StockUpdateEvent;
 import com.sts.event.factory.StockUpdateEventFactory;
 import com.sts.model.purchase.Purchase;
 
+import com.sts.utils.enums.TransactionReference;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class PurchaseEventFactory implements StockUpdateEventFactory<Purchase> {
                         item.getQuantity()))
                 .toList();
 
-        return new StockUpdateEvent(purchase.getId(), null, items);
+        return new StockUpdateEvent(purchase.getId(), null, TransactionReference.PURCHASE, items);
     }
 
 

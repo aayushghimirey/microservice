@@ -10,6 +10,7 @@ import com.sts.repository.StockVariantRepository;
 import com.sts.repository.VariantUnitRepository;
 import com.sts.shared.StockOutboxPublisher;
 
+import com.sts.utils.enums.TransactionReference;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -53,7 +54,7 @@ class StockUpdateProcessorImplTest {
     StockUpdateEvent event;
 
     @BeforeEach
-    void setUp() {
+    void setUpPurchase() {
 
         stock = new Stock();
 
@@ -69,6 +70,7 @@ class StockUpdateProcessorImplTest {
         event = new StockUpdateEvent(
                 purchaseId,
                 null,
+                TransactionReference.PURCHASE,
                 List.of(new StockUpdateEvent.StockUpdateItem(
                         variantId, unitId, BigDecimal.valueOf(5)
                 ))

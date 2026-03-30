@@ -53,9 +53,7 @@ public class KafkaListenerConfig {
                 new ConcurrentKafkaListenerContainerFactory<>();
 
         factory.setConsumerFactory(invoiceConsumerFactory());
-
         configureFactory(factory);
-
         return factory;
     }
 
@@ -65,7 +63,7 @@ public class KafkaListenerConfig {
         Map<String, Object> props = new HashMap<>();
 
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaProperties.getBootstrapServers());
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaProperties.getGroups().get("inventory-group"));
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaProperties.getGroup("inventory-group"));
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
 
