@@ -26,14 +26,18 @@ services:
       - "2181:2181"
     volumes:
       - zookeeperdata:/var/lib/zookeeper/data
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "2181" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   kafka:
     image: confluentinc/cp-kafka:7.9.1
     container_name: kafka
     depends_on:
       zookeeper:
-        condition: service_completed_successfully
-
+        condition: service_healthy
     volumes:
       - kafkadata:/var/lib/kafka/data
     environment:
@@ -47,6 +51,12 @@ services:
     ports:
       - "9092:9092"
       - "29092:29092"
+    healthcheck:
+      test: [ "CMD-SHELL", "nc -z localhost 9092 || exit 1" ]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 45s
 
   eureka-service:
     build:
@@ -58,6 +68,12 @@ services:
       - "8761:8761"
     environment:
       SERVER_PORT: 8761
+    healthcheck: # 👈 was missing
+      test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
 
   inventory-service:
     build:
@@ -79,9 +95,9 @@ services:
       postgres:
         condition: service_healthy
       kafka:
-        condition: service_started
+        condition: service_healthy       # 👈 was service_started
       eureka-service:
-        condition: service_started
+        condition: service_healthy       # 👈 was service_started
 
   finance-service:
     build:
@@ -99,12 +115,12 @@ services:
       EUREKA_CLIENT_DEFAULT_ZONE: http://eureka-service:8761/eureka
       SERVER_PORT: 8080
     depends_on:
-      eureka-service:
-        condition: service_started
       postgres:
         condition: service_healthy
       kafka:
-        condition: service_started
+        condition: service_healthy       # 👈 was service_started
+      eureka-service:
+        condition: service_healthy       # 👈 was service_started
 
   menu-service:
     build:
@@ -123,12 +139,12 @@ services:
       SERVER_PORT: 8080
       INVENTORY_SERVICE_URL: http://inventory-service:8080
     depends_on:
-      eureka-service:
-        condition: service_started
       postgres:
         condition: service_healthy
       kafka:
-        condition: service_started
+        condition: service_healthy       # 👈 was service_started
+      eureka-service:
+        condition: service_healthy       # 👈 was service_started
 
   order-service:
     build:
@@ -147,12 +163,12 @@ services:
       SERVER_PORT: 8080
       MENU_SERVICE_URL: http://menu-service:8080
     depends_on:
-      eureka-service:
-        condition: service_started
       postgres:
         condition: service_healthy
       kafka:
-        condition: service_started
+        condition: service_healthy
+      eureka-service:
+        condition: service_healthy       # 👈 was service_started
 
   invoice-service:
     build:
@@ -174,10 +190,9 @@ services:
       postgres:
         condition: service_healthy
       kafka:
-        condition: service_started
+        condition: service_healthy       # 👈 was service_started
       eureka-service:
-        condition: service_started
-
+        condition: service_healthy       # 👈 was service_started
 
   api-gateway:
     build:
@@ -192,8 +207,7 @@ services:
       EUREKA_CLIENT_DEFAULT_ZONE: http://eureka-service:8761/eureka
     depends_on:
       eureka-service:
-        condition: service_started
-
+        condition: service_healthy       # 👈 was service_started
 
 volumes:
   pgdata:

@@ -27,28 +27,26 @@ public class ApiGatewayApplication {
         return builder.routes()
                 .route("inventory-service", predicateSpec -> predicateSpec
                         .path("/stocks/**", "/purchases/**", "/vendors/**")
-//                        .filters(filterSpec -> filterSpec.filter(requestNavigator.apply(new RequestNavigator.Config())))
                         .uri("lb://inventory-service"))
                 .route("finance-service", predicateSpec -> predicateSpec
                         .path("/finances/**")
-//                        .filters(filterSpec -> filterSpec.filter(requestNavigator.apply(new RequestNavigator.Config())))
                         .uri("lb://finance-service"))
                 .route("menu-service", predicateSpec -> predicateSpec
                         .path("/menus/**")
-//                        .filters(filterSpec -> filterSpec.filter(requestNavigator.apply(new RequestNavigator.Config())))
                         .uri("lb://menu-service"))
                 .route("order-service", predicateSpec -> predicateSpec
                         .path("/tables/**", "/reservations/**")
-//                        .filters(filterSpec -> filterSpec.filter(requestNavigator.apply(new RequestNavigator.Config())))
                         .uri("lb://order-service"))
                 .route("invoice-service", predicateSpec -> predicateSpec
                         .path("/invoices/**")
-//                        .filters(filterSpec -> filterSpec.filter(requestNavigator.apply(new RequestNavigator.Config())))
                         .uri("lb://invoice-service"))
                 .route("auth-service", predicateSpec -> predicateSpec
                         .path("/auth/public/**", "/auth/super/**")
                         .uri("lb://auth-service")
                 )
+                .route("order-service-ws", predicateSpec -> predicateSpec
+                        .path("/ws/**")
+                        .uri("lb:ws://order-service"))
 
                 .build();
     }
@@ -63,7 +61,16 @@ public class ApiGatewayApplication {
                 "http://localhost:3000",
                 "http://localhost:5173"
         ));
-        config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        config.setAllowedHeaders(List.of(
+                "Authorization",
+                "Content-Type",
+                "Upgrade",                  // 👈 required for WebSocket
+                "Connection",               // 👈 required for WebSocket
+                "Sec-WebSocket-Key",        // 👈 required for WebSocket
+                "Sec-WebSocket-Version",    // 👈 required for WebSocket
+                "Sec-WebSocket-Extensions", // 👈 required for WebSocket
+                "Sec-WebSocket-Protocol"    // 👈 required for WebSocket
+        ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

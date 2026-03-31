@@ -53,7 +53,9 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         publishOutboxEvent(invoice);
 
+
         return invoiceMapper.toResponse(invoice);
+
     }
 
     @Override

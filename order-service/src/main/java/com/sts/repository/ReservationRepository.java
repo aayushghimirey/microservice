@@ -12,5 +12,6 @@ import java.util.UUID;
 public interface ReservationRepository extends JpaRepository<Reservation, UUID> {
     Reservation findBySessionId(UUID sessionId);
 
-    List<Reservation> findByStatus(ReservationStatus status);
+    Page<Reservation> findByStatus(ReservationStatus status, Pageable pageable);
+
 }

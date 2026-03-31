@@ -4,14 +4,15 @@ import java.util.UUID;
 
 public interface AppConstants {
 
-      UUID TEST_TENANT = UUID.fromString("11111111-1111-1111-1111-111111111111");
-    String ORDER_KAFKA_EVENT_TOPIC ="order-event";
+    UUID TEST_TENANT = UUID.fromString("11111111-1111-1111-1111-111111111111");
+    String ORDER_KAFKA_EVENT_TOPIC = "order-event";
 
     String TABLE_BASE_PATH = "/tables";
     String RESERVATION_BASE_PATH = "/reservations";
 
     interface SUCCESS_MESSAGES {
         String RESERVATION_CREATED = "Reservation Created";
+        String RESERVATION_FETCHED = "Reservation fetch successfully";
         String TABLE_CREATED = "Table create successfully";
         String TABLES_FETCHED = "Tables fetched successfully";
     }

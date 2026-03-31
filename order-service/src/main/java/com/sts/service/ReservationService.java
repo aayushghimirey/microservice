@@ -1,13 +1,14 @@
 package com.sts.service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.sts.enums.AggregateType;
 import com.sts.utils.OrderOutboxPublisher;
 import com.sts.utils.feign.MenuClientGateway;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,6 +49,7 @@ public class ReservationService {
 
     private final MenuClientGateway menuClientGateway;
 
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
     @Transactional
     public ReservationResponse createReservation(CreateReservationCommand request) {
@@ -69,7 +71,15 @@ public class ReservationService {
 
         log.info(AppConstants.LOG_MESSAGES.RESERVATION_CREATED, reservation.getId());
 
-        return reservationMapper.toResponse(reservation);
+        ReservationResponse response = reservationMapper.toResponse(reservation);
+
+        simpMessagingTemplate.convertAndSend("/topic/orders", response);
+
+        return response;
+    }
+
+    public Page<ReservationResponse> getAllReservationByStatus(ReservationStatus status, Pageable pageable) {
+        return reservationRepository.findByStatus(status, pageable).map(reservationMapper::toResponse);
     }
 
     /*

@@ -1,7 +1,9 @@
 package com.sts.controller;
 
 
-import org.springframework.http.MediaType;
+import com.sts.pagination.PageRequestDto;
+import com.sts.response.PagedResponse;
+import com.sts.utils.enums.ReservationStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +16,8 @@ import com.sts.utils.contant.AppConstants;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.util.UUID;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -34,8 +35,12 @@ public class ReservationController {
                 AppConstants.SUCCESS_MESSAGES.RESERVATION_CREATED);
     }
 
-//    @GetMapping(value = "/orders/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-//    public SseEmitter getOrderStream(@RequestParam UUID tenantId) {
-//        return reservationSseService.createEmitter(tenantId);
-//    }
+    @GetMapping
+    public ResponseEntity<PagedResponse<List<ReservationResponse>>> getAllReservations(@RequestParam ReservationStatus status, @ModelAttribute PageRequestDto pageRequestDto) {
+        return AppResponse.success(
+                reservationService.getAllReservationByStatus(status, pageRequestDto.buildPageable()),
+                AppConstants.SUCCESS_MESSAGES.RESERVATION_FETCHED);
+    }
+
+
 }

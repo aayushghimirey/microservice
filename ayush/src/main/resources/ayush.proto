@@ -1,7 +1,0 @@
-message Employee {
-
-   int32 id;
-   string name;
-
-
-}

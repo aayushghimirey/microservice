@@ -1,7 +1,9 @@
 package com.sts.event;
 
+import com.sts.dto.response.ReservationResponse;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +26,8 @@ public class InvoiceListener {
     private final KafkaProperties kafkaProperties;
     private final ReservationRepository reservationRepository;
     private final ReservationMapper reservationMapper;
+    private final SimpMessagingTemplate simpMessagingTemplate;
+
 
     @KafkaListener(topics = "#{@kafkaProperties.getTopic('invoice-event')}", containerFactory = "invoiceKafkaListenerContainerFactory")
     @Transactional
@@ -40,14 +44,19 @@ public class InvoiceListener {
             }
 
             reservation.setStatus(ReservationStatus.COMPLETED);
-
             reservation.getTable().setStatus(TableStatus.OPEN);
-
+            reservation = reservationRepository.save(reservation);
 
             acknowledgment.acknowledge();
+
             log.info(AppConstants.LOG_MESSAGES.RESERVATION_COMPLETED, event.getSessionId());
 
+            ReservationResponse response = reservationMapper.toResponse(reservation);
+            simpMessagingTemplate.convertAndSend("/topic/orders", response);
+
+
         } catch (Exception e) {
+            acknowledgment.acknowledge();
             log.error(AppConstants.LOG_MESSAGES.INVOICE_EVENT_FAILED, event.getInvoiceId(), e);
             throw e;
         }
