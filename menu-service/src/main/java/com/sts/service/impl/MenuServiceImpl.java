@@ -1,13 +1,18 @@
 package com.sts.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.sts.dto.MenuQueryDto;
 import com.sts.model.VariantSnapshot;
 import com.sts.repository.StockSnapshotRepository;
 import com.sts.repository.VariantSnapshotRepository;
+import com.sts.utils.enums.MenuCategory;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +28,7 @@ import com.sts.service.MenuService;
 import com.sts.utils.constant.AppConstants;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -59,8 +65,16 @@ class MenuServiceImpl implements MenuService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<MenuResponse> getAllMenus(Pageable pageable) {
-        return menuRepository.findAll(pageable).map(menuMapper::toResponse);
+    public Page<MenuResponse> getAllMenus(MenuQueryDto menuQueryDto, Pageable pageable) {
+        Specification<Menu> spec = Specification
+                .where((Specification<Menu>) (root, query, cb) -> menuQueryDto.category() == null ? null
+                        : cb.equal(root.<MenuCategory>get("category"), menuQueryDto.category()))
+                .and((Specification<Menu>) (root, query, cb) -> !StringUtils.hasText(menuQueryDto.menuName()) ? null
+                        : cb.like(root.<String>get("menuName"), "%" + menuQueryDto.menuName() + "%"))
+                .and((Specification<Menu>) (root, query, cb) -> !StringUtils.hasText(menuQueryDto.code()) ? null
+                        : cb.equal(root.<String>get("code"), menuQueryDto.code()));
+
+        return menuRepository.findAll(spec, pageable).map(menuMapper::toResponse);
     }
 
     @Override
@@ -97,5 +111,6 @@ class MenuServiceImpl implements MenuService {
                     .orElseThrow(() -> new ResourceNotFoundException(String.format("Unit with id %s not found for variant %s", ingredient.unitId(), ingredient.variantId())));
         });
     }
+
 
 }

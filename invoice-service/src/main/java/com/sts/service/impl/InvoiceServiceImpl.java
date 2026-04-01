@@ -10,6 +10,7 @@ import com.sts.service.resolver.ReferenceResolver;
 import com.sts.helper.outbox.OutboxPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +38,9 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final InvoiceRepository invoiceRepository;
     private final InvoiceMapper invoiceMapper;
 
+    private final SimpMessagingTemplate simpMessagingTemplate;
+
+
     private final OutboxPublisher outboxPublisher;
     private final InvoiceEventFactory invoiceEventFactory;
     private final KafkaProperties kafkaProperties;
@@ -53,8 +57,11 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         publishOutboxEvent(invoice);
 
+        InvoiceResponse response = invoiceMapper.toResponse(invoice);
 
-        return invoiceMapper.toResponse(invoice);
+        simpMessagingTemplate.convertAndSend("/topic/invoices", response);
+
+        return response;
 
     }
 

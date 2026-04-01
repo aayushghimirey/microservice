@@ -104,6 +104,7 @@ services:
       context: .
       args:
         SERVICE_NAME: finance-service
+
     container_name: finance-service
     ports:
       - "8001:8080"

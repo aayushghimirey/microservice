@@ -3,10 +3,12 @@ package com.sts.event.listener;
 import java.math.BigDecimal;
 
 import com.sts.event.OrderCreatedEvent;
+import com.sts.mapper.InvoiceMapper;
 import com.sts.model.InvoiceItemIngredient;
 import com.sts.utils.constant.AppConstants;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,11 +27,16 @@ import lombok.extern.slf4j.Slf4j;
 public class OrderEventListener {
 
     private final KafkaProperties kafkaProperties;
+    private final SimpMessagingTemplate simpMessagingTemplate;
+
     private final InvoiceRepository invoiceRepository;
+
+    private final InvoiceMapper invoiceMapper;
 
     @Transactional
     @KafkaListener(topics = "#{@kafkaProperties.getTopic('order-event')}", groupId = "#{@kafkaProperties.getGroup('invoice-group')}")
     public void listen(OrderCreatedEvent event, Acknowledgment acknowledgment) {
+
 
         log.info(AppConstants.LOG_MESSAGES.ORDER_EVENT_MESSAGE, event.getSessionId());
 
@@ -43,6 +50,8 @@ public class OrderEventListener {
             }
 
             invoiceRepository.save(invoice);
+
+            simpMessagingTemplate.convertAndSend("/topic/invoices", invoiceMapper.toResponse(invoice));
 
             log.info("Invoice processed successfully for session: {}", event.getSessionId());
 
@@ -63,6 +72,12 @@ public class OrderEventListener {
         invoice.setSessionId(event.getSessionId());
         invoice.setTableId(event.getTableId());
         invoice.setReservationTime(event.getReservationTime());
+
+//        invoice
+//
+//        event.getItems().forEach(ing -> {
+//
+//        });
 
         invoice.calculateGrossTotal();
     }

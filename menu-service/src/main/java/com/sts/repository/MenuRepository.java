@@ -7,8 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.sts.model.Menu;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface MenuRepository extends JpaRepository<Menu, UUID> {
+public interface MenuRepository extends JpaRepository<Menu, UUID>, JpaSpecificationExecutor<Menu> {
 
     boolean existsByCode(String code);
 

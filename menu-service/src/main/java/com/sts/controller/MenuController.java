@@ -3,6 +3,7 @@ package com.sts.controller;
 import java.util.List;
 import java.util.UUID;
 
+import com.sts.dto.MenuQueryDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,10 +43,10 @@ public class MenuController {
     }
 
     @GetMapping
-    public ResponseEntity<PagedResponse<List<MenuResponse>>> getAllMenus(
-            @ModelAttribute PageRequestDto pageRequestDto) {
+    public ResponseEntity<PagedResponse<List<MenuResponse>>> getAllMenus(@ModelAttribute MenuQueryDto menuQueryDto,
+                                                                         @ModelAttribute PageRequestDto pageRequestDto) {
         log.info(AppConstants.LOG_MESSAGES.FETCHING_ALL_MENUS, pageRequestDto.getPage(), pageRequestDto.getSize());
-        var menus = menuService.getAllMenus(pageRequestDto.buildPageable());
+        var menus = menuService.getAllMenus(menuQueryDto, pageRequestDto.buildPageable());
         return AppResponse.success(menus, AppConstants.SUCCESS_MESSAGES.MENUS_FETCHED);
     }
 
