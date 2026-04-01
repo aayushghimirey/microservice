@@ -30,6 +30,7 @@ public class PurchaseRecord extends Audit {
     @Column(name = "money_transaction", nullable = false, updatable = false)
     private MoneyTransaction moneyTransaction;
 
+    @Column(name = "vat_amount")
     private BigDecimal vatAmount;
 
     @Column(name = "gross_total", nullable = false, updatable = false)

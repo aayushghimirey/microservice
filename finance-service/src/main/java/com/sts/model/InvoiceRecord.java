@@ -2,6 +2,7 @@ package com.sts.model;
 
 
 import com.sts.domain.Audit;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import lombok.*;
@@ -20,13 +21,17 @@ import java.util.UUID;
 @Builder
 public class InvoiceRecord extends Audit {
 
+    @Column(name = "invoice_id", nullable = false, updatable = false)
     private UUID invoiceId;
 
     @Builder.Default
+    @Column(name = "gross_total", nullable = false, updatable = false)
     private BigDecimal grossTotal = BigDecimal.ZERO;
 
+    @Column(name = "reservation_start_time", updatable = false, nullable = false)
     private LocalDateTime reservationTime;
 
+    @Column(name = "reservation_end_time", updatable = false, nullable = false)
     private LocalDateTime reservationEndTime;
 
 

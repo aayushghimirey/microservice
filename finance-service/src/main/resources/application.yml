@@ -1,5 +1,4 @@
 spring:
-
   application:
     name: finance-service
 
@@ -7,6 +6,7 @@ spring:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/finance}
     username: ${SPRING_DATASOURCE_USERNAME:postgres}
     password: ${SPRING_DATASOURCE_PASSWORD:admin}
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -34,3 +34,11 @@ eureka:
       defaultZone: ${EUREKA_CLIENT_DEFAULT_ZONE:http://eureka-service:8761/eureka}
     register-with-eureka: true
     fetch-registry: false
+
+
+logging:
+  level:
+    root: info
+    com.sts: debug
+  file:
+    name: logs/finance.log

@@ -1,4 +1,4 @@
-package com.sts.config;
+package com.sts.config.kafka;
 
 import com.sts.event.InvoiceEvent;
 import com.sts.event.PurchaseCreatedEvent;
@@ -6,7 +6,6 @@ import com.sts.topics.KafkaProperties;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;

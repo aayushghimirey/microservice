@@ -20,15 +20,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PurchaseEventListener {
 
-    private final PurchaseRecordRepository purchaseRecordRepository;
-    private final PurchaseRecordMapper purchaseRecordMapper;
     private final KafkaProperties kafkaProperties;
+
+    private final PurchaseRecordRepository purchaseRecordRepository;
+
+    private final PurchaseRecordMapper purchaseRecordMapper;
 
     @KafkaListener(topics = "#{@kafkaProperties.getTopic('purchase-event')}",
             containerFactory = "purchaseKafkaListenerContainerFactory")
     public void listen(PurchaseCreatedEvent event, Acknowledgment acknowledgment) {
 
-        log.info(AppConstants.LOG_MESSAGES.PURCHASE_EVENT_RECEIVED, event.getPurchaseId());
+        log.info("Purchase event received - purchase: {}", event.getPurchaseId());
 
         try {
             PurchaseRecord purchaseRecord = purchaseRecordMapper.buildPurchaseRecord(event);
@@ -37,20 +39,11 @@ public class PurchaseEventListener {
 
             acknowledgment.acknowledge();
 
-            log.info(AppConstants.LOG_MESSAGES.PURCHASE_RECORD_SAVED, event.getPurchaseId());
+            log.info("Purchase record saved - invoiceId: {}", event.getPurchaseId());
 
         } catch (Exception e) {
-            log.error(AppConstants.LOG_MESSAGES.PURCHASE_EVENT_FAILED, event.getPurchaseId(), e);
-            throw e;
+            log.error("Purchase event processing failed - invoiceId: {}", event.getPurchaseId(), e);
         }
-    }
-
-
-    @KafkaListener(topics = "PURCHASE_EVENT", groupId = "debug-group",
-            containerFactory = "purchaseKafkaListenerContainerFactory"
-    )
-    public void debug(String msg) {
-        System.out.println("MSG: " + msg);
     }
 
 }

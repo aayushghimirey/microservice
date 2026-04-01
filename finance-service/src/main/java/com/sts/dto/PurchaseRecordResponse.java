@@ -12,6 +12,9 @@ import java.util.UUID;
 public record PurchaseRecordResponse(
         UUID id,
         UUID purchaseId,
-        BillingType billingType, MoneyTransaction moneyTransaction, BigDecimal vatAmount, BigDecimal grossTotal
+        BillingType billingType,
+        MoneyTransaction moneyTransaction,
+        BigDecimal vatAmount,
+        BigDecimal grossTotal
 ) {
 }
