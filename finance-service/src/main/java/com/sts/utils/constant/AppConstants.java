@@ -10,8 +10,5 @@ public interface AppConstants {
         String PURCHASE_FETCHED = "Purchase record fetched successfully";
     }
 
-    interface  ERROR_MESSAGES {
-
-    }
 
 }

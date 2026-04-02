@@ -17,9 +17,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Builder
+@Table(name = "purchase_record")
 public class PurchaseRecord extends Audit {
 
-    @Column(name = "purchaseId", nullable = false, updatable = false)
+    @Column(name = "purchase_id", nullable = false, updatable = false)
     private UUID purchaseId;
 
     @Enumerated(EnumType.STRING)

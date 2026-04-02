@@ -9,10 +9,13 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
-      show-sql: true
-    properties:
-      hibernate.format_sql: true
+      ddl-auto: validate
+
+  flyway:
+    enabled: true
+    url: ${spring.datasource.url}
+    user: ${FLYWAY_USERNAME}
+    password: ${FLYWAY_PASSWORD}
 
 server:
   port: ${SERVER_PORT:8081}
@@ -42,3 +45,13 @@ logging:
     com.sts: debug
   file:
     name: logs/finance.log
+
+
+management:
+  endpoint:
+    env:
+      show-values: ALWAYS
+  endpoints:
+    web:
+      exposure:
+        include: "*"

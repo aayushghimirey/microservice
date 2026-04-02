@@ -8,12 +8,11 @@ import java.util.UUID;
 
 @Builder
 public record InvoiceRecordResponse(
+        UUID id,
         UUID invoiceId,
-
         BigDecimal grossTotal,
-
         LocalDateTime reservationTime,
-
-        LocalDateTime reservationEndTime
+        LocalDateTime reservationEndTime,
+        LocalDateTime createdDateTime
 ) {
 }

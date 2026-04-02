@@ -9,12 +9,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class InvoiceRecordMapper {
 
-    public InvoiceRecordResponse toResponse(InvoiceRecord record) {
+    public InvoiceRecordResponse toResponse(InvoiceRecord entity) {
         return InvoiceRecordResponse.builder()
-                .invoiceId(record.getInvoiceId())
-                .grossTotal(record.getGrossTotal())
-                .reservationTime(record.getReservationTime())
-                .reservationEndTime(record.getReservationEndTime())
+                .id(entity.getId())
+                .invoiceId(entity.getInvoiceId())
+                .grossTotal(entity.getGrossTotal())
+                .reservationTime(entity.getReservationTime())
+                .reservationEndTime(entity.getReservationEndTime())
+                .createdDateTime(entity.getCreatedDateTime())
                 .build();
     }
 

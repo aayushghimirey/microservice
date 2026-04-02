@@ -20,13 +20,14 @@ public class PurchaseRecordMapper {
                 .build();
     }
 
-    public PurchaseRecordResponse toResponse(PurchaseRecord record) {
+    public PurchaseRecordResponse toResponse(PurchaseRecord entity) {
         return PurchaseRecordResponse.builder()
-                .id(record.getId())
-                .purchaseId(record.getPurchaseId())
-                .billingType(record.getBillingType())
-                .vatAmount(record.getVatAmount())
-                .grossTotal(record.getGrossTotal()).build();
+                .id(entity.getId())
+                .purchaseId(entity.getPurchaseId())
+                .billingType(entity.getBillingType())
+                .vatAmount(entity.getVatAmount())
+                .createdDateTime(entity.getCreatedDateTime())
+                .grossTotal(entity.getGrossTotal()).build();
     }
 
 }

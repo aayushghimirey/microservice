@@ -5,6 +5,7 @@ import com.sts.domain.Audit;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.Table;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -19,6 +20,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Builder
+@Table(name = "invoice_record")
 public class InvoiceRecord extends Audit {
 
     @Column(name = "invoice_id", nullable = false, updatable = false)

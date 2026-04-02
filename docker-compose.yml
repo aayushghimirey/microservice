@@ -114,6 +114,8 @@ services:
       SPRING_DATASOURCE_PASSWORD: admin
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       EUREKA_CLIENT_DEFAULT_ZONE: http://eureka-service:8761/eureka
+      FLYWAY_USERNAME: postgres
+      FLYWAY_PASSWORD: admin
       SERVER_PORT: 8080
     depends_on:
       postgres:

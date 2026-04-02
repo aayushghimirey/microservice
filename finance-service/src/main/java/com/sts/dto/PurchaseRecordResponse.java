@@ -6,6 +6,7 @@ import com.sts.enums.MoneyTransaction;
 import lombok.Builder;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Builder
@@ -15,6 +16,8 @@ public record PurchaseRecordResponse(
         BillingType billingType,
         MoneyTransaction moneyTransaction,
         BigDecimal vatAmount,
-        BigDecimal grossTotal
+        BigDecimal grossTotal,
+        LocalDateTime createdDateTime
+
 ) {
 }
