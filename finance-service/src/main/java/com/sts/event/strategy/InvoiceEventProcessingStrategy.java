@@ -1,27 +1,43 @@
 package com.sts.event.strategy;
 
-import com.sts.event.EventProcessingStrategy;
 import com.sts.event.InvoiceEvent;
 import com.sts.mapper.InvoiceRecordMapper;
+import com.sts.model.InvoiceRecord;
 import com.sts.repository.InvoiceRecordRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class InvoiceEventProcessingStrategy implements EventProcessingStrategy<InvoiceEvent> {
+public class InvoiceEventProcessingStrategy extends AbstractEventProcessingStrategy<InvoiceEvent> {
 
     private final InvoiceRecordRepository invoiceRecordRepository;
     private final InvoiceRecordMapper invoiceRecordMapper;
 
+
     @Override
-    public void process(InvoiceEvent event) {
-        if (invoiceRecordRepository.findByInvoiceId(event.getInvoiceId()).isPresent()) {
-            log.warn("Duplicate invoice id found - {}", event.getInvoiceId());
-        }
-        invoiceRecordRepository.save(invoiceRecordMapper.buildRecord(event));
+    @Transactional
+    protected void save(InvoiceEvent event) {
+        invoiceRecordRepository.findByInvoiceId(event.getInvoiceId())
+                .ifPresentOrElse(
+                        existing -> update(existing, event),
+                        () -> insert(event)
+                );
     }
+
+    // helpers
+    private void update(InvoiceRecord existing, InvoiceEvent event) {
+        existing.setGrossTotal(event.getGrossTotal());
+        log.info("Invoice record updated - invoiceId: {}", event.getInvoiceId());
+    }
+
+    private void insert(InvoiceEvent event) {
+        invoiceRecordRepository.save(invoiceRecordMapper.buildEntity(event));
+        log.info("Invoice record inserted - invoiceId: {}", event.getInvoiceId());
+    }
+
 }

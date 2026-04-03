@@ -5,27 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ab18d2d-25ec-4bf1-8ae3-75379509bd42" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/service/impl/InvoiceRecordServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finance-service/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finance-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/controller/InvoiceRecordController.java" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/controller/InvoiceRecordController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/controller/PurchaseRecordController.java" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/controller/PurchaseRecordController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/dto/InvoiceRecordResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/dto/InvoiceRecordResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/dto/PurchaseRecordResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/dto/PurchaseRecordResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/mapper/InvoiceRecordMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/mapper/InvoiceRecordMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/mapper/PurchaseRecordMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/mapper/PurchaseRecordMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/model/InvoiceRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/model/InvoiceRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/model/PurchaseRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/model/PurchaseRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/service/InvoiceRecordService.java" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/service/InvoiceRecordService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/service/PurchaseRecordService.java" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/service/PurchaseRecordService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/utils/constant/AppConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/utils/constant/AppConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finance-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finance-service/src/main/resources/logback.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared-core/src/main/java/com/sts/domain/Audit.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared-core/src/main/java/com/sts/domain/Audit.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

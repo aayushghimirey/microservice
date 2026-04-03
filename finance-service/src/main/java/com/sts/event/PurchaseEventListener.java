@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
@@ -20,18 +19,17 @@ public class PurchaseEventListener {
 
     @KafkaListener(topics = "#{@kafkaProperties.getTopic('purchase-event')}",
             containerFactory = "purchaseKafkaListenerContainerFactory")
-    @Transactional
     public void handlePurchaseEvent(PurchaseCreatedEvent event, Acknowledgment acknowledgment) {
 
-        log.info("Purchase event received - purchase: {}", event.getPurchaseId());
+        log.info("Purchase event received - purchaseId: {}", event.getPurchaseId());
 
-        try {
-            purchaseEventProcessingStrategy.process(event);
-            acknowledgment.acknowledge();
-            log.info("Purchase record saved - invoiceId: {}", event.getPurchaseId());
-        } catch (Exception e) {
-            log.error("Purchase event processing failed - invoiceId: {}", event.getPurchaseId(), e);
-        }
+        purchaseEventProcessingStrategy.process(event);
+
+        acknowledgment.acknowledge();
+
+        log.info("Purchase record saved - purchaseId: {}", event.getPurchaseId());
+
+
     }
 
 }

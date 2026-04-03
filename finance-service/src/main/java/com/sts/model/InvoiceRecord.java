@@ -23,11 +23,11 @@ import java.util.UUID;
 @Table(name = "invoice_record")
 public class InvoiceRecord extends Audit {
 
-    @Column(name = "invoice_id", nullable = false, updatable = false)
+    @Column(name = "invoice_id", nullable = false, updatable = false, unique = true)
     private UUID invoiceId;
 
     @Builder.Default
-    @Column(name = "gross_total", nullable = false, updatable = false)
+    @Column(name = "gross_total", nullable = false)
     private BigDecimal grossTotal = BigDecimal.ZERO;
 
     @Column(name = "reservation_start_time", updatable = false, nullable = false)

@@ -8,9 +8,10 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 
 @Component
-public class PurchaseRecordMapper {
+public class PurchaseRecordMapper implements AbstractMapper<PurchaseRecord, PurchaseRecordResponse, PurchaseCreatedEvent> {
 
-    public PurchaseRecord buildRecord(PurchaseCreatedEvent event) {
+    @Override
+    public PurchaseRecord buildEntity(PurchaseCreatedEvent event) {
         return PurchaseRecord.builder()
                 .purchaseId(event.getPurchaseId())
                 .billingType(event.getBillingType())
@@ -20,6 +21,7 @@ public class PurchaseRecordMapper {
                 .build();
     }
 
+    @Override
     public PurchaseRecordResponse toResponse(PurchaseRecord entity) {
         return PurchaseRecordResponse.builder()
                 .id(entity.getId())

@@ -20,7 +20,7 @@ import java.util.UUID;
 @Table(name = "purchase_record")
 public class PurchaseRecord extends Audit {
 
-    @Column(name = "purchase_id", nullable = false, updatable = false)
+    @Column(name = "purchase_id", nullable = false, updatable = false, unique = true)
     private UUID purchaseId;
 
     @Enumerated(EnumType.STRING)
