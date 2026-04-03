@@ -20,7 +20,7 @@ public class InvoiceRecordMapper {
                 .build();
     }
 
-    public InvoiceRecord buildInvoiceRecord(InvoiceEvent event) {
+    public InvoiceRecord buildRecord(InvoiceEvent event) {
         return InvoiceRecord.builder()
                 .invoiceId(event.getInvoiceId())
                 .reservationTime(event.getReservationTime())

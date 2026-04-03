@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Component
 public class PurchaseRecordMapper {
 
-    public PurchaseRecord buildPurchaseRecord(PurchaseCreatedEvent event) {
+    public PurchaseRecord buildRecord(PurchaseCreatedEvent event) {
         return PurchaseRecord.builder()
                 .purchaseId(event.getPurchaseId())
                 .billingType(event.getBillingType())
