@@ -1,5 +1,6 @@
 spring:
-
+  rls:
+    enabled: true
   application:
     name: auth-service
 

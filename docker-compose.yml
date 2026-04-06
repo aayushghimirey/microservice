@@ -99,6 +99,29 @@ services:
       eureka-service:
         condition: service_healthy       # 👈 was service_started
 
+  auth-service:
+    build:
+      context: .
+      args:
+        SERVICE_NAME: auth-service
+    container_name: auth-service
+    ports:
+      - "8007:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/auth
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin
+      SERVER_PORT: 8080
+      EUREKA_CLIENT_DEFAULT_ZONE: http://eureka-service:8761/eureka
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy       # 👈 was service_started
+      eureka-service:
+        condition: service_healthy       # 👈 was service_started
+
   finance-service:
     build:
       context: .

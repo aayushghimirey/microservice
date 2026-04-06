@@ -16,8 +16,8 @@ eureka:
 
 app:
   security:
-    secret-key: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b
     gateway-secret: sts@123_gateway_pass_#$%^&*validated_by_aayush+ghimire077@something.sts.com.test&&%secret
+    secret-key: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b
 
 logging:
   level:

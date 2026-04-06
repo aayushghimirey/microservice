@@ -3,16 +3,13 @@ package com.sts.event.factory.impl;
 import com.sts.event.InvoiceEvent;
 import com.sts.event.StockUpdateEvent;
 import com.sts.event.factory.StockUpdateEventFactory;
-import com.sts.utils.enums.StockUpdateSource;
 import com.sts.utils.enums.TransactionReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 @Component
 public class InvoiceEventFactory implements StockUpdateEventFactory<InvoiceEvent> {

@@ -5,7 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ab18d2d-25ec-4bf1-8ae3-75379509bd42" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/shared-core/src/main/java/com/sts/domain/TransactionAspect.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-core/src/main/java/com/sts/filter/SecurityCheckFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-core/src/main/java/com/sts/filter/TenantHolder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-gateway/src/main/java/com/sts/ApiGatewayApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/src/main/java/com/sts/ApiGatewayApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/finance-service/src/test/java/com/sts/event/InvoiceEventListenerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/src/test/java/com/sts/event/InvoiceEventListenerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/finance-service/src/test/java/com/sts/service/impl/InvoiceRecordServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/src/test/java/com/sts/service/impl/InvoiceRecordServiceImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/event/factory/impl/InvoiceEventFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/event/factory/impl/InvoiceEventFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/src/test/java/com/sts/repository/StockRepositoryTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/src/test/java/com/sts/service/impl/StockServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/test/java/com/sts/service/impl/StockServiceImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory-service/src/test/java/com/sts/service/impl/StockUpdateProcessorImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/test/java/com/sts/service/impl/StockUpdateProcessorImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-core/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/shared-core/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-core/src/main/java/com/sts/domain/Audit.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared-core/src/main/java/com/sts/domain/Audit.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,44 +59,46 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.ApiGatewayApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.EurekaApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.FinanceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.InventoryApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.InvoiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.MenuApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.OrderApplication.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.InvoiceEventListenerTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PurchaseServiceImplTest.createPurchase.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PurchaseServiceImplTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StockRepositoryTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StockRepositoryTest.existsByName.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StockServiceImplTest.adjustStock.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StockServiceImplTest.createStock_shouldThrowDuplicateResourceException_whenNameExists.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StockServiceImplTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StockServiceImplTest.shouldCreateStockSuccessfully.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_directory_selection&quot;: &quot;A:/re-microservice/inventory-service/src/main/java/com/sts/shared/outbox&quot;,
-    &quot;last_opened_file_path&quot;: &quot;A:/re-microservice/inventory-service&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15722656&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor&quot;,
-    &quot;settings.editor.splitter.proportion&quot;: &quot;0.26358974&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.ApiGatewayApplication.executor": "Run",
+    "Application.EurekaApplication.executor": "Run",
+    "Application.FinanceApplication.executor": "Run",
+    "Application.InventoryApplication.executor": "Run",
+    "Application.InvoiceApplication.executor": "Run",
+    "Application.MenuApplication.executor": "Run",
+    "Application.OrderApplication.executor": "Run",
+    "JUnit.InvoiceEventListenerTest (1).executor": "Run",
+    "JUnit.InvoiceEventListenerTest.executor": "Run",
+    "JUnit.PurchaseServiceImplTest.createPurchase.executor": "Run",
+    "JUnit.PurchaseServiceImplTest.executor": "Run",
+    "JUnit.StockRepositoryTest.executor": "Run",
+    "JUnit.StockRepositoryTest.existsByName.executor": "Run",
+    "JUnit.StockServiceImplTest.adjustStock.executor": "Run",
+    "JUnit.StockServiceImplTest.createStock_shouldThrowDuplicateResourceException_whenNameExists.executor": "Run",
+    "JUnit.StockServiceImplTest.executor": "Run",
+    "JUnit.StockServiceImplTest.shouldCreateStockSuccessfully.executor": "Run",
+    "JUnit.StockUpdateProcessorImplTest.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "security-worker",
+    "kotlin-language-version-configured": "true",
+    "last_directory_selection": "A:/re-microservice/inventory-service/src/main/java/com/sts/shared/outbox",
+    "last_opened_file_path": "A:/real-time-location",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15722656",
+    "project.structure.side.proportion": "0.2",
+    "run.configurations.included.in.services": "true",
+    "settings.editor.selected.configurable": "preferences.editor",
+    "settings.editor.splitter.proportion": "0.26358974",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.sts.service.specification" />
@@ -117,38 +135,69 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.InvoiceEventListenerTest">
-    <configuration name="InvoiceEventListenerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="inventory-service" />
+  <component name="RunManager" selected="JUnit.InvoiceEventProcessingStrategyTest">
+    <configuration name="InvoiceEventListenerTest (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="finance-service" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.sts.event.listener.*" />
+          <option name="PATTERN" value="com.sts.event.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.sts.event.listener" />
-      <option name="MAIN_CLASS_NAME" value="com.sts.event.listener.InvoiceEventListenerTest" />
+      <option name="PACKAGE_NAME" value="com.sts.event" />
+      <option name="MAIN_CLASS_NAME" value="com.sts.event.InvoiceEventListenerTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PurchaseServiceImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="inventory-service" />
+    <configuration name="InvoiceEventProcessingStrategyTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="finance-service" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.sts.service.impl.*" />
+          <option name="PATTERN" value="com.sts.event.strategy.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.sts.service.impl" />
-      <option name="MAIN_CLASS_NAME" value="com.sts.service.impl.PurchaseServiceImplTest" />
+      <option name="PACKAGE_NAME" value="com.sts.event.strategy" />
+      <option name="MAIN_CLASS_NAME" value="com.sts.event.strategy.InvoiceEventProcessingStrategyTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PurchaseServiceImplTest.createPurchase" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="InvoiceRecordServiceImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="finance-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.sts.service.impl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.sts.service.impl" />
+      <option name="MAIN_CLASS_NAME" value="com.sts.service.impl.InvoiceRecordServiceImplTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="InvoiceRecordServiceImplTest.should_return_normal" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="finance-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.sts.service.impl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.sts.service.impl" />
+      <option name="MAIN_CLASS_NAME" value="com.sts.service.impl.InvoiceRecordServiceImplTest" />
+      <option name="METHOD_NAME" value="should_return_normal" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StockUpdateProcessorImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="inventory-service" />
       <extension name="coverage">
         <pattern>
@@ -157,39 +206,7 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.sts.service.impl" />
-      <option name="MAIN_CLASS_NAME" value="com.sts.service.impl.PurchaseServiceImplTest" />
-      <option name="METHOD_NAME" value="createPurchase" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="StockRepositoryTest.existsByName" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="inventory-service" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.sts.repository.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.sts.repository" />
-      <option name="MAIN_CLASS_NAME" value="com.sts.repository.StockRepositoryTest" />
-      <option name="METHOD_NAME" value="existsByName" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="StockServiceImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="inventory-service" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.sts.service.impl.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.sts.service.impl" />
-      <option name="MAIN_CLASS_NAME" value="com.sts.service.impl.StockServiceImplTest" />
+      <option name="MAIN_CLASS_NAME" value="com.sts.service.impl.StockUpdateProcessorImplTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -253,11 +270,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.InvoiceEventListenerTest" />
-        <item itemvalue="JUnit.PurchaseServiceImplTest.createPurchase" />
-        <item itemvalue="JUnit.PurchaseServiceImplTest" />
-        <item itemvalue="JUnit.StockServiceImplTest" />
-        <item itemvalue="JUnit.StockRepositoryTest.existsByName" />
+        <item itemvalue="JUnit.InvoiceEventProcessingStrategyTest" />
+        <item itemvalue="JUnit.InvoiceRecordServiceImplTest" />
+        <item itemvalue="JUnit.InvoiceRecordServiceImplTest.should_return_normal" />
+        <item itemvalue="JUnit.InvoiceEventListenerTest (1)" />
+        <item itemvalue="JUnit.StockUpdateProcessorImplTest" />
       </list>
     </recent_temporary>
   </component>

@@ -1,6 +1,7 @@
 package com.sts.event;
 
 import com.sts.event.strategy.InvoiceEventProcessingStrategy;
+import com.sts.filter.TenantHolder;
 import com.sts.topics.KafkaProperties;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -39,6 +40,7 @@ class InvoiceEventListenerTest {
 
     @Test
     void should_process_and_acknowledge() {
+        TenantHolder.setTenantId(UUID.randomUUID());
         invoiceEventListener.handleInvoiceEvent(invoiceEvent, acknowledgment);
 
         verify(invoiceEventProcessingStrategy).process(invoiceEvent);

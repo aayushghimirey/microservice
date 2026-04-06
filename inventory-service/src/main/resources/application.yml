@@ -1,5 +1,6 @@
 spring:
-
+  rls:
+    enabled: true
   profiles:
     active: prod
 
@@ -20,6 +21,8 @@ server:
   port: ${SERVER_PORT:8080}
 
 app:
+  security:
+    gateway-secret: sts@123_gateway_pass_#$%^&*validated_by_aayush+ghimire077@something.sts.com.test&&%secret
   clients:
     menu-service:
       url: ${MENU_SERVICE_URL:http://localhost:8082}
@@ -33,7 +36,10 @@ app:
       inventory-group: inventory-group-consumer
 
 
-
+logging:
+  level:
+    root: INFO
+    com.sts: DEBUG
 
 eureka:
   client:

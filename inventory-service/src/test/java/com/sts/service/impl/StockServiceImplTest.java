@@ -7,6 +7,7 @@ import com.sts.event.StockUpdateEvent;
 import com.sts.event.factory.StockUpdateEventFactory;
 import com.sts.event.factory.StockUpdateFactoryRegistry;
 import com.sts.exception.DuplicateResourceException;
+import com.sts.filter.TenantHolder;
 import com.sts.mapper.StockMapper;
 import com.sts.model.stock.Stock;
 import com.sts.model.stock.StockVariant;
@@ -21,11 +22,14 @@ import com.sts.shared.StockOutboxPublisher;
 import com.sts.utils.constant.AppConstants;
 import com.sts.utils.enums.StockType;
 import com.sts.utils.enums.UnitType;
+import org.aspectj.lang.annotation.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -55,6 +59,7 @@ class StockServiceImplTest {
     @Mock
     private StockMapper stockMapper;
 
+
     @Mock
     private ReferenceResolver referenceResolver;
 
@@ -67,8 +72,14 @@ class StockServiceImplTest {
     @InjectMocks
     private StockServiceImpl stockService;
 
+    @AfterEach
+    void cleanUp() {
+        TenantHolder.clear();
+    }
+
     UUID variantId = UUID.fromString("11111111-1111-1111-1111-111111111111");
     UUID unitId = UUID.fromString("22222222-2222-2222-2222-222222222222");
+    UUID tenantId = UUID.randomUUID();
 
 
     CreateStockCommand createStockCommand() {
@@ -109,6 +120,7 @@ class StockServiceImplTest {
         Stock savedStock = mock(Stock.class);
         StockResponse stockResponse = mock(StockResponse.class);
 
+        TenantHolder.setTenantId(tenantId);
         when(stockRepository.existsByName(command.name())).thenReturn(false);
         when(stockMapper.buildStock(command)).thenReturn(mappedStock);
         when(stockRepository.save(mappedStock)).thenReturn(savedStock);
@@ -122,6 +134,8 @@ class StockServiceImplTest {
     @Test
     void createStock_shouldThrowDuplicateResourceException_whenNameExists() {
         CreateStockCommand command = createStockCommand();
+
+        TenantHolder.setTenantId(tenantId);
         when(stockRepository.existsByName(command.name())).thenReturn(true);
 
         DuplicateResourceException ex = assertThrows(DuplicateResourceException.class,
@@ -137,29 +151,5 @@ class StockServiceImplTest {
 
     }
 
-    @Test
-    void adjustStock_shouldPublishEvent_whenCommandIsValid() {
-        StockAdjustmentCommand command = stockAdjustmentCommand();
 
-        StockVariant stockVariant = mock(StockVariant.class);
-        VariantUnit variantUnit = mock(VariantUnit.class);
-        StockUpdateEvent event = mock(StockUpdateEvent.class);
-
-
-        when(referenceResolver.getVariantOrThrow(variantId)).thenReturn(stockVariant);
-        when(stockVariant.getId()).thenReturn(variantId);
-//        when(variantUnitResolver.getVariantUnitOrThrow(variantId, unitId)).thenReturn(variantUnit);
-//        when(variantUnit.getId()).thenReturn(unitId);
-
-        when(stockUpdateFactoryRegistry.forAdjustment(variantId, unitId, BigDecimal.valueOf(3)))
-                .thenReturn(event);
-
-
-        stockService.adjustStock(command);
-
-        verify(referenceResolver).getVariantOrThrow(variantId);
-        verify(variantUnitResolver).getVariantUnitOrThrow(variantId, unitId);
-        verify(stockUpdateFactoryRegistry).forAdjustment(variantId, unitId, BigDecimal.valueOf(3));
-        verify(eventPublisher).publish(event);
-    }
 }

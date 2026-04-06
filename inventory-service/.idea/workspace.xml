@@ -5,7 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b17b2c76-4396-44bb-a00d-3c9536cd03a6" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../shared-core/src/main/java/com/sts/domain/TransactionAspect.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../shared-core/src/main/java/com/sts/filter/SecurityCheckFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../shared-core/src/main/java/com/sts/filter/TenantHolder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/impl/InvoiceEventFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/impl/InvoiceEventFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/sts/service/impl/StockServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/sts/service/impl/StockServiceImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shared-core/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../shared-core/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shared-core/src/main/java/com/sts/domain/Audit.java" beforeDir="false" afterPath="$PROJECT_DIR$/../shared-core/src/main/java/com/sts/domain/Audit.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +63,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "security-worker",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "A:/re-microservice/menu-service",
     "project.structure.last.edited": "Modules",

@@ -1,6 +1,7 @@
 package com.sts.service.impl;
 
 import com.sts.dto.InvoiceRecordResponse;
+import com.sts.filter.TenantHolder;
 import com.sts.mapper.InvoiceRecordMapper;
 import com.sts.model.InvoiceRecord;
 import com.sts.repository.InvoiceRecordRepository;
@@ -37,6 +38,8 @@ class InvoiceRecordServiceImplTest {
 
     @Test
     void should_return_normal() {
+        TenantHolder.setTenantId(UUID.randomUUID());
+
 
         InvoiceRecord entity = new InvoiceRecord();
         InvoiceRecordResponse response = new InvoiceRecordResponse(

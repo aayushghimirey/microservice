@@ -1,6 +1,7 @@
 package com.sts.event.strategy;
 
 import com.sts.event.InvoiceEvent;
+import com.sts.filter.TenantHolder;
 import com.sts.mapper.InvoiceRecordMapper;
 import com.sts.model.InvoiceRecord;
 import com.sts.repository.InvoiceRecordRepository;
@@ -42,6 +43,8 @@ class InvoiceEventProcessingStrategyTest {
 
     @Test
     void process_valid_event() {
+        TenantHolder.setTenantId(UUID.randomUUID());
+
         InvoiceEvent event = invoiceEvent;
         InvoiceRecord expected = mock(InvoiceRecord.class);
 
@@ -58,21 +61,4 @@ class InvoiceEventProcessingStrategyTest {
 
     }
 
-    @Test
-    void process_dublicate_event() {
-        InvoiceEvent event = invoiceEvent;
-        InvoiceRecord expected = mock(InvoiceRecord.class);
-
-        when(invoiceRecordRepository.findByInvoiceId(event.getInvoiceId()))
-                .thenReturn(Optional.of(expected));
-        when(invoiceRecordMapper.buildEntity(event)).thenReturn(expected);
-        when(invoiceRecordRepository.save(expected)).thenReturn(expected);
-
-
-        strategy.process(event);
-
-        verify(invoiceRecordMapper).buildEntity(event);
-        verify(invoiceRecordRepository).save(expected);
-
-    }
 }

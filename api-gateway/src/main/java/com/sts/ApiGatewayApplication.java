@@ -25,27 +25,40 @@ public class ApiGatewayApplication {
     @Bean
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("inventory-service", predicateSpec -> predicateSpec
-                        .path("/stocks/**", "/purchases/**", "/vendors/**")
-                        .uri("lb://inventory-service"))
-                .route("finance-service", predicateSpec -> predicateSpec
-                        .path("/finances/**")
-                        .uri("lb://finance-service"))
-                .route("menu-service", predicateSpec -> predicateSpec
-                        .path("/menus/**")
-                        .uri("lb://menu-service"))
-                .route("order-service", predicateSpec -> predicateSpec
-                        .path("/tables/**", "/reservations/**")
-                        .uri("lb://order-service"))
-                .route("invoice-service", predicateSpec -> predicateSpec
-                        .path("/invoices/**")
-                        .uri("lb://invoice-service"))
                 .route("auth-service", predicateSpec -> predicateSpec
                         .path("/auth/public/**", "/auth/super/**")
                         .uri("lb://auth-service")
                 )
+
+                .route("inventory-service", predicateSpec -> predicateSpec
+                        .path("/stocks/**", "/purchases/**", "/vendors/**")
+                        .filters(gatewayFilterSpec -> gatewayFilterSpec.filter(requestNavigator.apply(new RequestNavigator.Config())))
+                        .uri("lb://inventory-service"))
+                .route("finance-service", predicateSpec -> predicateSpec
+                        .path("/finances/**")
+                        .filters(gatewayFilterSpec -> gatewayFilterSpec.filter(requestNavigator.apply(new RequestNavigator.Config())))
+
+                        .uri("lb://finance-service"))
+                .route("menu-service", predicateSpec -> predicateSpec
+                        .path("/menus/**")
+                        .filters(gatewayFilterSpec -> gatewayFilterSpec.filter(requestNavigator.apply(new RequestNavigator.Config())))
+
+                        .uri("lb://menu-service"))
+                .route("order-service", predicateSpec -> predicateSpec
+                        .path("/tables/**", "/reservations/**")
+                        .filters(gatewayFilterSpec -> gatewayFilterSpec.filter(requestNavigator.apply(new RequestNavigator.Config())))
+
+                        .uri("lb://order-service"))
+                .route("invoice-service", predicateSpec -> predicateSpec
+                        .path("/invoices/**")
+                        .filters(gatewayFilterSpec -> gatewayFilterSpec.filter(requestNavigator.apply(new RequestNavigator.Config())))
+
+                        .uri("lb://invoice-service"))
+
                 .route("order-service-ws", predicateSpec -> predicateSpec
                         .path("/ws/**")
+                        .filters(gatewayFilterSpec -> gatewayFilterSpec.filter(requestNavigator.apply(new RequestNavigator.Config())))
+
                         .uri("lb:ws://order-service"))
 
                 .build();

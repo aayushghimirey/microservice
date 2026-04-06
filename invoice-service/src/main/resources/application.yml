@@ -1,5 +1,6 @@
 spring:
-
+  rls:
+    enabled: true
   application:
     name: invoice-service
 
@@ -17,6 +18,8 @@ server:
   port: ${SERVER_PORT:8084}
 
 app:
+  security:
+    gateway-secret: sts@123_gateway_pass_#$%^&*validated_by_aayush+ghimire077@something.sts.com.test&&%secret
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     topics:

@@ -2,6 +2,7 @@ package com.sts.service.impl;
 
 
 import com.sts.event.StockUpdateEvent;
+import com.sts.filter.TenantHolder;
 import com.sts.model.stock.Stock;
 import com.sts.model.stock.StockVariant;
 import com.sts.model.stock.VariantUnit;
@@ -11,6 +12,7 @@ import com.sts.repository.VariantUnitRepository;
 import com.sts.shared.StockOutboxPublisher;
 
 import com.sts.utils.enums.TransactionReference;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,6 +54,13 @@ class StockUpdateProcessorImplTest {
     StockVariant variant;
     VariantUnit unit;
     StockUpdateEvent event;
+    UUID tenantId = UUID.randomUUID();
+
+
+    @AfterEach
+    void cleanUp() {
+        TenantHolder.clear();
+    }
 
     @BeforeEach
     void setUpPurchase() {
@@ -80,6 +89,8 @@ class StockUpdateProcessorImplTest {
 
     @Test
     void shouldIncreaseStock() {
+
+        TenantHolder.setTenantId(tenantId);
 
         when(stockVariantRepository.findAllById(anySet())).thenReturn(List.of(variant));
         when(variantUnitRepository.findAllById(anySet())).thenReturn(List.of(unit));

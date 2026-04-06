@@ -1,0 +1,21 @@
+package com.sts.filter;
+
+
+import java.util.UUID;
+
+public class TenantHolder {
+
+    private static final ThreadLocal<UUID> TENANT = new ThreadLocal<>();
+
+    public static void setTenantId(UUID tenantId) {
+        TENANT.set(tenantId);
+    }
+
+    public static UUID getTenantId() {
+        return TENANT.get();
+    }
+
+    public static void clear() {
+        TENANT.remove(); // IMPORTANT (not set null)
+    }
+}
