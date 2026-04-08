@@ -4,6 +4,7 @@ spring:
   application:
     name: auth-service
 
+
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/auth}
     username: ${SPRING_DATASOURCE_USERNAME:postgres}
@@ -17,8 +18,9 @@ spring:
 
   flyway:
     enabled: true
-    user: postgres
-    password: admin
+    user: ${FLYWAY_USER}
+    password: ${FLYWAY_PASSWORD}
+
 
 server:
   port: ${SERVER_PORT:8085}

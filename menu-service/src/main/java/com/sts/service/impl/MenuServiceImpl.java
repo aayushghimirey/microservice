@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.UUID;
 
 import com.sts.dto.MenuQueryDto;
+import com.sts.filter.TenantHolder;
 import com.sts.model.VariantSnapshot;
 import com.sts.repository.StockSnapshotRepository;
 import com.sts.repository.VariantSnapshotRepository;
 import com.sts.utils.enums.MenuCategory;
+import io.github.aayushghimirey.jpa_postgres_rls.core.RlsContext;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,9 +41,13 @@ class MenuServiceImpl implements MenuService {
     private final VariantSnapshotRepository variantSnapshotRepository;
     private final MenuMapper menuMapper;
 
+    private final RlsContext rlsContext;
+
     @Override
     @Transactional
     public MenuResponse createMenu(CreateMenuRequest request) {
+
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
 
         if (menuRepository.existsByName(request.name())) {
             throw new DuplicateResourceException(
@@ -66,6 +72,10 @@ class MenuServiceImpl implements MenuService {
     @Override
     @Transactional(readOnly = true)
     public Page<MenuResponse> getAllMenus(MenuQueryDto menuQueryDto, Pageable pageable) {
+
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
+
+
         Specification<Menu> spec = Specification
                 .where((Specification<Menu>) (root, query, cb) -> menuQueryDto.category() == null ? null
                         : cb.equal(root.<MenuCategory>get("category"), menuQueryDto.category()))
@@ -80,6 +90,8 @@ class MenuServiceImpl implements MenuService {
     @Override
     @Transactional(readOnly = true)
     public MenuResponse getMenuById(UUID menuId) {
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
+
         Menu menu = findMenuOrThrow(menuId);
         return menuMapper.toResponse(menu);
     }
@@ -87,6 +99,10 @@ class MenuServiceImpl implements MenuService {
     @Override
     @Transactional(readOnly = true)
     public List<MenuIngredientResponse> getMenuIngredientsById(UUID menuId) {
+
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
+
+
         Menu menu = findMenuOrThrow(menuId);
         return menu.getIngredients().stream()
                 .map(menuMapper::toMenuIngredientResponse).toList();

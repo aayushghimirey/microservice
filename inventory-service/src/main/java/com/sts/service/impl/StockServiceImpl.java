@@ -1,25 +1,16 @@
 package com.sts.service.impl;
 
 
-import java.util.*;
-
-import com.sts.entity.OutboxEventType;
-import com.sts.event.factory.StockUpdateFactoryRegistry;
-
-import com.sts.shared.StockOutboxPublisher;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.sts.dto.request.CreateStockCommand;
 import com.sts.dto.request.GetStockQueryRequest;
 import com.sts.dto.request.StockAdjustmentCommand;
 import com.sts.dto.request.UpdateStockCommand;
 import com.sts.dto.response.StockResponse;
 import com.sts.event.StockUpdateEvent;
+import com.sts.event.factory.StockUpdateFactoryRegistry;
 import com.sts.exception.DuplicateResourceException;
+import com.sts.filter.TenantHolder;
+import com.sts.helper.event.DomainEventPublisher;
 import com.sts.mapper.StockMapper;
 import com.sts.mapper.StockUpdateMapper;
 import com.sts.model.stock.Stock;
@@ -30,10 +21,18 @@ import com.sts.service.StockService;
 import com.sts.service.resolver.ReferenceResolver;
 import com.sts.service.resolver.VariantUnitResolver;
 import com.sts.service.specification.StockSpecification;
-import com.sts.helper.event.DomainEventPublisher;
+import com.sts.shared.StockOutboxPublisher;
 import com.sts.utils.constant.AppConstants;
+import io.github.aayushghimirey.jpa_postgres_rls.core.RlsContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -56,10 +55,15 @@ public class StockServiceImpl implements StockService {
 
     private final StockOutboxPublisher stockOutboxPublisher;
 
+    private final RlsContext rlsContext;
+
 
     @Override
     @Transactional
     public StockResponse createStock(CreateStockCommand command) {
+
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
+
         log.info(AppConstants.Logs.CREATING_STOCK, command.name());
 
         assertStockNameUnique(command.name(), null);
@@ -74,6 +78,10 @@ public class StockServiceImpl implements StockService {
     @Override
     @Transactional
     public StockResponse updateStock(UUID stockId, UpdateStockCommand command) {
+
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
+
+
         log.info(AppConstants.Logs.UPDATING_STOCK, stockId);
 
         assertStockNameUnique(command.name(), stockId);
@@ -91,6 +99,10 @@ public class StockServiceImpl implements StockService {
     @Override
     @Transactional
     public void adjustStock(StockAdjustmentCommand command) {
+
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
+
+
         log.info(AppConstants.Logs.ADJUSTING_STOCK,
                 command.variantId(), command.unitId(), command.quantity());
 
@@ -98,7 +110,7 @@ public class StockServiceImpl implements StockService {
         variantUnitResolver.getVariantUnitOrThrow(variant.getId(), command.unitId());
 
         StockUpdateEvent event = stockFactoryRegistry
-                .forAdjustment(variant.getId(), command.unitId(), command.quantity());
+                .forAdjustment(variant.getId(), command.unitId(), command.quantity(), variant.getTenantId());
 
         domainEventPublisher.publish(event);
     }
@@ -107,6 +119,10 @@ public class StockServiceImpl implements StockService {
     @Override
     @Transactional(readOnly = true)
     public Page<StockResponse> getAllQueryStock(GetStockQueryRequest queryRequest, Pageable pageable) {
+
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
+
+
         Specification<Stock> spec = specification.buildSpecification(queryRequest);
 
         return stockRepository.findAll(spec, pageable)
@@ -116,6 +132,10 @@ public class StockServiceImpl implements StockService {
     @Override
     @Transactional(readOnly = true)
     public Page<StockResponse.VariantResponse> getAllVariantByStockId(UUID stockId, Pageable pageable) {
+
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
+
+
         return stockVariantRepository.findAllByStockId(stockId, pageable)
                 .map(stockMapper::toVariantResponse);
     }
@@ -123,6 +143,9 @@ public class StockServiceImpl implements StockService {
     @Override
     @Transactional(readOnly = true)
     public boolean existsByVariantIdAndUnitId(UUID variantId, UUID unitId) {
+
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
+
 
         log.info(AppConstants.Logs.VALIDATING_VARIANT_WITH_UNIT, variantId, unitId);
 

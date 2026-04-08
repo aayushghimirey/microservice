@@ -1,6 +1,8 @@
 package com.sts.entity;
 
 import com.sts.enums.AggregateType;
+import io.github.aayushghimirey.jpa_postgres_rls.annotation.RlsRule;
+import io.github.aayushghimirey.jpa_postgres_rls.annotation.RowLevelSecurity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -16,6 +18,8 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+
+
 public class OutboxEvent {
 
     @Id
@@ -42,6 +46,8 @@ public class OutboxEvent {
     @Column(name = "processed", nullable = false)
     private boolean processed = false;
 
+    @Column(nullable = false)
+    private UUID tenantId;
 
     private LocalDateTime createdAt;
 }

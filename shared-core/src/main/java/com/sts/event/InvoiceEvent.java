@@ -18,6 +18,7 @@ public class InvoiceEvent {
     private UUID invoiceId;
     private UUID sessionId;
     private UUID reservationId;
+    private UUID tenantId;
 
     @Builder.Default
     private BigDecimal grossTotal = BigDecimal.ZERO;

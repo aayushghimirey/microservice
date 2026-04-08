@@ -5,18 +5,57 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b17b2c76-4396-44bb-a00d-3c9536cd03a6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../shared-core/src/main/java/com/sts/domain/TransactionAspect.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../shared-core/src/main/java/com/sts/filter/SecurityCheckFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../shared-core/src/main/java/com/sts/filter/TenantHolder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/db/migration/V1__init_schema.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../shared-outbox/src/main/resources/db/migration/common/V5.1__create_outbox-table.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../auth-service/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../auth-service/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../auth-service/src/main/java/com/sts/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../auth-service/src/main/java/com/sts/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../auth-service/src/main/java/com/sts/controller/AuthenticationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../auth-service/src/main/java/com/sts/controller/AuthenticationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../auth-service/src/main/java/com/sts/model/Tenant.java" beforeDir="false" afterPath="$PROJECT_DIR$/../auth-service/src/main/java/com/sts/model/Tenant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../auth-service/src/main/java/com/sts/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/../auth-service/src/main/java/com/sts/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../auth-service/src/main/java/com/sts/service/TenantService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../auth-service/src/main/java/com/sts/service/TenantService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../auth-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../auth-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../auth-service/src/main/resources/db/migration/V1__init_schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../auth-service/src/main/resources/db/migration/V1__init_schema.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../init-db.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../init-db.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/StockUpdateEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/event/StockUpdateEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/StockUpdateFactoryRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/StockUpdateFactoryRegistry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/impl/AdjustmentEventFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/impl/AdjustmentEventFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/impl/InvoiceEventFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/impl/InvoiceEventFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/impl/PurchaseEventFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/event/factory/impl/PurchaseEventFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/mapper/PurchaseMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/mapper/PurchaseMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/mapper/StockMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/mapper/StockMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/model/purchase/Purchase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/model/purchase/Purchase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/model/purchase/PurchaseItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/model/purchase/PurchaseItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/model/stock/Stock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/model/stock/Stock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/model/stock/StockTransaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/model/stock/StockTransaction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/model/stock/StockVariant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/model/stock/StockVariant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/model/stock/VariantUnit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/model/stock/VariantUnit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/model/vendor/Vendor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/model/vendor/Vendor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/service/impl/PurchaseServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/service/impl/PurchaseServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/service/impl/StockServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/service/impl/StockServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/service/impl/StockTransactionServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/service/impl/StockTransactionServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/service/impl/StockUpdateProcessorImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/service/impl/StockUpdateProcessorImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sts/service/impl/VendorServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sts/service/impl/VendorServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/sts/service/impl/StockServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/sts/service/impl/StockServiceImplTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../shared-core/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../shared-core/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../shared-core/src/main/java/com/sts/domain/Audit.java" beforeDir="false" afterPath="$PROJECT_DIR$/../shared-core/src/main/java/com/sts/domain/Audit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/sts/event/listener/InvoiceEventListenerTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/sts/service/impl/PurchaseServiceImplTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/sts/service/impl/StockServiceImplTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/sts/service/impl/StockUpdateProcessorImplTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/event/StockListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/event/StockListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/service/impl/MenuServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-service/src/main/java/com/sts/service/impl/MenuServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shared-core/src/main/java/com/sts/domain/TransactionAspect.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shared-core/src/main/java/com/sts/event/InvoiceEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../shared-core/src/main/java/com/sts/event/InvoiceEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shared-core/src/main/java/com/sts/event/OrderCreatedEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../shared-core/src/main/java/com/sts/event/OrderCreatedEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shared-core/src/main/java/com/sts/event/PurchaseCreatedEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../shared-core/src/main/java/com/sts/event/PurchaseCreatedEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shared-core/src/main/java/com/sts/event/StockEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../shared-core/src/main/java/com/sts/event/StockEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shared-outbox/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../shared-outbox/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shared-outbox/src/main/java/com/sts/entity/OutboxEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../shared-outbox/src/main/java/com/sts/entity/OutboxEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shared-outbox/src/main/java/com/sts/mapper/OutboxMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/../shared-outbox/src/main/java/com/sts/mapper/OutboxMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shared-outbox/src/main/java/com/sts/publisher/OutboxKafkaPublisher.java" beforeDir="false" afterPath="$PROJECT_DIR$/../shared-outbox/src/main/java/com/sts/publisher/OutboxKafkaPublisher.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +104,7 @@
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "git-widget-placeholder": "security-worker",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "A:/re-microservice/menu-service",
+    "last_opened_file_path": "A:/re-microservice/inventory-service/src/main/resources",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.16308594",
     "project.structure.side.proportion": "0.2"
@@ -75,8 +114,14 @@
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.sts.service.impl" />
     </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="A:\re-microservice\inventory-service\src\main\resources" />
+    </key>
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="A:\re-microservice\inventory-service\src\main\resources\db" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
       <recent name="com.sts.service.impl" />

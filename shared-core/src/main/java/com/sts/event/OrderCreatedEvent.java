@@ -23,6 +23,8 @@ public class OrderCreatedEvent {
 
     private UUID tableId;
 
+    private UUID tenantId;
+
     @Builder.Default
     private BigDecimal billAmount = BigDecimal.ZERO;
 

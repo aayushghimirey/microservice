@@ -10,6 +10,7 @@ import com.sts.utils.enums.TransactionReference;
 public record StockUpdateEvent(
         UUID purchaseId,
         UUID invoiceId,
+        UUID tenantId,
         TransactionReference transactionReference,
         List<StockUpdateItem> items) {
 

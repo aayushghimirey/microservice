@@ -3,6 +3,7 @@ package com.sts.mapper;
 import com.sts.entity.OutboxEvent;
 import com.sts.entity.OutboxEventType;
 import com.sts.enums.AggregateType;
+import com.sts.filter.TenantHolder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -20,6 +21,7 @@ public class OutboxMapper {
                 .payload(payload)
                 .processed(false)
                 .createdAt(LocalDateTime.now())
+                .tenantId(TenantHolder.getTenantId())
                 .build();
     }
 }

@@ -24,6 +24,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import io.github.aayushghimirey.jpa_postgres_rls.annotation.RlsRule;
+import io.github.aayushghimirey.jpa_postgres_rls.annotation.RowLevelSecurity;
+
 @Entity
 @Builder
 @Getter
@@ -32,6 +35,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "stock_variant")
+@RowLevelSecurity
+@RlsRule(table = "stock_variant", policy = "stock_variant_tenant_policy", requiredVariable = "app.tenant_id")
 public class StockVariant extends Audit {
 
     @Version

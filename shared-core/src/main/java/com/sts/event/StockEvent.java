@@ -6,6 +6,7 @@ import java.util.UUID;
 
 public record StockEvent(
         UUID stockId,
+        UUID tenantId,
         List<VariantStockEvent> variants
 ) {
     public record VariantStockEvent(

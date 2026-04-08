@@ -1,6 +1,5 @@
 package com.sts.model;
 
-import com.sts.domain.Audit;
 import io.github.aayushghimirey.jpa_postgres_rls.annotation.RlsRule;
 import io.github.aayushghimirey.jpa_postgres_rls.annotation.RowLevelSecurity;
 import jakarta.persistence.*;

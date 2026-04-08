@@ -23,4 +23,5 @@ public class AuthenticationController {
     public ResponseEntity<?> authenticate(@RequestBody AuthRequest request) {
         return AppResponse.success(authenticationService.authenticate(request), "Login successful");
     }
+
 }

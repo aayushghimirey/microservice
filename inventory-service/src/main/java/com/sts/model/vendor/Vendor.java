@@ -19,6 +19,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import io.github.aayushghimirey.jpa_postgres_rls.annotation.RlsRule;
+import io.github.aayushghimirey.jpa_postgres_rls.annotation.RowLevelSecurity;
+
 @Entity
 @Getter
 @Setter
@@ -27,6 +30,8 @@ import lombok.Setter;
 @Builder
 @Table(name = "vendor")
 @EntityListeners(AuditingEntityListener.class)
+@RowLevelSecurity
+@RlsRule(table = "vendor", policy = "vendor_tenant_policy", requiredVariable = "app.tenant_id")
 public class Vendor extends Audit {
 
     private String name;

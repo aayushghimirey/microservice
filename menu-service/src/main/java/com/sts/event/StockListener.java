@@ -1,9 +1,11 @@
 package com.sts.event;
 
+import com.sts.filter.TenantHolder;
 import com.sts.mapper.StockSnapshotMapper;
 import com.sts.model.StockSnapshot;
 import com.sts.repository.StockSnapshotRepository;
 import com.sts.topics.KafkaProperties;
+import io.github.aayushghimirey.jpa_postgres_rls.core.RlsContext;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -24,9 +27,17 @@ public class StockListener {
     private final StockSnapshotMapper stockSnapshotMapper;
     private final KafkaProperties kafkaProperties;
 
+    private final RlsContext rlsContext;
+
 
     @KafkaListener(topics = "#{@kafkaProperties.getTopic('stock-event')}")
+    @Transactional
     public void onStockEvent(StockEvent event, Acknowledgment acknowledgment) {
+
+        rlsContext.with("app.tenant_id", event.tenantId()).apply();
+
+        TenantHolder.setTenantId(event.tenantId());
+
         log.info("Received StockEvent for stockId: {}", event.stockId());
 
         if (stockSnapshotRepository.existsByStockId(event.stockId())) {

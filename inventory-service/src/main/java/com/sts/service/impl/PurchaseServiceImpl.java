@@ -1,7 +1,9 @@
 package com.sts.service.impl;
 
 import com.sts.event.factory.StockUpdateFactoryRegistry;
+import com.sts.filter.TenantHolder;
 import com.sts.shared.PurchaseOutboxPublisher;
+import io.github.aayushghimirey.jpa_postgres_rls.core.RlsContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,9 +43,15 @@ class PurchaseServiceImpl implements PurchaseService {
     private final DomainEventPublisher domainEventPublisher;
     private final PurchaseOutboxPublisher purchaseOutboxPublisher;
 
+    private final RlsContext rlsContext;
+
     @Override
     @Transactional
     public PurchaseResponse createPurchase(CreatePurchaseCommand command) {
+
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
+
+
         log.info(AppConstants.Logs.CREATING_PURCHASE, command.invoiceNumber());
 
         checkInvoiceNumberUniqueness(command.invoiceNumber());
@@ -70,6 +78,10 @@ class PurchaseServiceImpl implements PurchaseService {
     @Override
     @Transactional(readOnly = true)
     public Page<PurchaseResponse> getAllPurchases(Pageable pageable) {
+
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
+
+
         return purchaseRepository
                 .findAll(pageable)
                 .map(purchaseMapper::toResponse);

@@ -9,13 +9,14 @@ CREATE TABLE tenant (
 ALTER TABLE tenant ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY tenant_rls_policy ON tenant
-    USING (id = current_setting('app.id')::UUID);
+    USING (id = NULLIF(current_setting('app.id', true), '')::uuid)
+    WITH CHECK (true);
 
 CREATE TABLE users (
     id UUID PRIMARY KEY,
     created_date_time TIMESTAMP,
     tenant_id UUID,
-    last_update_date_time TIMESTAMP,
+    last_updated_date_time TIMESTAMP,
     is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
     username VARCHAR(250) NOT NULL,
     email VARCHAR(150) UNIQUE,
@@ -24,3 +25,12 @@ CREATE TABLE users (
     role VARCHAR(255) NOT NULL,
     permission VARCHAR(255)
 );
+
+ALTER TABLE users
+ENABLE ROW LEVEL SECURITY;
+
+
+CREATE POLICY user_isolation_policy ON users
+    USING (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid)
+    WITH CHECK (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid);
+

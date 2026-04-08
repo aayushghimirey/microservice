@@ -21,7 +21,7 @@ public class PurchaseEventFactory implements StockUpdateEventFactory<Purchase> {
                         item.getQuantity()))
                 .toList();
 
-        return new StockUpdateEvent(purchase.getId(), null, TransactionReference.PURCHASE, items);
+        return new StockUpdateEvent(purchase.getId(), null, purchase.getTenantId(), TransactionReference.PURCHASE, items);
     }
 
 

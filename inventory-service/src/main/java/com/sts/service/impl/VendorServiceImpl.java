@@ -1,5 +1,7 @@
 package com.sts.service.impl;
 
+import com.sts.filter.TenantHolder;
+import io.github.aayushghimirey.jpa_postgres_rls.core.RlsContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ public class VendorServiceImpl implements VendorService {
 
     private final VendorRepository vendorRepository;
     private final VendorMapper vendorMapper;
+    private final RlsContext rlsContext;
 
     /*
      * Commands
@@ -30,6 +33,7 @@ public class VendorServiceImpl implements VendorService {
     @Override
     @Transactional
     public VendorResponse createVendor(CreateVendorCommand command) {
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
 
         Vendor vendor = vendorMapper.buildVendor(command);
 
@@ -43,6 +47,8 @@ public class VendorServiceImpl implements VendorService {
     @Override
     @Transactional(readOnly = true)
     public Page<VendorResponse> getAllVendors(Pageable pageable) {
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
+
         return vendorRepository.findAll(pageable).map(vendorMapper::toResponse);
     }
 

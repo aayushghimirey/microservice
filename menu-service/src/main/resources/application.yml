@@ -1,6 +1,7 @@
 spring:
   rls:
     enabled: true
+
   application:
     name: menu-service
 

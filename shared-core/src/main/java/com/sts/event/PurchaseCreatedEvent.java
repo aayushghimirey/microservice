@@ -16,6 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class PurchaseCreatedEvent {
     private UUID purchaseId;
+    private UUID tenantId;
     private BillingType billingType;
     private MoneyTransaction moneyTransaction;
     private BigDecimal vatAmount;

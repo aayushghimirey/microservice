@@ -22,7 +22,7 @@ public class TenantService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    @Transactional
+//    @Transactional
     public void registerTenant(TenantRequest request) {
 
         final Tenant savedTenant = this.saveTenant(userMapper.toTenantEntity(request));

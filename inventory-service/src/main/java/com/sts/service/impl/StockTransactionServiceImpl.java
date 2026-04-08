@@ -2,6 +2,8 @@ package com.sts.service.impl;
 
 import java.util.UUID;
 
+import com.sts.filter.TenantHolder;
+import io.github.aayushghimirey.jpa_postgres_rls.core.RlsContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,18 +24,24 @@ public class StockTransactionServiceImpl implements StockTransactionService {
 
     private final StockTransactionRepository stockTransactionRepository;
 
+    private final RlsContext rlsContext;
+
     /*
      * Queries
      */
     @Override
     @Transactional(readOnly = true)
     public Page<StockTransactionResponse> getAllTransaction(Pageable pageable) {
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
+
         return stockTransactionRepository.findAllTransactions(pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<StockTransactionResponse> getAllTransactionByVariantId(UUID variantId, Pageable pageable) {
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
+
         return stockTransactionRepository.findAllTransactionsByVariantId(variantId, pageable);
     }
 

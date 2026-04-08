@@ -4,6 +4,13 @@ spring:
   profiles:
     active: prod
 
+  flyway:
+    enabled: true
+    user: ${FLYWAY_USER}
+    password: ${FLYWAY_PASSWORD}
+    locations:
+      - classpath:db/migration
+      - classpath:db/migration/common
   application:
     name: inventory-service
 
@@ -13,7 +20,7 @@ spring:
     password: ${SPRING_DATASOURCE_PASSWORD:admin}
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     properties:
       hibernate.format_sql: true
 

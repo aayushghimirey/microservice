@@ -85,8 +85,10 @@ services:
       - "8000:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/inventory
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: admin
+      SPRING_DATASOURCE_USERNAME: app_user
+      SPRING_DATASOURCE_PASSWORD: AppUser@1234
+      FLYWAY_USER: postgres
+      FLYWAY_PASSWORD: admin
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       EUREKA_CLIENT_DEFAULT_ZONE: http://eureka-service:8761/eureka
       SERVER_PORT: 8080
@@ -111,6 +113,8 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/auth
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: admin
+      FLYWAY_USER: postgres
+      FLYWAY_PASSWORD: admin
       SERVER_PORT: 8080
       EUREKA_CLIENT_DEFAULT_ZONE: http://eureka-service:8761/eureka
 

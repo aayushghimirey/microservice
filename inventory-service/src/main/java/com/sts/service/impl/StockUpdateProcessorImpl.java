@@ -3,6 +3,7 @@ package com.sts.service.impl;
 import com.sts.entity.OutboxEventType;
 import com.sts.event.StockUpdateEvent;
 import com.sts.exception.ResourceNotFoundException;
+import com.sts.filter.TenantHolder;
 import com.sts.model.stock.Stock;
 import com.sts.model.stock.StockTransaction;
 import com.sts.model.stock.StockVariant;
@@ -15,6 +16,7 @@ import com.sts.shared.StockOutboxPublisher;
 import com.sts.utils.constant.AppConstants;
 import com.sts.utils.enums.StockUpdateSource;
 import com.sts.utils.enums.TransactionReference;
+import io.github.aayushghimirey.jpa_postgres_rls.core.RlsContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,11 +36,15 @@ public class StockUpdateProcessorImpl implements StockUpdateProcessor {
     private final StockVariantRepository stockVariantRepository;
     private final VariantUnitRepository variantUnitRepository;
     private final StockTransactionRepository stockTransactionRepository;
+    private final RlsContext rlsContext;
 
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public void process(StockUpdateEvent event) {
+        rlsContext.with("app.tenant_id", event.tenantId()).apply();
+        TenantHolder.setTenantId(event.tenantId());
+
 
         log.info("Stock UPDATE event from {}", event.transactionReference());
 

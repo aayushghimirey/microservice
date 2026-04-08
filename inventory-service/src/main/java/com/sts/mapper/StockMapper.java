@@ -92,6 +92,7 @@ public class StockMapper {
     public StockEvent toStockEvent(Stock stock) {
         return new StockEvent(
                 stock.getId(),
+                stock.getTenantId(),
                 stock.getVariants().stream()
                         .map(this::toVariantEvent)
                         .toList());

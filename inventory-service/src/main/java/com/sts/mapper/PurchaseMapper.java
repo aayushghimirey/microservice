@@ -83,6 +83,7 @@ public class PurchaseMapper {
     public PurchaseCreatedEvent toPurchaseEvent(Purchase purchase) {
         return new PurchaseCreatedEvent(
                 purchase.getId(),
+                purchase.getTenantId(),
                 purchase.getBillingType(),
                 purchase.getMoneyTransaction(),
                 purchase.getVatAmount(),

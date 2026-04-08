@@ -35,6 +35,7 @@ public class InvoiceEventFactory implements StockUpdateEventFactory<InvoiceEvent
         return new StockUpdateEvent(
                 null,
                 input.getInvoiceId(),
+                input.getTenantId(),
                 TransactionReference.SALES,
                 stockItems
         );
