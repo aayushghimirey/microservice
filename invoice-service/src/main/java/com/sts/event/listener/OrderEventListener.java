@@ -3,9 +3,11 @@ package com.sts.event.listener;
 import java.math.BigDecimal;
 
 import com.sts.event.OrderCreatedEvent;
+import com.sts.filter.TenantHolder;
 import com.sts.mapper.InvoiceMapper;
 import com.sts.model.InvoiceItemIngredient;
 import com.sts.utils.constant.AppConstants;
+import io.github.aayushghimirey.jpa_postgres_rls.core.RlsContext;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -33,9 +35,15 @@ public class OrderEventListener {
 
     private final InvoiceMapper invoiceMapper;
 
+    private final RlsContext rlsContext;
+
     @Transactional
     @KafkaListener(topics = "#{@kafkaProperties.getTopic('order-event')}", groupId = "#{@kafkaProperties.getGroup('invoice-group')}")
     public void listen(OrderCreatedEvent event, Acknowledgment acknowledgment) {
+
+        TenantHolder.setTenantId(event.getTenantId());
+
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
 
 
         log.info(AppConstants.LOG_MESSAGES.ORDER_EVENT_MESSAGE, event.getSessionId());

@@ -54,6 +54,9 @@ public class StockListener {
         acknowledgment.acknowledge();
 
 
+        TenantHolder.clear();
+
+
     }
 
 }

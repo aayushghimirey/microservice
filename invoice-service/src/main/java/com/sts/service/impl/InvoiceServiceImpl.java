@@ -6,8 +6,10 @@ import java.util.UUID;
 
 import com.sts.enums.AggregateType;
 import com.sts.event.factory.InvoiceEventFactory;
+import com.sts.filter.TenantHolder;
 import com.sts.service.resolver.ReferenceResolver;
 import com.sts.helper.outbox.OutboxPublisher;
+import io.github.aayushghimirey.jpa_postgres_rls.core.RlsContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -45,10 +47,14 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final InvoiceEventFactory invoiceEventFactory;
     private final KafkaProperties kafkaProperties;
 
+    private final RlsContext rlsContext;
+
 
     @Override
     @Transactional
     public InvoiceResponse proceedInvoice(UUID invoiceId) {
+
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
 
         Invoice invoice = referenceResolver.getOrThrow(invoiceId);
 
@@ -68,6 +74,8 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     @Transactional(readOnly = true)
     public List<InvoiceResponse> getAllPendingInvoices() {
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
+
         return invoiceRepository.findByStatus(InvoiceStatus.PENDING).stream().map(
                 invoiceMapper::toResponse).toList();
     }
@@ -75,6 +83,8 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     @Transactional(readOnly = true)
     public Page<InvoiceResponse> getAllInvoices(Pageable pageable) {
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
+
         return invoiceRepository.findAll(pageable).map(
                 invoiceMapper::toResponse);
     }

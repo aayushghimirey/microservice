@@ -4,8 +4,10 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
 
+import com.sts.filter.TenantHolder;
 import com.sts.utils.OrderOutboxPublisher;
 import com.sts.utils.feign.MenuClientGateway;
+import io.github.aayushghimirey.jpa_postgres_rls.core.RlsContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -51,8 +53,13 @@ public class ReservationService {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
 
+    private final RlsContext rlsContext;
+
     @Transactional
     public ReservationResponse createReservation(CreateReservationCommand request) {
+
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
+
 
         Table table = validateTable(request.tableId());
 
@@ -79,6 +86,8 @@ public class ReservationService {
     }
 
     public Page<ReservationResponse> getAllReservationByStatus(ReservationStatus status, Pageable pageable) {
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
+
         return reservationRepository.findByStatus(status, pageable).map(reservationMapper::toResponse);
     }
 

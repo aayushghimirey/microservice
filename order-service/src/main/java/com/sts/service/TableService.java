@@ -1,5 +1,7 @@
 package com.sts.service;
 
+import com.sts.filter.TenantHolder;
+import io.github.aayushghimirey.jpa_postgres_rls.core.RlsContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,9 +24,13 @@ public class TableService {
 
     private final TableRepository tableRepository;
     private final TableMapper tableMapper;
+    private final RlsContext rlsContext;
 
     @Transactional
     public TableResponse createTable(CreateTableCommand request) {
+
+
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
 
         if (tableRepository.existsByName(request.name())) {
             throw new DuplicateResourceException(
@@ -45,6 +51,9 @@ public class TableService {
 
     @Transactional(readOnly = true)
     public Page<TableResponse> getAllTables(Pageable pageable) {
+
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
+
         return tableRepository.findAll(pageable).map(tableMapper::toResponse);
     }
 }

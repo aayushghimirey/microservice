@@ -1,6 +1,8 @@
 package com.sts.event;
 
 import com.sts.dto.response.ReservationResponse;
+import com.sts.filter.TenantHolder;
+import io.github.aayushghimirey.jpa_postgres_rls.core.RlsContext;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -27,12 +29,17 @@ public class InvoiceListener {
     private final ReservationRepository reservationRepository;
     private final ReservationMapper reservationMapper;
     private final SimpMessagingTemplate simpMessagingTemplate;
+    private final RlsContext rlsContext;
 
 
     @KafkaListener(topics = "#{@kafkaProperties.getTopic('invoice-event')}", containerFactory = "invoiceKafkaListenerContainerFactory")
     @Transactional
     public void listen(InvoiceEvent event, Acknowledgment acknowledgment) {
         log.info(AppConstants.LOG_MESSAGES.INVOICE_EVENT_RECEIVED, event.getInvoiceId());
+
+        TenantHolder.setTenantId(event.getTenantId());
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
+
 
         try {
             Reservation reservation = reservationRepository.findBySessionId(event.getSessionId());

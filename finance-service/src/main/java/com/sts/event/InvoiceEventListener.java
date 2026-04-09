@@ -1,7 +1,9 @@
 package com.sts.event;
 
 import com.sts.event.strategy.InvoiceEventProcessingStrategy;
+import com.sts.filter.TenantHolder;
 import com.sts.topics.KafkaProperties;
+import io.github.aayushghimirey.jpa_postgres_rls.core.RlsContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -16,10 +18,15 @@ public class InvoiceEventListener {
 
     private final KafkaProperties kafkaProperties;
     private final InvoiceEventProcessingStrategy invoiceEventProcessingStrategy;
+    private final RlsContext rlsContext;
 
     @KafkaListener(topics = "#{@kafkaProperties.getTopic('invoice-event')}",
             containerFactory = "invoiceKafkaListenerContainerFactory")
     public void handleInvoiceEvent(InvoiceEvent event, Acknowledgment acknowledgment) {
+
+
+        rlsContext.with("app.tenant_id", event.getTenantId()).apply();
+        TenantHolder.setTenantId(event.getTenantId());
 
         log.info("Invoice event received - invoiceId: {}", event.getInvoiceId());
 
@@ -28,6 +35,8 @@ public class InvoiceEventListener {
         acknowledgment.acknowledge();
 
         log.info("Invoice record saved - invoiceId: {}", event.getInvoiceId());
+
+        TenantHolder.clear();
 
     }
 
