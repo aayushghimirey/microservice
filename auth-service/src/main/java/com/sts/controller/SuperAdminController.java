@@ -1,6 +1,7 @@
 package com.sts.controller;
 
 import com.sts.dto.request.TenantRequest;
+import com.sts.response.ApiResponse;
 import com.sts.response.AppResponse;
 import com.sts.service.TenantService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class SuperAdminController {
 
     @PostMapping("/tenant")
     @PreAuthorize("hasRole('SUPER_ADMIN')")
-    public ResponseEntity<?> createTenant(@RequestBody TenantRequest request) {
+    public ResponseEntity<ApiResponse<String>> createTenant(@RequestBody TenantRequest request) {
         tenantService.registerTenant(request);
         return AppResponse.success("", "Tenant created successfully");
     }

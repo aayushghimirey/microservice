@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 import java.util.UUID;
 
-@FeignClient(name = "menu-client", url = "${app.clients.menu-service.url}", path = "/menus")
+@FeignClient(name = "menu-client", url = "${app.clients.menu-service.url}", path = "/menus", configuration = {FeignClientInterceptor.class})
 public interface MenuClient {
 
     @GetMapping("/{menuId}")

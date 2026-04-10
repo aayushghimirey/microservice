@@ -65,7 +65,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         InvoiceResponse response = invoiceMapper.toResponse(invoice);
 
-        simpMessagingTemplate.convertAndSend("/topic/invoices", response);
+        simpMessagingTemplate.convertAndSendToUser(invoice.getTenantId().toString(), "/queue/invoices", response);
 
         return response;
 

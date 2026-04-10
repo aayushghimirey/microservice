@@ -2,6 +2,8 @@ package com.sts.model;
 
 
 import com.sts.domain.Audit;
+import io.github.aayushghimirey.jpa_postgres_rls.annotation.RlsRule;
+import io.github.aayushghimirey.jpa_postgres_rls.annotation.RowLevelSecurity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -21,6 +23,8 @@ import java.util.UUID;
 @EntityListeners(AuditingEntityListener.class)
 @Builder
 @Table(name = "invoice_record")
+@RowLevelSecurity
+@RlsRule(table = "invoice_record", policy = "invoice_record_tenant_policy", requiredVariable = "app.tenant_id")
 public class InvoiceRecord extends Audit {
 
     @Column(name = "invoice_id", nullable = false, updatable = false, unique = true)

@@ -7,7 +7,7 @@ CREATE TABLE invoice_record (
     created_date_time TIMESTAMP,
     last_updated_date_time TIMESTAMP,
     is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
-    tenant_id UUID
+    tenant_id UUID NOT NULL
 );
 
 CREATE TABLE purchase_record (
@@ -20,5 +20,5 @@ CREATE TABLE purchase_record (
     created_date_time TIMESTAMP,
     last_updated_date_time TIMESTAMP,
     is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
-    tenant_id UUID
+    tenant_id UUID NOT NULL
 )

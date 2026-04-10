@@ -3,6 +3,8 @@ package com.sts.model;
 import com.sts.domain.Audit;
 import com.sts.enums.BillingType;
 import com.sts.enums.MoneyTransaction;
+import io.github.aayushghimirey.jpa_postgres_rls.annotation.RlsRule;
+import io.github.aayushghimirey.jpa_postgres_rls.annotation.RowLevelSecurity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -18,6 +20,9 @@ import java.util.UUID;
 @EntityListeners(AuditingEntityListener.class)
 @Builder
 @Table(name = "purchase_record")
+
+@RowLevelSecurity
+@RlsRule(table = "purchase_record", policy = "purchase_record_tenant_policy", requiredVariable = "app.tenant_id")
 public class PurchaseRecord extends Audit {
 
     @Column(name = "purchase_id", nullable = false, updatable = false, unique = true)

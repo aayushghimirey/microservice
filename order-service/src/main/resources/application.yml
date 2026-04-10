@@ -4,6 +4,14 @@ spring:
   application:
     name: order-service
 
+  flyway:
+    enabled: true
+    user: ${FLYWAY_USER}
+    password: ${FLYWAY_PASSWORD}
+    locations:
+      - classpath:db/migration
+      - classpath:db/migration/common
+
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/orders}
     username: ${SPRING_DATASOURCE_USERNAME:postgres}

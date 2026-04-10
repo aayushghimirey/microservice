@@ -2,6 +2,13 @@ spring:
   rls:
     enabled: true
 
+  flyway:
+    enabled: true
+    user: ${FLYWAY_USER}
+    password: ${FLYWAY_PASSWORD}
+    locations:
+      - classpath:db/migration
+      - classpath:db/migration/common
   application:
     name: menu-service
 

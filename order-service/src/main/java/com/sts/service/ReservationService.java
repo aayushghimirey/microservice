@@ -60,12 +60,10 @@ public class ReservationService {
 
         rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
 
-
         Table table = validateTable(request.tableId());
 
-        Map<UUID, MenuResponse> menuMap = request.items().stream()
-                .map(item -> fetchMenu(item.menuId()))
-                .collect(java.util.stream.Collectors.toMap(MenuResponse::getId, menu -> menu));
+        Map<UUID, MenuResponse> menuMap = request.items().stream().map(item ->
+                fetchMenu(item.menuId())).collect(java.util.stream.Collectors.toMap(MenuResponse::getId, menu -> menu));
 
         Reservation reservation = buildReservation(request, table, menuMap);
 
@@ -80,11 +78,12 @@ public class ReservationService {
 
         ReservationResponse response = reservationMapper.toResponse(reservation);
 
-        simpMessagingTemplate.convertAndSend("/topic/orders", response);
+        simpMessagingTemplate.convertAndSendToUser(reservation.getTenantId().toString(), "/queue/orders", response);
 
         return response;
     }
 
+    @Transactional
     public Page<ReservationResponse> getAllReservationByStatus(ReservationStatus status, Pageable pageable) {
         rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
 
@@ -99,9 +98,7 @@ public class ReservationService {
 
     private Table validateTable(UUID tableId) {
 
-        Table table = tableRepository.findById(tableId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        String.format(AppConstants.ERROR_MESSAGES.TABLE_NOT_FOUND, tableId)));
+        Table table = tableRepository.findById(tableId).orElseThrow(() -> new ResourceNotFoundException(String.format(AppConstants.ERROR_MESSAGES.TABLE_NOT_FOUND, tableId)));
 
         if (!TableStatus.OPEN.equals(table.getStatus())) {
             throw new BusinessValidationException(AppConstants.ERROR_MESSAGES.TABLE_NOT_OPEN);

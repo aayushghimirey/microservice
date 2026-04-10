@@ -26,6 +26,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import io.github.aayushghimirey.jpa_postgres_rls.annotation.RlsRule;
+import io.github.aayushghimirey.jpa_postgres_rls.annotation.RowLevelSecurity;
 
 @Entity
 @Getter
@@ -33,6 +35,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@RowLevelSecurity
+@RlsRule(table = "reservation", requiredVariable = "app.tenant_id", policy = "reservation_tenant_policy")
 @EntityListeners(AuditingEntityListener.class)
 public class Reservation extends Audit {
 

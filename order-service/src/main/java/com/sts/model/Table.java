@@ -4,6 +4,8 @@ import com.sts.domain.Audit;
 import com.sts.utils.enums.TableStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import io.github.aayushghimirey.jpa_postgres_rls.annotation.RlsRule;
+import io.github.aayushghimirey.jpa_postgres_rls.annotation.RowLevelSecurity;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.ArrayList;
@@ -16,6 +18,8 @@ import java.util.List;
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Builder
+@RowLevelSecurity
+@RlsRule(table = "tables", requiredVariable = "app.tenant_id", policy = "tables_tenant_policy")
 @jakarta.persistence.Table(name = "tables")
 public class Table extends Audit {
 

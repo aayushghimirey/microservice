@@ -43,6 +43,7 @@ public class OrderOutboxPublisher {
         OrderCreatedEvent event = new OrderCreatedEvent();
 
         event.setReservationId(reservation.getId());
+        event.setTenantId(reservation.getTenantId());
         event.setSessionId(reservation.getSessionId());
         event.setStatus(reservation.getStatus().name());
         event.setTableId(reservation.getTable().getId());

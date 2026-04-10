@@ -2,6 +2,8 @@ package com.sts.model;
 
 import com.sts.domain.Audit;
 import com.sts.utils.enums.MenuCategory;
+import io.github.aayushghimirey.jpa_postgres_rls.annotation.RlsRule;
+import io.github.aayushghimirey.jpa_postgres_rls.annotation.RowLevelSecurity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -21,6 +23,9 @@ import java.util.List;
 @Builder
 @Table(name = "menu")
 @EntityListeners(AuditingEntityListener.class)
+
+@RowLevelSecurity
+@RlsRule(table = "menu", requiredVariable = "app.tenant_id", policy = "menu_rls_policy")
 public class Menu extends Audit {
 
     @Column(name = "name", nullable = false)

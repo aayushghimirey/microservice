@@ -2,6 +2,8 @@ package com.sts.controller;
 
 
 import com.sts.dto.request.AuthRequest;
+import com.sts.dto.response.AuthResponse;
+import com.sts.response.ApiResponse;
 import com.sts.response.AppResponse;
 import com.sts.service.AuthenticationService;
 
@@ -20,7 +22,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticate(@RequestBody AuthRequest request) {
+    public ResponseEntity<ApiResponse<AuthResponse>> authenticate(@RequestBody AuthRequest request) {
         return AppResponse.success(authenticationService.authenticate(request), "Login successful");
     }
 

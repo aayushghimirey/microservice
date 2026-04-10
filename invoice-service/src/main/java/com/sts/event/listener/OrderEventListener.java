@@ -59,7 +59,7 @@ public class OrderEventListener {
 
             invoiceRepository.save(invoice);
 
-            simpMessagingTemplate.convertAndSend("/topic/invoices", invoiceMapper.toResponse(invoice));
+            simpMessagingTemplate.convertAndSendToUser(invoice.getTenantId().toString(), "/queue/invoices", invoiceMapper.toResponse(invoice));
 
             log.info("Invoice processed successfully for session: {}", event.getSessionId());
 

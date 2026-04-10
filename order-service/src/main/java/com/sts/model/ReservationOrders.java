@@ -8,6 +8,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import io.github.aayushghimirey.jpa_postgres_rls.annotation.RlsRule;
+import io.github.aayushghimirey.jpa_postgres_rls.annotation.RowLevelSecurity;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -19,6 +21,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Builder
+@RowLevelSecurity
+@RlsRule(table = "reservation_orders", requiredVariable = "app.tenant_id", policy = "reservation_orders_tenant_policy")
 public class ReservationOrders extends Audit {
 
     private UUID menuItemId;

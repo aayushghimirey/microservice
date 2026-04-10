@@ -139,6 +139,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/finance
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: admin
+
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       EUREKA_CLIENT_DEFAULT_ZONE: http://eureka-service:8761/eureka
       FLYWAY_USERNAME: postgres
@@ -165,6 +166,8 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: admin
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      FLYWAY_USER: postgres
+      FLYWAY_PASSWORD: admin
       EUREKA_CLIENT_DEFAULT_ZONE: http://eureka-service:8761/eureka
       SERVER_PORT: 8080
       INVENTORY_SERVICE_URL: http://inventory-service:8080
@@ -189,6 +192,8 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: admin
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      FLYWAY_USER: postgres
+      FLYWAY_PASSWORD: admin
       EUREKA_CLIENT_DEFAULT_ZONE: http://eureka-service:8761/eureka
       SERVER_PORT: 8080
       MENU_SERVICE_URL: http://menu-service:8080
@@ -213,6 +218,8 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: admin
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      FLYWAY_USER: postgres
+      FLYWAY_PASSWORD: admin
       EUREKA_CLIENT_DEFAULT_ZONE: http://eureka-service:8761/eureka
       SERVER_PORT: 8080
       MENU_SERVICE_URL: http://menu-service:8080
