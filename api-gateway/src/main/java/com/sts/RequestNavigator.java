@@ -41,6 +41,7 @@ public class RequestNavigator extends AbstractGatewayFilterFactory<RequestNaviga
             String token = null;
 
 
+
             List<String> headers = request.getHeaders().get("Authorization");
             if (headers == null || headers.isEmpty()) {
                 return onError(exchange, "No Authorization header found", HttpStatus.UNAUTHORIZED);

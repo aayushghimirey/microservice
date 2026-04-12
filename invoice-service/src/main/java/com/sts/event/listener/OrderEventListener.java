@@ -46,7 +46,7 @@ public class OrderEventListener {
         rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
 
 
-        log.info(AppConstants.LOG_MESSAGES.ORDER_EVENT_MESSAGE, event.getSessionId());
+        log.info(AppConstants.LOG_MESSAGES.ORDER_EVENT_MESSAGE, event.getSessionId(), event.getTenantId());
 
         try {
             Invoice invoice = invoiceRepository.findBySessionId(event.getSessionId());

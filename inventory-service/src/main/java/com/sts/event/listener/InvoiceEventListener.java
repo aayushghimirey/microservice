@@ -1,6 +1,7 @@
 package com.sts.event.listener;
 
 import com.sts.event.factory.StockUpdateFactoryRegistry;
+import com.sts.filter.TenantHolder;
 import com.sts.topics.KafkaProperties;
 import com.sts.utils.constant.AppConstants;
 import org.springframework.kafka.annotation.KafkaListener;

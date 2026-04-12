@@ -4,6 +4,7 @@ import com.sts.entity.OutboxEventType;
 import com.sts.enums.AggregateType;
 import com.sts.event.MenuResponse;
 import com.sts.event.OrderCreatedEvent;
+import com.sts.filter.TenantHolder;
 import com.sts.helper.outbox.OutboxPublisher;
 import com.sts.model.Reservation;
 import com.sts.topics.KafkaProperties;
@@ -43,7 +44,7 @@ public class OrderOutboxPublisher {
         OrderCreatedEvent event = new OrderCreatedEvent();
 
         event.setReservationId(reservation.getId());
-        event.setTenantId(reservation.getTenantId());
+        event.setTenantId(TenantHolder.getTenantId());
         event.setSessionId(reservation.getSessionId());
         event.setStatus(reservation.getStatus().name());
         event.setTableId(reservation.getTable().getId());

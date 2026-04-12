@@ -19,6 +19,8 @@ public interface StockTransactionResponse {
 
     String getUnitName();
 
+    String getPurchaseUnitName();
+
     BigDecimal getQuantityChanged();
 
     BigDecimal getBalanceAfter();

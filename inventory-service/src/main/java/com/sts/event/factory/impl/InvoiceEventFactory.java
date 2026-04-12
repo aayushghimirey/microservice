@@ -19,7 +19,7 @@ public class InvoiceEventFactory implements StockUpdateEventFactory<InvoiceEvent
     @Override
     public StockUpdateEvent build(InvoiceEvent input) {
 
-        log.info("Building StockUpdateEvent from InvoiceEvent with invoiceId: {}", input.getInvoiceId());
+        log.info("Building StockUpdateEvent from InvoiceEvent with invoiceId: {} and tenantId {}", input.getInvoiceId(), input.getTenantId());
 
         List<StockUpdateEvent.StockUpdateItem> stockItems = input.getItems().stream()
                 .flatMap(item -> item.getIngredients().stream()

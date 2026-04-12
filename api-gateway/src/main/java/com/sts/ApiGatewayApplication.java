@@ -29,7 +29,6 @@ public class ApiGatewayApplication {
                         .path("/auth/public/**", "/auth/super/**")
                         .uri("lb://auth-service")
                 )
-
                 .route("inventory-service", predicateSpec -> predicateSpec
                         .path("/stocks/**", "/purchases/**", "/vendors/**")
                         .filters(gatewayFilterSpec -> gatewayFilterSpec.filter(requestNavigator.apply(new RequestNavigator.Config())))
@@ -52,15 +51,19 @@ public class ApiGatewayApplication {
                 .route("invoice-service", predicateSpec -> predicateSpec
                         .path("/invoices/**")
                         .filters(gatewayFilterSpec -> gatewayFilterSpec.filter(requestNavigator.apply(new RequestNavigator.Config())))
-
                         .uri("lb://invoice-service"))
 
-                .route("order-service-ws", predicateSpec -> predicateSpec
-                        .path("/ws/**")
-                        .filters(gatewayFilterSpec -> gatewayFilterSpec.filter(requestNavigator.apply(new RequestNavigator.Config())))
+                .route("order-service-ws", r -> r
+                        .path("/orders/ws/**")
+                        .filters(f -> f.filter(requestNavigator.apply(new RequestNavigator.Config())))
+                        .uri("lb://order-service")
+                )
 
-                        .uri("lb:ws://order-service"))
-
+                .route("invoice-service-ws", r -> r
+                        .path("/invoices/ws/**")
+                        .filters(f -> f.filter(requestNavigator.apply(new RequestNavigator.Config())))
+                        .uri("lb://invoice-service")
+                )
                 .build();
     }
 

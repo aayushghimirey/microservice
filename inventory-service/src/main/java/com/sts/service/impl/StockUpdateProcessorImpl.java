@@ -119,7 +119,7 @@ public class StockUpdateProcessorImpl implements StockUpdateProcessor {
         variant.setCurrentStock(newBalance);
         variantsToUpdate.add(variant);
 
-        transactionsToSave.add(toTransaction(item, referenceId, delta, newBalance));
+        transactionsToSave.add(toTransaction(item, referenceId, delta, newBalance, transactionReference));
         log.debug(AppConstants.Logs.CREATING_STOCK_TRANSACTION, item.variantId(), newBalance);
     }
 
@@ -135,15 +135,17 @@ public class StockUpdateProcessorImpl implements StockUpdateProcessor {
             StockUpdateEvent.StockUpdateItem item,
             UUID referenceId,
             BigDecimal delta,
-            BigDecimal balanceAfter) {
+            BigDecimal balanceAfter, TransactionReference transactionReference) {
         return StockTransaction.builder()
                 .variantId(item.variantId())
                 .unitId(item.unitId())
                 .quantityChange(delta)
                 .balanceAfter(balanceAfter)
                 .referenceId(referenceId)
-                .remark("Stock update ")
+                .referenceType(transactionReference)
+                .remark("Stock update from " + transactionReference)
                 .build();
+
     }
 
 

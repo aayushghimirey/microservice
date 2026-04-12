@@ -2,6 +2,7 @@ package com.sts.event.factory;
 
 import com.sts.event.InvoiceEvent;
 import com.sts.event.MenuIngredientResponse;
+import com.sts.filter.TenantHolder;
 import com.sts.model.Invoice;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ public class InvoiceEventFactory {
                 .invoiceId(invoice.getId())
                 .sessionId(invoice.getSessionId())
                 .reservationId(invoice.getReservationId())
+                .tenantId(TenantHolder.getTenantId())
                 .grossTotal(invoice.getGrossTotal())
                 .reservationTime(invoice.getReservationTime())
                 .reservationEndTime(invoice.getReservationEndTime()).build();

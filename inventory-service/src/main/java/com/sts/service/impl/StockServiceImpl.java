@@ -122,7 +122,6 @@ public class StockServiceImpl implements StockService {
 
         rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
 
-
         Specification<Stock> spec = specification.buildSpecification(queryRequest);
 
         return stockRepository.findAll(spec, pageable)

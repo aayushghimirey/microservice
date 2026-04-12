@@ -18,7 +18,7 @@ public interface AppConstants {
     }
 
     interface LOG_MESSAGES {
-        String ORDER_EVENT_MESSAGE = "Order event received with session id {}";
+        String ORDER_EVENT_MESSAGE = "Order event received with session id {} and tenant id {}";
         String INVOICE_PROCESSED_SUCCESS = "Invoice processed successfully for session '%s'";
         String PROCESSING_INVOICE = "Processing invoice with id: {}";
         String INVOICE_PAID = "Invoice marked as PAID for id: {}";
