@@ -1,9 +1,11 @@
 package com.sts.event.strategy;
 
 import com.sts.event.InvoiceEvent;
+import com.sts.filter.TenantHolder;
 import com.sts.mapper.InvoiceRecordMapper;
 import com.sts.model.InvoiceRecord;
 import com.sts.repository.InvoiceRecordRepository;
+import io.github.aayushghimirey.jpa_postgres_rls.core.RlsContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -17,11 +19,15 @@ public class InvoiceEventProcessingStrategy extends AbstractEventProcessingStrat
 
     private final InvoiceRecordRepository invoiceRecordRepository;
     private final InvoiceRecordMapper invoiceRecordMapper;
+    private final RlsContext rlsContext;
 
 
     @Override
     @Transactional
     protected void save(InvoiceEvent event) {
+        TenantHolder.setTenantId(event.getTenantId());
+        rlsContext.with("app.tenant_id", event.getTenantId()).apply();
+
         invoiceRecordRepository.findByInvoiceId(event.getInvoiceId())
                 .ifPresentOrElse(
                         existing -> update(existing, event),

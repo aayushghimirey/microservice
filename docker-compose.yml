@@ -87,12 +87,16 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/inventory
       SPRING_DATASOURCE_USERNAME: app_user
       SPRING_DATASOURCE_PASSWORD: AppUser@1234
+      GATEWAY_SECRET: sts@123_gateway_pass_#$%^&*validated_by_aayush+ghimire077@something.sts.com.test&&%secret
       FLYWAY_USER: postgres
       FLYWAY_PASSWORD: admin
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       EUREKA_CLIENT_DEFAULT_ZONE: http://eureka-service:8761/eureka
       SERVER_PORT: 8080
       MENU_SERVICE_URL: http://menu-service:8080
+      PURCHASE_EVENT: PURCHASE_EVENT
+      INVOICE_EVENT: INVOICE_EVENT
+      STOCK_EVENT: STOCK_EVENT
     depends_on:
       postgres:
         condition: service_healthy
@@ -142,6 +146,11 @@ services:
 
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       EUREKA_CLIENT_DEFAULT_ZONE: http://eureka-service:8761/eureka
+      GATEWAY_SECRET: sts@123_gateway_pass_#$%^&*validated_by_aayush+ghimire077@something.sts.com.test&&%secret
+
+      PURCHASE_EVENT: PURCHASE_EVENT
+      INVOICE_EVENT: INVOICE_EVENT
+
       FLYWAY_USERNAME: postgres
       FLYWAY_PASSWORD: admin
       SERVER_PORT: 8080
@@ -170,6 +179,8 @@ services:
       FLYWAY_PASSWORD: admin
       EUREKA_CLIENT_DEFAULT_ZONE: http://eureka-service:8761/eureka
       SERVER_PORT: 8080
+      GATEWAY_SECRET: sts@123_gateway_pass_#$%^&*validated_by_aayush+ghimire077@something.sts.com.test&&%secret
+      STOCK_EVENT: STOCK_EVENT
       INVENTORY_SERVICE_URL: http://inventory-service:8080
     depends_on:
       postgres:
@@ -197,6 +208,10 @@ services:
       EUREKA_CLIENT_DEFAULT_ZONE: http://eureka-service:8761/eureka
       SERVER_PORT: 8080
       MENU_SERVICE_URL: http://menu-service:8080
+      GATEWAY_SECRET: sts@123_gateway_pass_#$%^&*validated_by_aayush+ghimire077@something.sts.com.test&&%secret
+
+      ORDER_EVENT: ORDER_EVENT
+      INVOICE_EVENT: INVOICE_EVENT
     depends_on:
       postgres:
         condition: service_healthy

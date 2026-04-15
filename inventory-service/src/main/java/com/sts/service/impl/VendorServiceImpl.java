@@ -1,5 +1,6 @@
 package com.sts.service.impl;
 
+import com.sts.exception.DuplicateResourceException;
 import com.sts.filter.TenantHolder;
 import io.github.aayushghimirey.jpa_postgres_rls.core.RlsContext;
 import org.springframework.data.domain.Page;
@@ -35,11 +36,14 @@ public class VendorServiceImpl implements VendorService {
     public VendorResponse createVendor(CreateVendorCommand command) {
         rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
 
+        assertVendorNameUnique(command.name());
+
         Vendor vendor = vendorMapper.buildVendor(command);
 
         return vendorMapper.toResponse(vendorRepository.save(vendor));
 
     }
+
 
     /*
      * Queries
@@ -51,5 +55,13 @@ public class VendorServiceImpl implements VendorService {
 
         return vendorRepository.findAll(pageable).map(vendorMapper::toResponse);
     }
+
+    private void assertVendorNameUnique(String name) {
+        if (vendorRepository.existsByName(name)) {
+            log.warn("Vendor with name '{}' already exists.", name);
+            throw new DuplicateResourceException("Vendor with name '" + name + "' already exists.");
+        }
+    }
+
 
 }

@@ -55,13 +55,11 @@ public class ApiGatewayApplication {
 
                 .route("order-service-ws", r -> r
                         .path("/orders/ws/**")
-                        .filters(f -> f.filter(requestNavigator.apply(new RequestNavigator.Config())))
                         .uri("lb://order-service")
                 )
 
                 .route("invoice-service-ws", r -> r
                         .path("/invoices/ws/**")
-                        .filters(f -> f.filter(requestNavigator.apply(new RequestNavigator.Config())))
                         .uri("lb://invoice-service")
                 )
                 .build();

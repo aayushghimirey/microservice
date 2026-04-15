@@ -64,8 +64,6 @@ public class StockServiceImpl implements StockService {
 
         rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
 
-        log.info(AppConstants.Logs.CREATING_STOCK, command.name());
-
         assertStockNameUnique(command.name(), null);
 
         Stock stock = stockRepository.save(stockMapper.buildStock(command));
@@ -82,11 +80,10 @@ public class StockServiceImpl implements StockService {
         rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
 
 
-        log.info(AppConstants.Logs.UPDATING_STOCK, stockId);
-
         assertStockNameUnique(command.name(), stockId);
 
         Stock stock = referenceResolver.getStockOrThrow(stockId);
+
         stockUpdateMapper.updateStock(stock, command);
 
         Stock updated = stockRepository.save(stock);
@@ -102,15 +99,12 @@ public class StockServiceImpl implements StockService {
 
         rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
 
-
-        log.info(AppConstants.Logs.ADJUSTING_STOCK,
-                command.variantId(), command.unitId(), command.quantity());
-
         StockVariant variant = referenceResolver.getVariantOrThrow(command.variantId());
+
         variantUnitResolver.getVariantUnitOrThrow(variant.getId(), command.unitId());
 
         StockUpdateEvent event = stockFactoryRegistry
-                .forAdjustment(variant.getId(), command.unitId(), command.quantity(), variant.getTenantId());
+                .forAdjustment(variant.getId(), command.unitId(), command.quantity(), command.isAddition(), variant.getTenantId());
 
         domainEventPublisher.publish(event);
     }
@@ -152,7 +146,6 @@ public class StockServiceImpl implements StockService {
     }
 
     // -------------------- Helpers ----------------------
-
 
     private void assertStockNameUnique(String name, UUID excludeId) {
         if (name == null || name.isBlank()) return;

@@ -4,17 +4,16 @@ import com.sts.event.InvoiceEvent;
 import com.sts.event.StockUpdateEvent;
 import com.sts.event.factory.StockUpdateEventFactory;
 import com.sts.utils.enums.TransactionReference;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @Component
+@Slf4j
 public class InvoiceEventFactory implements StockUpdateEventFactory<InvoiceEvent> {
 
-    private static final Logger log = LoggerFactory.getLogger(InvoiceEventFactory.class);
 
     @Override
     public StockUpdateEvent build(InvoiceEvent input) {
@@ -37,6 +36,7 @@ public class InvoiceEventFactory implements StockUpdateEventFactory<InvoiceEvent
                 input.getInvoiceId(),
                 input.getTenantId(),
                 TransactionReference.SALES,
+                false,
                 stockItems
         );
     }

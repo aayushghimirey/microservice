@@ -1,16 +1,14 @@
 package com.sts.service;
 
-import java.util.UUID;
-
-import com.sts.event.StockUpdateEvent;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 import com.sts.dto.request.CreateStockCommand;
 import com.sts.dto.request.GetStockQueryRequest;
 import com.sts.dto.request.StockAdjustmentCommand;
 import com.sts.dto.request.UpdateStockCommand;
 import com.sts.dto.response.StockResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.UUID;
 
 public interface StockService {
 
@@ -20,7 +18,6 @@ public interface StockService {
 
     void adjustStock(StockAdjustmentCommand command);
 
-    // -- query -----------------
 
     Page<StockResponse> getAllQueryStock(GetStockQueryRequest queryRequest, Pageable pageable);
 

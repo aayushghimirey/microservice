@@ -21,15 +21,12 @@ public class InvoiceEventListener {
     private final InvoiceEventProcessingStrategy invoiceEventProcessingStrategy;
     private final RlsContext rlsContext;
 
-    @KafkaListener(topics = "#{@kafkaProperties.getTopic('invoice-event')}",
+    @KafkaListener(topics = "${app.kafka.topics.invoice-event}",
             containerFactory = "invoiceKafkaListenerContainerFactory")
-    @Transactional
+
 
     public void handleInvoiceEvent(InvoiceEvent event, Acknowledgment acknowledgment) {
 
-
-        rlsContext.with("app.tenant_id", event.getTenantId()).apply();
-        TenantHolder.setTenantId(event.getTenantId());
 
         log.info("Invoice event received - invoiceId: {}", event.getInvoiceId());
 

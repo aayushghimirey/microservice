@@ -25,8 +25,8 @@ public class StockUpdateFactoryRegistry {
     private final PurchaseEventFactory purchaseEventFactory;
 
 
-    public StockUpdateEvent forAdjustment(UUID variantId, UUID unitId, BigDecimal quantity, UUID tenantId) {
-        return adjustmentEventFactory.build(new AdjustmentEventFactory.AdjustmentInput(variantId, unitId, tenantId, quantity));
+    public StockUpdateEvent forAdjustment(UUID variantId, UUID unitId, BigDecimal quantity, Boolean isAddition, UUID tenantId) {
+        return adjustmentEventFactory.build(new AdjustmentEventFactory.AdjustmentInput(variantId, unitId, tenantId, isAddition, quantity));
     }
 
 

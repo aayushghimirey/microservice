@@ -1,8 +1,7 @@
 spring:
+
   rls:
     enabled: true
-  profiles:
-    active: prod
 
   flyway:
     enabled: true
@@ -11,34 +10,45 @@ spring:
     locations:
       - classpath:db/migration
       - classpath:db/migration/common
+
   application:
     name: inventory-service
 
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/inventory}
-    username: ${SPRING_DATASOURCE_USERNAME:postgres}
-    password: ${SPRING_DATASOURCE_PASSWORD:admin}
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+
   jpa:
     hibernate:
       ddl-auto: validate
-    properties:
-      hibernate.format_sql: true
 
 server:
   port: ${SERVER_PORT:8080}
 
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_DEFAULT_ZONE}
+    register-with-eureka: true
+    fetch-registry: false
+
+# Custom application properties
 app:
   security:
-    gateway-secret: sts@123_gateway_pass_#$%^&*validated_by_aayush+ghimire077@something.sts.com.test&&%secret
+    gateway-secret: ${GATEWAY_SECRET}
+
   clients:
     menu-service:
-      url: ${MENU_SERVICE_URL:http://localhost:8082}
+      url: ${MENU_SERVICE_URL}
+
   kafka:
-    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+
     topics:
-      purchase-event: PURCHASE_EVENT
-      invoice-event: INVOICE_EVENT
-      stock-event: STOCK_EVENT
+      purchase-event: ${PURCHASE_EVENT}
+      invoice-event: ${INVOICE_EVENT}
+      stock-event: ${STOCK_EVENT}
     groups:
       inventory-group: inventory-group-consumer
 
@@ -48,9 +58,3 @@ logging:
     root: INFO
     com.sts: DEBUG
 
-eureka:
-  client:
-    service-url:
-      defaultZone: ${EUREKA_CLIENT_DEFAULT_ZONE:http://eureka-service:8761/eureka}
-    register-with-eureka: true
-    fetch-registry: false

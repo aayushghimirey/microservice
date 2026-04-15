@@ -22,6 +22,7 @@ import lombok.Setter;
 
 import io.github.aayushghimirey.jpa_postgres_rls.annotation.RlsRule;
 import io.github.aayushghimirey.jpa_postgres_rls.annotation.RowLevelSecurity;
+import org.springframework.data.jpa.repository.Lock;
 
 @Entity
 @Builder

@@ -17,6 +17,7 @@ import com.sts.utils.contant.AppConstants;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -30,17 +31,43 @@ public class ReservationController {
     @PostMapping
     public ResponseEntity<ApiResponse<ReservationResponse>> createReservation(
             @RequestBody CreateReservationCommand request) {
-        log.info(AppConstants.LOG_MESSAGES.CREATING_RESERVATION, request.tableId());
-        return AppResponse.success(reservationService.createReservation(request),
+
+        log.info("Request received: createReservation tableId={} time={}",
+                request.tableId(),
+                LocalDateTime.now());
+
+        ReservationResponse response =
+                reservationService.createReservation(request);
+
+        log.info("Request completed: createReservation sessionId={}",
+                response.sessionId());
+
+        return AppResponse.success(
+                response,
                 AppConstants.SUCCESS_MESSAGES.RESERVATION_CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<PagedResponse<List<ReservationResponse>>> getAllReservations(@RequestParam ReservationStatus status, @ModelAttribute PageRequestDto pageRequestDto) {
+    public ResponseEntity<PagedResponse<List<ReservationResponse>>> getAllReservations(
+            @RequestParam ReservationStatus status,
+            @ModelAttribute PageRequestDto pageRequestDto) {
+
+        log.info("Request received: getAllReservations status={} page={} size={}",
+                status,
+                pageRequestDto.getPage(),
+                pageRequestDto.getSize());
+
+        var response =
+                reservationService.getAllReservationByStatus(
+                        status,
+                        pageRequestDto.buildPageable());
+
+        log.info("Request completed: getAllReservations status={} totalElements={}",
+                status,
+                response.getTotalElements());
+
         return AppResponse.success(
-                reservationService.getAllReservationByStatus(status, pageRequestDto.buildPageable()),
+                response,
                 AppConstants.SUCCESS_MESSAGES.RESERVATION_FETCHED);
     }
-
-
 }

@@ -40,10 +40,11 @@ public class StockUpdateProcessorImpl implements StockUpdateProcessor {
 
 
     @Override
-    @Transactional(propagation = Propagation.MANDATORY)
+    @Transactional
     public void process(StockUpdateEvent event) {
-        rlsContext.with("app.tenant_id", event.tenantId()).apply();
+
         TenantHolder.setTenantId(event.tenantId());
+        rlsContext.with("app.tenant_id", event.tenantId()).apply();
 
 
         log.info("Stock UPDATE event from {}", event.transactionReference());
@@ -58,12 +59,12 @@ public class StockUpdateProcessorImpl implements StockUpdateProcessor {
 
         for (var item : event.items()) {
             processItem(item, referenceId, variantMap, unitMap,
-                    variantsToUpdate, transactionsToSave, event.transactionReference());
+                    variantsToUpdate, transactionsToSave, event.transactionReference(), event.isAddition());
         }
 
         stockVariantRepository.saveAll(variantsToUpdate);
-        stockTransactionRepository.saveAll(transactionsToSave);
 
+        stockTransactionRepository.saveAll(transactionsToSave);
 
     }
 
@@ -93,7 +94,9 @@ public class StockUpdateProcessorImpl implements StockUpdateProcessor {
             Map<UUID, StockVariant> variantMap,
             Map<UUID, VariantUnit> unitMap,
             List<StockVariant> variantsToUpdate,
-            List<StockTransaction> transactionsToSave, TransactionReference transactionReference) {
+            List<StockTransaction> transactionsToSave, TransactionReference transactionReference,
+            boolean isAddition
+    ) {
 
         StockVariant variant = variantMap.get(item.variantId());
         if (variant == null)
@@ -106,15 +109,14 @@ public class StockUpdateProcessorImpl implements StockUpdateProcessor {
                     String.format("Unit not found: %s", item.unitId()));
 
         BigDecimal delta = calculateDelta(item.quantity(), unit.getConversionRate());
-        BigDecimal newBalance = switch (transactionReference) {
-            case PURCHASE, ADJUSTMENT -> variant.getCurrentStock().add(delta);
-            case SALES -> variant.getCurrentStock().subtract(delta);
-            default -> throw new IllegalArgumentException(
-                    "Unsupported transaction reference: " + transactionReference);
-        };
 
-        log.debug(AppConstants.Logs.CALCULATE_STOCK_DELTA, item.variantId(), delta);
+        BigDecimal newBalance;
 
+        if (isAddition) {
+            newBalance = variant.getCurrentStock().add(delta);
+        } else {
+            newBalance = variant.getCurrentStock().subtract(delta);
+        }
 
         variant.setCurrentStock(newBalance);
         variantsToUpdate.add(variant);

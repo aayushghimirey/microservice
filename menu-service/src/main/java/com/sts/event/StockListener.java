@@ -5,6 +5,7 @@ import com.sts.mapper.StockSnapshotMapper;
 import com.sts.model.StockSnapshot;
 import com.sts.repository.StockSnapshotRepository;
 import com.sts.topics.KafkaProperties;
+import com.sts.utils.constant.AppConstants;
 import io.github.aayushghimirey.jpa_postgres_rls.core.RlsContext;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -30,13 +31,12 @@ public class StockListener {
     private final RlsContext rlsContext;
 
 
-    @KafkaListener(topics = "#{@kafkaProperties.getTopic('stock-event')}")
+    @KafkaListener(topics = "${app.kafka.topics.stock-event}", containerFactory = "stockListenerContainerFactory")
     @Transactional
     public void onStockEvent(StockEvent event, Acknowledgment acknowledgment) {
 
-        rlsContext.with("app.tenant_id", event.tenantId()).apply();
-
         TenantHolder.setTenantId(event.tenantId());
+        rlsContext.with("app.tenant_id", event.tenantId()).apply();
 
         log.info("Received StockEvent for stockId: {}", event.stockId());
 

@@ -14,7 +14,7 @@ import java.util.UUID;
 public class AdjustmentEventFactory implements StockUpdateEventFactory<AdjustmentEventFactory.AdjustmentInput> {
 
 
-    public record AdjustmentInput(UUID variantId, UUID unitId, UUID tenantId, BigDecimal quantity) {
+    public record AdjustmentInput(UUID variantId, UUID unitId, UUID tenantId, Boolean isAddition, BigDecimal quantity) {
     }
 
     @Override
@@ -24,6 +24,7 @@ public class AdjustmentEventFactory implements StockUpdateEventFactory<Adjustmen
                 null,
                 input.tenantId,
                 TransactionReference.ADJUSTMENT,
+                input.isAddition,
                 List.of(new StockUpdateEvent.StockUpdateItem(
                         input.variantId,
                         input.unitId,

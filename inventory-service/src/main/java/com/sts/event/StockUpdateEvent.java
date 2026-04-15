@@ -12,7 +12,9 @@ public record StockUpdateEvent(
         UUID invoiceId,
         UUID tenantId,
         TransactionReference transactionReference,
-        List<StockUpdateItem> items) {
+        Boolean isAddition,
+        List<StockUpdateItem> items
+) {
 
     public record StockUpdateItem(
             UUID variantId,

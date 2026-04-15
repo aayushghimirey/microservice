@@ -22,7 +22,7 @@ public class VariantUnitResolver {
     public VariantUnit getVariantUnitOrThrow(UUID variantId, UUID unitId) {
         return variantUnitRepository.findByIdAndStockVariantId(unitId, variantId)
                 .orElseThrow(() -> {
-                    log.error("Variant unit not found: unitId={}, variantId={}", unitId, variantId);
+                    log.warn("Variant unit not found: unitId={}, variantId={}", unitId, variantId);
                     return new ResourceNotFoundException(
                             String.format(AppConstants.ErrorMessages.UNIT_NOT_FOUND, unitId));
                 });

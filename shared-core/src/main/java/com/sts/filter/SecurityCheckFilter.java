@@ -25,6 +25,11 @@ public class SecurityCheckFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
+        if (request.getRequestURI().startsWith("/ws")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         try {
 
             String tenantId = request.getHeader("X-Tenant-Id");

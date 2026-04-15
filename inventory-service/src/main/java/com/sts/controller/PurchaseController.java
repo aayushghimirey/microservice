@@ -1,16 +1,5 @@
 package com.sts.controller;
 
-import java.util.List;
-
-import com.sts.utils.constant.AppConstants;
-import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.sts.dto.request.CreatePurchaseCommand;
 import com.sts.dto.response.PurchaseResponse;
 import com.sts.pagination.PageRequestDto;
@@ -18,10 +7,14 @@ import com.sts.response.ApiResponse;
 import com.sts.response.AppResponse;
 import com.sts.response.PagedResponse;
 import com.sts.service.PurchaseService;
-
+import com.sts.utils.constant.AppConstants;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -29,34 +22,47 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class PurchaseController {
 
-        private final PurchaseService purchaseService;
+    private final PurchaseService purchaseService;
 
-        /**
-         * Creates a new purchase. VAT (13%) is automatically calculated and added to
-         * the sub-total
-         * to derive the final Gross Total.
-         */
-        @PostMapping
-        public ResponseEntity<ApiResponse<PurchaseResponse>> createPurchase(
-                        @Valid @RequestBody CreatePurchaseCommand command) {
+    /**
+     * Creates a new purchase. VAT (13%) is automatically calculated and added to
+     * the sub-total to derive the final Gross Total.
+     */
+    @PostMapping
+    public ResponseEntity<ApiResponse<PurchaseResponse>> createPurchase(
+            @Valid @RequestBody CreatePurchaseCommand command) {
 
-                PurchaseResponse purchase = purchaseService.createPurchase(command);
+        log.info("Request received: createPurchase vendorId={} totalItems={}",
+                command.vendorId(),
+                command.items() != null ? command.items().size() : 0);
 
-                return AppResponse.success(
-                                purchase,
-                                AppConstants.Response.PURCHASE_CREATED);
-        }
+        PurchaseResponse purchase = purchaseService.createPurchase(command);
 
-        @GetMapping
-        public ResponseEntity<PagedResponse<List<PurchaseResponse>>> getAllPurchases(
-                        PageRequestDto pageRequestDto) {
+        log.info("Request completed: createPurchase purchaseId={} grossTotal={}",
+                purchase.id(),
+                purchase.grossTotal());
 
-                Page<PurchaseResponse> purchases = purchaseService.getAllPurchases(
-                                pageRequestDto.buildPageable());
+        return AppResponse.success(
+                purchase,
+                AppConstants.Response.PURCHASE_CREATED);
+    }
 
-                return AppResponse.success(
-                                purchases,
-                                AppConstants.Response.FETCHED_PURCHASES);
-        }
+    @GetMapping
+    public ResponseEntity<PagedResponse<List<PurchaseResponse>>> getAllPurchases(
+            PageRequestDto pageRequestDto) {
 
+        log.info("Request received: getAllPurchases page={} size={}",
+                pageRequestDto.getPage(),
+                pageRequestDto.getSize());
+
+        var purchases =
+                purchaseService.getAllPurchases(pageRequestDto.buildPageable());
+
+        log.info("Request completed: getAllPurchases totalElements={}",
+                purchases.getTotalElements());
+
+        return AppResponse.success(
+                purchases,
+                AppConstants.Response.FETCHED_PURCHASES);
+    }
 }

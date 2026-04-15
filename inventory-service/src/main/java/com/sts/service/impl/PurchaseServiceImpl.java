@@ -1,19 +1,12 @@
 package com.sts.service.impl;
 
-import com.sts.event.factory.StockUpdateFactoryRegistry;
-import com.sts.filter.TenantHolder;
-import com.sts.shared.PurchaseOutboxPublisher;
-import io.github.aayushghimirey.jpa_postgres_rls.core.RlsContext;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.sts.dto.request.CreatePurchaseCommand;
 import com.sts.dto.response.PurchaseResponse;
 import com.sts.event.StockUpdateEvent;
+import com.sts.event.factory.StockUpdateFactoryRegistry;
 import com.sts.exception.DuplicateResourceException;
+import com.sts.filter.TenantHolder;
+import com.sts.helper.event.DomainEventPublisher;
 import com.sts.mapper.PurchaseMapper;
 import com.sts.model.purchase.Purchase;
 import com.sts.model.vendor.Vendor;
@@ -21,11 +14,15 @@ import com.sts.repository.PurchaseRepository;
 import com.sts.service.PurchaseService;
 import com.sts.service.resolver.ReferenceResolver;
 import com.sts.service.resolver.VariantUnitResolver;
-import com.sts.helper.event.DomainEventPublisher;
-
+import com.sts.shared.PurchaseOutboxPublisher;
 import com.sts.utils.constant.AppConstants;
-
+import io.github.aayushghimirey.jpa_postgres_rls.core.RlsContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -50,9 +47,6 @@ class PurchaseServiceImpl implements PurchaseService {
     public PurchaseResponse createPurchase(CreatePurchaseCommand command) {
 
         rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
-
-
-        log.info(AppConstants.Logs.CREATING_PURCHASE, command.invoiceNumber());
 
         checkInvoiceNumberUniqueness(command.invoiceNumber());
 
@@ -80,7 +74,6 @@ class PurchaseServiceImpl implements PurchaseService {
     public Page<PurchaseResponse> getAllPurchases(Pageable pageable) {
 
         rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
-
 
         return purchaseRepository
                 .findAll(pageable)

@@ -1,19 +1,13 @@
 package com.sts.event.listener;
 
+import com.sts.event.InvoiceEvent;
 import com.sts.event.factory.StockUpdateFactoryRegistry;
-import com.sts.filter.TenantHolder;
-import com.sts.topics.KafkaProperties;
-import com.sts.utils.constant.AppConstants;
+import com.sts.helper.event.DomainEventPublisher;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
-
-import com.sts.event.InvoiceEvent;
-import com.sts.helper.event.DomainEventPublisher;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.transaction.annotation.Transactional;
 
 
 /*
@@ -27,27 +21,40 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class InvoiceEventListener {
 
-
     private final DomainEventPublisher domainEventPublisher;
     private final StockUpdateFactoryRegistry stockUpdateFactoryRegistry;
-    private final KafkaProperties kafkaProperties;
 
-    @KafkaListener(topics = "INVOICE_EVENT", containerFactory = "invoiceKafkaListenerContainerFactory")
-    @Transactional
+    @KafkaListener(
+            topics = "${app.kafka.topics.invoice-event}",
+            containerFactory = "invoiceKafkaListenerContainerFactory"
+    )
     public void listen(InvoiceEvent event, Acknowledgment acknowledgment) {
-        log.info(AppConstants.Logs.INVOICE_EVENT_RECEIVED, event.getInvoiceId());
-        log.info("Received invoice event");
+
+        log.info("Kafka event received: invoiceId={} eventType={}",
+                event.getInvoiceId(),
+                event.getClass().getSimpleName());
+
         try {
 
-            domainEventPublisher.publish(stockUpdateFactoryRegistry.forInvoice(event));
+            log.info("Processing invoice event: invoiceId={}", event.getInvoiceId());
 
+            domainEventPublisher.publish(
+                    stockUpdateFactoryRegistry.forInvoice(event)
+            );
+
+            log.info("Successfully processed invoice event: invoiceId={}",
+                    event.getInvoiceId());
+
+            acknowledgment.acknowledge();
 
         } catch (Exception e) {
 
-            log.error(AppConstants.Logs.FAILED_TO_PROCESS_INVOICE, event.getInvoiceId(), e);
+            log.error("Failed to process invoice event: invoiceId={} error={}",
+                    event.getInvoiceId(),
+                    e.getMessage(),
+                    e);
+
             throw e;
-        } finally {
-            acknowledgment.acknowledge();
         }
     }
 }

@@ -13,37 +13,39 @@ spring:
       - classpath:db/migration/common
 
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/orders}
-    username: ${SPRING_DATASOURCE_USERNAME:postgres}
-    password: ${SPRING_DATASOURCE_PASSWORD:admin}
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+
   jpa:
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate.format_sql: true
+
 
 server:
-  port: ${SERVER_PORT:8083}
-
-app:
-  security:
-    gateway-secret: sts@123_gateway_pass_#$%^&*validated_by_aayush+ghimire077@something.sts.com.test&&%secret
-  kafka:
-    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
-    groups:
-      order-group: order-group-consumer
-    topics:
-      order-event: ORDER_EVENT
-      invoice-event: INVOICE_EVENT
-  clients:
-    menu-service:
-      url: ${MENU_SERVICE_URL:http://localhost:8082}
-
-
+  port: ${SERVER_PORT}
 
 eureka:
   client:
     service-url:
-      defaultZone: ${EUREKA_CLIENT_DEFAULT_ZONE:http://eureka-service:8761/eureka}
+      defaultZone: ${EUREKA_CLIENT_DEFAULT_ZONE}
     register-with-eureka: true
     fetch-registry: false
+
+# Custom application properties
+app:
+  security:
+    gateway-secret: ${GATEWAY_SECRET}
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+    groups:
+      order-group: order-group-consumer
+    topics:
+      order-event: ${ORDER_EVENT}
+      invoice-event: ${INVOICE_EVENT}
+  clients:
+    menu-service:
+      url: ${MENU_SERVICE_URL}
+
+
+

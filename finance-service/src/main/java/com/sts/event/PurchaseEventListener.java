@@ -21,14 +21,9 @@ public class PurchaseEventListener {
     private final PurchaseEventProcessingStrategy purchaseEventProcessingStrategy;
     private final RlsContext rlsContext;
 
-    @KafkaListener(topics = "#{@kafkaProperties.getTopic('purchase-event')}",
+    @KafkaListener(topics = "${app.kafka.topics.purchase-event}",
             containerFactory = "purchaseKafkaListenerContainerFactory")
-    @Transactional
     public void handlePurchaseEvent(PurchaseCreatedEvent event, Acknowledgment acknowledgment) {
-
-
-        rlsContext.with("app.tenant_id", event.getTenantId()).apply();
-        TenantHolder.setTenantId(event.getTenantId());
 
 
         log.info("Purchase event received - purchaseId: {}", event.getPurchaseId());

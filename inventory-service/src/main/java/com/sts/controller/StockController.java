@@ -43,11 +43,11 @@ public class StockController {
     public ResponseEntity<ApiResponse<StockResponse>> createStock(
             @Valid @RequestBody CreateStockCommand command) {
 
-        log.info(AppConstants.Request.CREATE_STOCK_START, command.type());
+        log.info("Request received: createStock stockType={}", command.type());
 
         StockResponse stock = stockService.createStock(command);
 
-        log.info(AppConstants.Request.CREATE_STOCK_END, stock.id());
+        log.info("Request completed: createStock stockId={}", stock.id());
 
         return AppResponse.success(stock, AppConstants.Response.STOCK_CREATED);
     }
@@ -55,13 +55,13 @@ public class StockController {
     @PatchMapping("/{stockId}")
     public ResponseEntity<ApiResponse<StockResponse>> updateStock(
             @PathVariable UUID stockId,
-            @Valid @RequestBody UpdateStockCommand command) {
+            @RequestBody UpdateStockCommand command) {
 
-        log.info(AppConstants.Request.UPDATE_STOCK_START, stockId);
+        log.info("Request received: updateStock stockId={}", stockId);
 
         StockResponse stock = stockService.updateStock(stockId, command);
 
-        log.info(AppConstants.Request.UPDATE_STOCK_END, stock.id());
+        log.info("Request completed: updateStock stockId={}", stock.id());
 
         return AppResponse.success(stock, AppConstants.Response.STOCK_UPDATED);
     }
@@ -70,23 +70,33 @@ public class StockController {
     public ResponseEntity<ApiResponse<Void>> adjustStock(
             @Valid @RequestBody StockAdjustmentCommand command) {
 
-        log.info(AppConstants.Request.CREATE_ADJUSTMENT_START, command.variantId());
+        log.info("Request received: adjustStock variantId={}", command.variantId());
 
         stockService.adjustStock(command);
 
-        log.info(AppConstants.Request.CREATE_ADJUSTMENT_END, command.variantId());
+        log.info("Request completed: adjustStock variantId={}", command.variantId());
+
         return AppResponse.noContent();
     }
+
+    /* Query requests */
 
     @GetMapping
     public ResponseEntity<PagedResponse<List<StockResponse>>> getStocks(
             @ModelAttribute PageRequestDto pageRequestDto,
             @Valid @ModelAttribute GetStockQueryRequest queryRequest) {
 
-        return AppResponse.success(
-                stockService.getAllQueryStock(queryRequest, pageRequestDto.buildPageable()),
-                AppConstants.Response.FETCHED_STOCKS);
+        log.info("Request received: getStocks page={} size={}",
+                pageRequestDto.getPage(), pageRequestDto.getSize());
 
+        var response =
+                stockService.getAllQueryStock(queryRequest, pageRequestDto.buildPageable());
+
+        log.info("Request completed: getStocks totalElements={}", response.getTotalElements());
+
+        return AppResponse.success(
+                response,
+                AppConstants.Response.FETCHED_STOCKS);
     }
 
     @GetMapping("/{stockId}/variants")
@@ -94,10 +104,17 @@ public class StockController {
             @PathVariable UUID stockId,
             @ModelAttribute PageRequestDto pageRequestDto) {
 
-        return AppResponse.success(
-                stockService.getAllVariantByStockId(stockId, pageRequestDto.buildPageable()),
-                AppConstants.Response.FETCHED_STOCK_VARIANTS);
+        log.info("Request received: getStockVariants stockId={}", stockId);
 
+        var response =
+                stockService.getAllVariantByStockId(stockId, pageRequestDto.buildPageable());
+
+        log.info("Request completed: getStockVariants stockId={} totalElements={}",
+                stockId, response.getTotalElements());
+
+        return AppResponse.success(
+                response,
+                AppConstants.Response.FETCHED_STOCK_VARIANTS);
     }
 
     @GetMapping("/variants/{variantId}/units/{unitId}/exists")
@@ -105,11 +122,16 @@ public class StockController {
             @PathVariable UUID variantId,
             @PathVariable UUID unitId) {
 
-        log.info(AppConstants.Request.START_VERIFY_VARIANT, variantId, unitId);
+        log.info("Request received: existsVariantUnit variantId={} unitId={}",
+                variantId, unitId);
+
+        var exists = stockService.existsByVariantIdAndUnitId(variantId, unitId);
+
+        log.info("Request completed: existsVariantUnit variantId={} unitId={} exists={}",
+                variantId, unitId, exists);
 
         return AppResponse.success(
-                stockService.existsByVariantIdAndUnitId(variantId, unitId),
+                exists,
                 AppConstants.Response.STOCK_VERIFIED);
-
     }
 }

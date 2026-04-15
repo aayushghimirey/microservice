@@ -32,7 +32,7 @@ public class InvoiceListener {
     private final RlsContext rlsContext;
 
 
-    @KafkaListener(topics = "#{@kafkaProperties.getTopic('invoice-event')}", containerFactory = "invoiceKafkaListenerContainerFactory")
+    @KafkaListener(topics = "${app.kafka.topics.invoice-event}", containerFactory = "invoiceKafkaListenerContainerFactory")
     @Transactional
     public void listen(InvoiceEvent event, Acknowledgment acknowledgment) {
         log.info(AppConstants.LOG_MESSAGES.INVOICE_EVENT_RECEIVED, event.getInvoiceId());

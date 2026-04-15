@@ -9,36 +9,40 @@ spring:
     locations:
       - classpath:db/migration
       - classpath:db/migration/common
+
   application:
     name: menu-service
 
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/menu}
-    username: ${SPRING_DATASOURCE_USERNAME:postgres}
-    password: ${SPRING_DATASOURCE_PASSWORD:admin}
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
 
 server:
-  port: ${SERVER_PORT:8082}
+  port: ${SERVER_PORT}
 
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_DEFAULT_ZONE}
+    register-with-eureka: true
+    fetch-registry: false
+
+
+# Custom application properties
 app:
   security:
-    gateway-secret: sts@123_gateway_pass_#$%^&*validated_by_aayush+ghimire077@something.sts.com.test&&%secret
+    gateway-secret: ${GATEWAY_SECRET}
   kafka:
-    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
     topics:
-      stock-event: STOCK_EVENT
+      stock-event: ${STOCK_EVENT}
     groups:
       menu-service-group: menu-service-group
 
 
 
-eureka:
-  client:
-    service-url:
-      defaultZone: ${EUREKA_CLIENT_DEFAULT_ZONE:http://eureka-service:8761/eureka}
-    register-with-eureka: true
-    fetch-registry: false

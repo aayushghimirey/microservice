@@ -9,6 +9,8 @@ public interface AppConstants {
     // ── Base Paths ─────────────────────────────────────────────────────────
     String MENU_BASE_PATH = "/menus";
 
+    String KAFKA_TOPIC_STOCK_EVENT = "stock-event";
+
     interface SUCCESS_MESSAGES {
         String MENU_CREATED = "Menu created successfully";
         String MENU_FETCHED = "Menu fetched successfully";

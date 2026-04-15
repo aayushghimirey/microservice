@@ -23,6 +23,8 @@ public record StockAdjustmentCommand(
         @Positive(message = AppConstants.VALIDATION_MESSAGES.QUANTITY_MUST_BE_POSITIVE)
         BigDecimal quantity,
 
+        @NotNull boolean isAddition,
+
         @Size(max = 255, message = AppConstants.VALIDATION_MESSAGES.REASON_TOO_LONG)
         String reason
 ) {
