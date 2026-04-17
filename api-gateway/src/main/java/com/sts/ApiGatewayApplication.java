@@ -25,6 +25,18 @@ public class ApiGatewayApplication {
     @Bean
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
         return builder.routes()
+
+
+                .route("order-service-ws", r -> r
+                        .path("/orders/ws/**")
+                        .uri("lb://order-service")
+                )
+
+                .route("invoice-service-ws", r -> r
+                        .path("/invoices/ws/**")
+                        .uri("lb://invoice-service")
+                )
+
                 .route("auth-service", predicateSpec -> predicateSpec
                         .path("/auth/public/**", "/auth/super/**")
                         .uri("lb://auth-service")
@@ -53,15 +65,6 @@ public class ApiGatewayApplication {
                         .filters(gatewayFilterSpec -> gatewayFilterSpec.filter(requestNavigator.apply(new RequestNavigator.Config())))
                         .uri("lb://invoice-service"))
 
-                .route("order-service-ws", r -> r
-                        .path("/orders/ws/**")
-                        .uri("lb://order-service")
-                )
-
-                .route("invoice-service-ws", r -> r
-                        .path("/invoices/ws/**")
-                        .uri("lb://invoice-service")
-                )
                 .build();
     }
 

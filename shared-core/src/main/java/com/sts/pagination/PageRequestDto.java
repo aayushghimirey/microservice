@@ -20,4 +20,7 @@ public class PageRequestDto {
         return PageRequest.of(page, size);
     }
 
+    public Pageable buildPageable(String sortBy) {
+        return PageRequest.of(page, size, org.springframework.data.domain.Sort.by(sortBy).descending());
+    }
 }

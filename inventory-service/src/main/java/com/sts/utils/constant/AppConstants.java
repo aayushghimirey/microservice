@@ -89,6 +89,7 @@ public interface AppConstants {
         String STOCK_VERIFIED = "Stock verified successfully with variantId={} and unitId={}";
         String FETCHED_TRANSACTION = "Fetched stock transaction successfully, totalRecords={}";
         String VENDOR_CREATED = "Vendor created successfully with vendorId={}";
+        String VENDOR_UPDATED = "Vendor updated successfully with vendorId={}";
         String FETCHED_VENDORS = "Fetched vendors successfully, totalRecords={}";
     }
 

@@ -46,7 +46,6 @@ public class ReferenceResolver {
     }
 
     private <T> T orThrow(Optional<T> entity, String message) {
-        log.warn("Entity not found: {}", message);
-        return entity.orElseThrow(() -> new ResourceNotFoundException(message));
+         return entity.orElseThrow(() -> new ResourceNotFoundException(message));
     }
 }

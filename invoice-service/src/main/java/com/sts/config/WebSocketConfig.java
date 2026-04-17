@@ -12,13 +12,14 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @RequiredArgsConstructor
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    private final CustomHandsakeHandler customHandsakeHandler;
+    private final TenantHandshakeHandler tenantHandshakeHandler;
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/invoices/ws")
-                .setHandshakeHandler(customHandsakeHandler)
-                .setAllowedOriginPatterns("*").withSockJS().setSuppressCors(true);
+        registry.addEndpoint("/invoices/ws").setAllowedOriginPatterns("*")
+                .setHandshakeHandler(tenantHandshakeHandler)
+                .addInterceptors(new TenantHandshakeInterceptor())
+                .withSockJS().setSuppressCors(true);
     }
 
     @Override

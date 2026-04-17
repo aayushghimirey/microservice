@@ -29,7 +29,6 @@ public class TableService {
     @Transactional
     public TableResponse createTable(CreateTableCommand request) {
 
-
         rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
 
         if (tableRepository.existsByName(request.name())) {

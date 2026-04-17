@@ -41,6 +41,14 @@ public class GlobalExceptionHandler {
     }
 
 
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidCredentialsException(
+            InvalidCredentialsException ex, HttpServletRequest request) {
+        log.warn("InvalidCredentialsException resource: {}", ex.getMessage());
+        return build(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), request.getRequestURI());
+    }
+
+
     @ExceptionHandler(BusinessValidationException.class)
     public ResponseEntity<ErrorResponse> handleBusinessValidation(
             BusinessValidationException ex, HttpServletRequest request) {

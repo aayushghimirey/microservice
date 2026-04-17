@@ -1,14 +1,13 @@
 package com.sts.controller;
 
 import java.util.List;
+import java.util.UUID;
 
+import com.sts.dto.request.GetVendorQueryRequest;
+import com.sts.dto.request.UpdateVendorCommand;
 import com.sts.utils.constant.AppConstants;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.sts.dto.request.CreateVendorCommand;
 import com.sts.dto.response.VendorResponse;
@@ -39,12 +38,23 @@ public class VendorController {
         return AppResponse.success(vendor, AppConstants.Response.VENDOR_CREATED);
     }
 
+    @PatchMapping("/{vendorId}")
+    public ResponseEntity<ApiResponse<VendorResponse>> updateVendor(
+            @PathVariable UUID vendorId,
+            @Valid @RequestBody UpdateVendorCommand command) {
+        VendorResponse vendor = vendorService.updateVendor(vendorId, command);
+
+        return AppResponse.success(vendor, AppConstants.Response.VENDOR_UPDATED);
+
+    }
+
     @GetMapping
     public ResponseEntity<PagedResponse<List<VendorResponse>>> getAllVendors(
+            @ModelAttribute GetVendorQueryRequest queryRequest,
             PageRequestDto pageRequestDto) {
 
         return AppResponse.success(
-                vendorService.getAllVendors(pageRequestDto.buildPageable()),
+                vendorService.getAllVendors(queryRequest, pageRequestDto.buildPageable()),
                 AppConstants.Response.FETCHED_VENDORS);
 
     }

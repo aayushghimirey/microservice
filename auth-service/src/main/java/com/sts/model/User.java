@@ -31,8 +31,8 @@ import java.util.UUID;
 @SuperBuilder
 @Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)
-@RowLevelSecurity
-@RlsRule(policy = "user_isolation_policy", requiredVariable = "tenant_id", table = "users")
+//@RowLevelSecurity
+//@RlsRule(policy = "user_isolation_policy", requiredVariable = "tenant_id", table = "users")
 public class User implements UserDetails {
 
     @Id

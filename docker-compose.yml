@@ -115,8 +115,8 @@ services:
       - "8007:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/auth
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: admin
+      SPRING_DATASOURCE_USERNAME: app_user
+      SPRING_DATASOURCE_PASSWORD: AppUser@1234
       FLYWAY_USER: postgres
       FLYWAY_PASSWORD: admin
       SERVER_PORT: 8080
@@ -141,8 +141,8 @@ services:
       - "8001:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/finance
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: admin
+      SPRING_DATASOURCE_USERNAME: app_user
+      SPRING_DATASOURCE_PASSWORD: AppUser@1234
 
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       EUREKA_CLIENT_DEFAULT_ZONE: http://eureka-service:8761/eureka
@@ -151,8 +151,9 @@ services:
       PURCHASE_EVENT: PURCHASE_EVENT
       INVOICE_EVENT: INVOICE_EVENT
 
-      FLYWAY_USERNAME: postgres
+      FLYWAY_USER: postgres
       FLYWAY_PASSWORD: admin
+
       SERVER_PORT: 8080
     depends_on:
       postgres:
@@ -172,8 +173,9 @@ services:
       - "8002:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/menu
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: admin
+      SPRING_DATASOURCE_USERNAME: app_user
+      SPRING_DATASOURCE_PASSWORD: AppUser@1234
+
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       FLYWAY_USER: postgres
       FLYWAY_PASSWORD: admin
@@ -200,8 +202,8 @@ services:
       - "8003:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/orders
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: admin
+      SPRING_DATASOURCE_USERNAME: app_user
+      SPRING_DATASOURCE_PASSWORD: AppUser@1234
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       FLYWAY_USER: postgres
       FLYWAY_PASSWORD: admin
@@ -230,8 +232,8 @@ services:
       - "8004:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/invoice
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: admin
+      SPRING_DATASOURCE_USERNAME: app_user
+      SPRING_DATASOURCE_PASSWORD: AppUser@1234
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       FLYWAY_USER: postgres
       FLYWAY_PASSWORD: admin

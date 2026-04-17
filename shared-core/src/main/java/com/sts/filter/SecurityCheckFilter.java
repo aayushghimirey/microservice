@@ -1,5 +1,6 @@
 package com.sts.filter;
 
+import com.sts.exception.InvalidRequestException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,34 +26,41 @@ public class SecurityCheckFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
-        if (request.getRequestURI().startsWith("/ws")) {
+        String path = request.getRequestURI();
+        log.info("Received request for path: {}", path);
+
+        if (isWebSocketRequest(path)) {
+            log.info("Skipping security for WebSocket request: {}", path);
             filterChain.doFilter(request, response);
             return;
         }
 
         try {
+            log.info("Performing security check for request to {}", path);
 
             String tenantId = request.getHeader("X-Tenant-Id");
             String gatewaySecret = request.getHeader("X-Gateway-Secret");
 
             if (tenantId == null || gatewaySecret == null) {
-                log.warn("Security Failed. Missing tenant or gatewaySecret");
-                throw new RuntimeException("Invalid Request");
+                log.warn("Missing tenantId or gatewaySecret");
+                throw new InvalidRequestException("Invalid Request");
             }
 
             if (!expectedGatewaySecret.equals(gatewaySecret)) {
-                log.warn("Invalid gateway secret : {}", gatewaySecret);
-                throw new RuntimeException("Invalid gateway secret");
+                log.warn("Invalid gateway secret: {}", gatewaySecret);
+                throw new InvalidRequestException("Invalid gateway secret");
             }
 
             TenantHolder.setTenantId(UUID.fromString(tenantId));
 
-            // IMPORTANT: continue filter chain
             filterChain.doFilter(request, response);
 
         } finally {
-            // ALWAYS clear
             TenantHolder.clear();
         }
+    }
+
+    private boolean isWebSocketRequest(String path) {
+        return path.matches(".*/ws(/.*)?");
     }
 }

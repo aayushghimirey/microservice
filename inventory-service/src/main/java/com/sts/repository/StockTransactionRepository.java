@@ -24,12 +24,14 @@ public interface StockTransactionRepository extends JpaRepository<StockTransacti
                 vu.name AS unitName,
                 tx.quantity_change AS quantityChanged,
                 tx.balance_after AS balanceAfter,
+                tx.created_date_time AS createdAt,
                 tx.remark AS remark
             FROM stock_transaction tx
             JOIN stock_variant sr
                 ON tx.variant_id = sr.id
             JOIN variant_unit vu
                 ON tx.unit_id = vu.id
+                ORDER BY tx.created_date_time DESC
             """, countQuery = "SELECT COUNT(*) FROM stock_transaction", nativeQuery = true)
     Page<StockTransactionResponse> findAllTransactions(Pageable pageable);
 
@@ -44,6 +46,7 @@ public interface StockTransactionRepository extends JpaRepository<StockTransacti
                 vu.name AS unitName,
                 tx.quantity_change AS quantityChanged,
                 tx.balance_after AS balanceAfter,
+                tx.created_date_time AS createdAt,
                 tx.remark AS remark
             FROM stock_transaction tx
             JOIN stock_variant sr
@@ -51,6 +54,7 @@ public interface StockTransactionRepository extends JpaRepository<StockTransacti
             JOIN variant_unit vu
                 ON tx.unit_id = vu.id
                 WHERE tx.variant_id = :variantId
+                ORDER BY tx.created_date_time DESC
             """, countQuery = "SELECT COUNT(*) FROM stock_transaction WHERE variant_id = :variantId", nativeQuery = true)
     Page<StockTransactionResponse> findAllTransactionsByVariantId(
             @Param("variantId") UUID variantId,

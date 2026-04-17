@@ -59,7 +59,8 @@ public class InvoiceListener {
             log.info(AppConstants.LOG_MESSAGES.RESERVATION_COMPLETED, event.getSessionId());
 
             ReservationResponse response = reservationMapper.toResponse(reservation);
-            simpMessagingTemplate.convertAndSend("/queue/orders", response);
+
+            simpMessagingTemplate.convertAndSendToUser(reservation.getTenantId().toString(), "/queue/orders", response);
 
 
         } catch (Exception e) {
