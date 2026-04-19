@@ -17,7 +17,7 @@ public class PageRequestDto {
     private int size = 10;
 
     public Pageable buildPageable() {
-        return PageRequest.of(page, size, org.springframework.data.domain.Sort.by("createdDateTime").descending());
+        return PageRequest.of(page, size);
     }
 
     public Pageable buildPageable(String sortBy) {
