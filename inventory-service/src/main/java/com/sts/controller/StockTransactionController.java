@@ -29,7 +29,7 @@ public class StockTransactionController {
     public ResponseEntity<PagedResponse<List<StockTransactionResponse>>> getAllStockTransactions(
             PageRequestDto pageRequestDto) {
 
-        var transactions = stockTransactionService.getAllTransaction(pageRequestDto.buildPageable());
+        var transactions = stockTransactionService.getAllTransaction(pageRequestDto.buildPageableNoSort());
 
         return AppResponse.success(transactions, AppConstants.Response.FETCHED_TRANSACTION);
     }
@@ -41,7 +41,7 @@ public class StockTransactionController {
 
         var transactions = stockTransactionService.getAllTransactionByVariantId(
                 variantId,
-                pageRequestDto.buildPageable());
+                pageRequestDto.buildPageableNoSort());
 
         return AppResponse.success(transactions, AppConstants.Response.FETCHED_TRANSACTION);
     }

@@ -87,7 +87,9 @@ public class PurchaseMapper {
                 purchase.getBillingType(),
                 purchase.getMoneyTransaction(),
                 purchase.getVatAmount(),
-                purchase.getGrossTotal());
+                purchase.getGrossTotal(),
+                purchase.getCreatedDateTime()
+        );
     }
 
 }

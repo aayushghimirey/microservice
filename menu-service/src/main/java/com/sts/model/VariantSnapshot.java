@@ -7,9 +7,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -27,7 +24,13 @@ public class VariantSnapshot extends Audit {
     @Column(name = "variant_id")
     private UUID variantId;
 
-    Set<UUID> unitIds;
+    @ElementCollection
+    @CollectionTable(
+            name = "variant_snapshot_unit_ids",
+            joinColumns = @JoinColumn(name = "variant_snapshot_id")
+    )
+    @Column(name = "unit_id", nullable = false)
+    private Set<UUID> unitIds;
 
     @ManyToOne
     @JoinColumn(name = "stock_snapshot_id")

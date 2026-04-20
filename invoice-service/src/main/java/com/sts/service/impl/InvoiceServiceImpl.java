@@ -1,5 +1,6 @@
 package com.sts.service.impl;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -59,7 +60,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         Invoice invoice = referenceResolver.getOrThrow(invoiceId);
 
         invoice.setStatus(InvoiceStatus.PAID);
-        invoice.setReservationEndTime(LocalDateTime.now());
+        invoice.setReservationEndTime(Instant.now());
 
         publishOutboxEvent(invoice);
 

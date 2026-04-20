@@ -3,6 +3,7 @@ package com.sts.event;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +29,9 @@ public class OrderCreatedEvent {
     @Builder.Default
     private BigDecimal billAmount = BigDecimal.ZERO;
 
-    private LocalDateTime reservationTime;
+    private Instant reservationTime;
 
-    private LocalDateTime reservationEndTime;
+    private Instant reservationEndTime;
 
     @Builder.Default
     private List<MenuItem> items = new ArrayList<>();

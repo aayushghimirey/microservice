@@ -18,6 +18,7 @@ public class PurchaseRecordMapper implements AbstractMapper<PurchaseRecord, Purc
                 .moneyTransaction(event.getMoneyTransaction())
                 .vatAmount(event.getVatAmount() != null ? event.getVatAmount() : BigDecimal.ZERO)
                 .grossTotal(event.getGrossTotal())
+                .purchaseDateTime(event.getPurchaseDateTime())
                 .build();
     }
 

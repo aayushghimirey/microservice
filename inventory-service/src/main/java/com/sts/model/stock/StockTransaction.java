@@ -1,28 +1,15 @@
 package com.sts.model.stock;
 
-import java.math.BigDecimal;
-import java.util.UUID;
-
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import com.sts.domain.Audit;
 import com.sts.utils.enums.TransactionReference;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import io.github.aayushghimirey.jpa_postgres_rls.annotation.RlsRule;
 import io.github.aayushghimirey.jpa_postgres_rls.annotation.RowLevelSecurity;
-import org.springframework.data.jpa.repository.Lock;
+import jakarta.persistence.*;
+import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.math.BigDecimal;
+import java.util.UUID;
 
 @Entity
 @Builder

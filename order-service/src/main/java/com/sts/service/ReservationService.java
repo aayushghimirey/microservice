@@ -1,5 +1,6 @@
 package com.sts.service;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
@@ -117,7 +118,7 @@ public class ReservationService {
         Reservation reservation = new Reservation();
         reservation.setTable(table);
         reservation.setSessionId(UUID.randomUUID());
-        reservation.setReservationTime(LocalDateTime.now());
+        reservation.setReservationTime(Instant.now());
         reservation.setStatus(ReservationStatus.PENDING);
 
         for (var itemRequest : request.items()) {

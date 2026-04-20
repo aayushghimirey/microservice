@@ -12,6 +12,7 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -35,10 +36,10 @@ public class InvoiceRecord extends Audit {
     private BigDecimal grossTotal = BigDecimal.ZERO;
 
     @Column(name = "reservation_start_time", updatable = false, nullable = false)
-    private LocalDateTime reservationTime;
+    private Instant reservationTime;
 
     @Column(name = "reservation_end_time", updatable = false, nullable = false)
-    private LocalDateTime reservationEndTime;
+    private Instant reservationEndTime;
 
 
 }

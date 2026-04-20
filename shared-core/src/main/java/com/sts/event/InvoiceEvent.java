@@ -3,6 +3,7 @@ package com.sts.event;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +24,8 @@ public class InvoiceEvent {
     @Builder.Default
     private BigDecimal grossTotal = BigDecimal.ZERO;
 
-    private LocalDateTime reservationTime;
-    private LocalDateTime reservationEndTime;
+    private Instant reservationTime;
+    private Instant reservationEndTime;
 
 
     @Builder.Default

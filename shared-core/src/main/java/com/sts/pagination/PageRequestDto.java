@@ -21,6 +21,11 @@ public class PageRequestDto {
         return PageRequest.of(page, size, Sort.by("createdDateTime").descending());
     }
 
+    public Pageable buildPageableNoSort() {
+        return PageRequest.of(page, size);
+    }
+
+
     public Pageable buildPageable(String sortBy) {
         return PageRequest.of(page, size, Sort.by(sortBy).descending());
     }

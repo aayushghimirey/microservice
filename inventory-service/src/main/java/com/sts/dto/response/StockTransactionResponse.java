@@ -1,7 +1,7 @@
 package com.sts.dto.response;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 public interface StockTransactionResponse {
@@ -26,5 +26,5 @@ public interface StockTransactionResponse {
 
     String getRemark();
 
-    LocalDateTime getCreatedAt();
+    Instant getCreatedAt();
 }

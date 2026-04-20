@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.UUID;
 
 @Getter
@@ -21,4 +22,5 @@ public class PurchaseCreatedEvent {
     private MoneyTransaction moneyTransaction;
     private BigDecimal vatAmount;
     private BigDecimal grossTotal;
+    private Instant purchaseDateTime;
 }

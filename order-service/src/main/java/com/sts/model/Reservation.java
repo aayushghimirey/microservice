@@ -1,6 +1,7 @@
 package com.sts.model;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,9 +44,9 @@ public class Reservation extends Audit {
     private UUID sessionId;
 
     @Column(nullable = false)
-    private LocalDateTime reservationTime;
+    private Instant reservationTime;
 
-    private LocalDateTime reservationEndTime;
+    private Instant reservationEndTime;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

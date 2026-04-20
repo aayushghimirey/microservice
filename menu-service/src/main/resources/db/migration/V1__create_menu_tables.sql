@@ -37,6 +37,7 @@ CREATE TABLE variant_snapshot (
     id UUID PRIMARY KEY,
      stock_snapshot_id UUID REFERENCES stock_snapshot(id),
     variant_id UUID,
+
     created_date_time TIMESTAMP,
     last_updated_date_time TIMESTAMP,
     is_deleted BOOLEAN NOT NULL DEFAULT FALSE,

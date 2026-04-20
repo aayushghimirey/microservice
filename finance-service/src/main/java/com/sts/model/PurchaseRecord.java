@@ -10,6 +10,7 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -41,5 +42,7 @@ public class PurchaseRecord extends Audit {
 
     @Column(name = "gross_total", nullable = false, updatable = false)
     private BigDecimal grossTotal;
+
+    private Instant purchaseDateTime;
 
 }

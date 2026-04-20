@@ -3,6 +3,7 @@ package com.sts.dto;
 import lombok.Builder;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -11,8 +12,8 @@ public record InvoiceRecordResponse(
         UUID id,
         UUID invoiceId,
         BigDecimal grossTotal,
-        LocalDateTime reservationTime,
-        LocalDateTime reservationEndTime,
-        LocalDateTime createdDateTime
+        Instant reservationTime,
+        Instant reservationEndTime,
+        Instant createdDateTime
 ) {
 }

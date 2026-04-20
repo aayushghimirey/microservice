@@ -4,7 +4,7 @@ import com.sts.utils.enums.ReservationStatus;
 import lombok.Builder;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -12,8 +12,8 @@ import java.util.UUID;
 @Builder
 public record ReservationResponse(
         UUID sessionId,
-        LocalDateTime reservationTime,
-        LocalDateTime reservationEndTime,
+        Instant reservationTime,
+        Instant reservationEndTime,
         ReservationStatus status,
         BigDecimal billAmount,
         UUID tableId,

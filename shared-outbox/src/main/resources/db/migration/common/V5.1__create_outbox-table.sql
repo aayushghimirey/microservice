@@ -1,4 +1,3 @@
--- V1__create_outbox_event_table.sql
 
 CREATE TABLE IF NOT EXISTS outbox_event (
     id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),

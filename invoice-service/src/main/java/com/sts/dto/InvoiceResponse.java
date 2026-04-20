@@ -4,6 +4,7 @@ import com.sts.utils.enums.InvoiceStatus;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -28,8 +29,8 @@ public class InvoiceResponse {
 
     private BigDecimal grossTotal = BigDecimal.ZERO;
 
-    private LocalDateTime reservationTime;
+    private Instant reservationTime;
 
-    private LocalDateTime reservationEndTime;
+    private Instant reservationEndTime;
 
 }
