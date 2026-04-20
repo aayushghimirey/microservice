@@ -1,6 +1,7 @@
 package com.sts.controller;
 
 
+import com.sts.dto.request.UpdateOrderItemCommand;
 import com.sts.pagination.PageRequestDto;
 import com.sts.response.PagedResponse;
 import com.sts.utils.enums.ReservationStatus;
@@ -19,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -45,6 +47,36 @@ public class ReservationController {
         return AppResponse.success(
                 response,
                 AppConstants.SUCCESS_MESSAGES.RESERVATION_CREATED);
+    }
+
+    @PutMapping("/{sessionId}")
+    public ResponseEntity<ApiResponse<ReservationResponse>> updateReservationStatus(
+            @PathVariable UUID sessionId,
+            @RequestBody UpdateOrderItemCommand updateOrderItemCommand) {
+
+        log.info("Request received: updateReservationStatus sessionId={}",
+                sessionId);
+
+        ReservationResponse response =
+                reservationService.updateReservation(sessionId, updateOrderItemCommand);
+
+        log.info("Request completed: updateReservationStatus sessionId={} newStatus={}",
+                sessionId,
+                response.status());
+
+        return AppResponse.success(
+                response, "Reservation updated successfully");
+    }
+
+
+    @PatchMapping("/{sessionId}/cancel")
+    public ResponseEntity<ApiResponse<Void>> cancelReservation(
+            @PathVariable UUID sessionId) {
+        log.info("Request received: cancelReservation sessionId={}", sessionId);
+
+        reservationService.cancelReservation(sessionId);
+        log.info("Request completed: cancelReservation sessionId={} ", sessionId);
+        return AppResponse.noContent();
     }
 
     @GetMapping

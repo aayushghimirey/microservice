@@ -1,6 +1,7 @@
 package com.sts.mapper;
 
 import com.sts.dto.request.CreateReservationCommand;
+import com.sts.dto.request.UpdateOrderItemCommand;
 import com.sts.dto.response.ReservationResponse;
 import com.sts.event.MenuResponse;
 import com.sts.model.Reservation;
@@ -24,6 +25,17 @@ public class ReservationMapper {
         orders.setPrice(menuResponseDto.getPrice());
         return orders;
     }
+
+    public ReservationOrders buildReservationOrders(UpdateOrderItemCommand.UpdateReservationItemRequest request,
+                                                    MenuResponse menuResponseDto) {
+        ReservationOrders orders = new ReservationOrders();
+        orders.setMenuItemId(request.menuId());
+        orders.setMenuItemName(menuResponseDto.getName());
+        orders.setQuantity(request.quantity());
+        orders.setPrice(menuResponseDto.getPrice());
+        return orders;
+    }
+
 
     public ReservationResponse toResponse(Reservation reservation) {
 

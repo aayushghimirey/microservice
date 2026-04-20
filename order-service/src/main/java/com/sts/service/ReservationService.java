@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
 
+import com.sts.dto.request.UpdateOrderItemCommand;
 import com.sts.filter.TenantHolder;
 import com.sts.utils.OrderOutboxPublisher;
 import com.sts.utils.feign.MenuClientGateway;
@@ -83,6 +84,66 @@ public class ReservationService {
 
         return response;
     }
+
+    @Transactional
+    public ReservationResponse updateReservation(UUID sessionId, UpdateOrderItemCommand itemCommand) {
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
+
+        Reservation prevReservation = reservationRepository.findBySessionId(sessionId);
+
+        // clear all prev items
+        prevReservation.getReservationOrders().clear();
+
+        // build new items
+        Map<UUID, MenuResponse> menuMap = itemCommand.items().stream().map(item ->
+                fetchMenu(item.menuId())).collect(java.util.stream.Collectors.toMap(MenuResponse::getId, menu -> menu));
+
+        for (var itemRequest : itemCommand.items()) {
+
+            MenuResponse menuResponse = menuMap.get(itemRequest.menuId());
+            ReservationOrders orders = reservationMapper.buildReservationOrders(itemRequest, menuResponse);
+
+            prevReservation.addReservationOrder(orders);
+        }
+
+        prevReservation.setStatus(ReservationStatus.UPDATED);
+
+        Reservation reservation = reservationRepository.save(prevReservation);
+
+        orderOutboxPublisher.publish(reservation, menuMap);
+
+        ReservationResponse response = reservationMapper.toResponse(reservation);
+
+        simpMessagingTemplate.convertAndSendToUser(reservation.getTenantId().toString(), "/queue/orders", response);
+
+        return response;
+
+    }
+
+    @Transactional
+    public void cancelReservation(UUID sessionId) {
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
+
+        Reservation reservation = reservationRepository.findBySessionId(sessionId);
+
+        if (reservation == null) {
+            throw new ResourceNotFoundException("Reservation not found for sessionId: " + sessionId);
+        }
+
+
+        reservation.setStatus(ReservationStatus.CANCELLED);
+        reservation.getTable().setStatus(TableStatus.OPEN);
+
+        ReservationResponse response = reservationMapper.toResponse(reservation);
+
+        orderOutboxPublisher.publishOrderCancelled(reservation);
+
+        simpMessagingTemplate.convertAndSendToUser(reservation.getTenantId().toString(), "/queue/orders", response);
+
+
+        reservationRepository.save(reservation);
+    }
+
 
     @Transactional
     public Page<ReservationResponse> getAllReservationByStatus(ReservationStatus status, Pageable pageable) {

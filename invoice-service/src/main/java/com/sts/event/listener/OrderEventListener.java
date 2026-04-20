@@ -72,6 +72,12 @@ public class OrderEventListener {
 
     private void updateInvoice(Invoice invoice, OrderCreatedEvent event) {
 
+        if(event.getStatus().equals("CANCELLED")) {
+            invoice.setStatus(InvoiceStatus.CANCELLED);
+            invoiceRepository.save(invoice);
+            return;
+        }
+
         invoice.setBillNumber(generateBillNumber());
         invoice.setStatus(InvoiceStatus.PENDING);
         invoice.setSubTotal(event.getBillAmount());

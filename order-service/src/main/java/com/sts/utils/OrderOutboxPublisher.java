@@ -39,6 +39,28 @@ public class OrderOutboxPublisher {
 
     }
 
+    public void publishOrderCancelled(Reservation reservation) {
+
+        OrderCreatedEvent event = new OrderCreatedEvent();
+
+        event.setReservationId(reservation.getId());
+        event.setTenantId(TenantHolder.getTenantId());
+        event.setSessionId(reservation.getSessionId());
+        event.setStatus(reservation.getStatus().name());
+        event.setTableId(reservation.getTable().getId());
+        event.setBillAmount(reservation.getBillAmount());
+        event.setReservationTime(reservation.getReservationTime());
+
+        outboxPublisher.publish(
+                AggregateType.ORDER,
+                event.getSessionId(),
+                OutboxEventType.DELETED,
+                event,
+                kafkaProperties.getTopic(AppConstants.ORDER_KAFKA_EVENT_TOPIC)
+        );
+
+    }
+
     private OrderCreatedEvent buildOrderCreatedEvent(Reservation reservation, Map<UUID, MenuResponse> menuItemMap) {
 
         OrderCreatedEvent event = new OrderCreatedEvent();
