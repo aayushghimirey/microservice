@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5ab18d2d-25ec-4bf1-8ae3-75379509bd42" name="Changes" comment="" />
+    <list default="true" id="5ab18d2d-25ec-4bf1-8ae3-75379509bd42" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/shared-core/src/main/java/com/sts/pagination/PageRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared-core/src/main/java/com/sts/pagination/PageRequestDto.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

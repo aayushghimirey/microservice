@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @Getter
 @Setter
@@ -17,10 +18,10 @@ public class PageRequestDto {
     private int size = 10;
 
     public Pageable buildPageable() {
-        return PageRequest.of(page, size);
+        return PageRequest.of(page, size, Sort.by("createdDateTime").descending());
     }
 
     public Pageable buildPageable(String sortBy) {
-        return PageRequest.of(page, size, org.springframework.data.domain.Sort.by(sortBy).descending());
+        return PageRequest.of(page, size, Sort.by(sortBy).descending());
     }
 }
