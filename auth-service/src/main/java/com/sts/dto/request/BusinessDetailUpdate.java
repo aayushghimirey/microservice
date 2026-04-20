@@ -1,15 +1,10 @@
-package com.sts.dto.response;
+package com.sts.dto.request;
 
-import lombok.Builder;
 import lombok.Data;
 
-import java.util.UUID;
-
 @Data
-@Builder
-public class BusinessDetailResponse {
+public class BusinessDetailUpdate {
 
-    private UUID id;
     private String companyName;
     private String address;
     private String panNumber;

@@ -1,5 +1,6 @@
 package com.sts.config.filter;
 
+import com.sts.filter.TenantHolder;
 import com.sts.service.JwtService;
 import com.sts.utils.AppConstants;
 import io.jsonwebtoken.Claims;
@@ -21,6 +22,7 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.UUID;
 
 
 @Component
@@ -84,6 +86,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             userDetails.getAuthorities()
                     );
 
+                    TenantHolder.setTenantId(UUID.fromString(jwtService.extractTenantId(token)));
+
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
@@ -93,6 +97,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             log.error("Error logging in: {}", exception.getMessage());
             // Optionally send a 401 response here instead of just continuing the chain
             filterChain.doFilter(request, response);
+            TenantHolder.clear();
         }
     }
 }

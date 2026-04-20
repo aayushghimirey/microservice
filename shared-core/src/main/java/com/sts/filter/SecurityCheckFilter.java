@@ -35,6 +35,7 @@ public class SecurityCheckFilter extends OncePerRequestFilter {
             return;
         }
 
+
         try {
             log.info("Performing security check for request to {}", path);
 
