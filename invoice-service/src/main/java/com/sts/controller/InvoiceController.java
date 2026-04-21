@@ -3,12 +3,10 @@ package com.sts.controller;
 import java.util.List;
 import java.util.UUID;
 
+import com.sts.dto.CreateInvoiceCommand;
+import com.sts.dto.InvoiceSearchRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.sts.dto.InvoiceResponse;
 import com.sts.pagination.PageRequestDto;
@@ -34,14 +32,23 @@ public class InvoiceController {
     }
 
     @PostMapping("/{invoiceId}")
-    public ResponseEntity<ApiResponse<InvoiceResponse>> proceedInvoice(@PathVariable("invoiceId") UUID invoiceId) {
-        return AppResponse.success(invoiceService.proceedInvoice(invoiceId),
+    public ResponseEntity<ApiResponse<InvoiceResponse>> proceedInvoice(@PathVariable("invoiceId") UUID invoiceId,
+                                                                       @RequestBody CreateInvoiceCommand command) {
+        return AppResponse.success(invoiceService.proceedInvoice(invoiceId, command),
                 AppConstants.SUCCESS_MESSAGES.INVOICE_CREATED);
     }
 
+    @GetMapping("/{invoiceId}/print")
+    public ResponseEntity<ApiResponse<String>> printInvoice(@PathVariable("invoiceId") UUID invoiceId) {
+        return AppResponse.success(invoiceService.printInvoice(invoiceId), "Invoice printed successfully");
+    }
+
     @GetMapping
-    public ResponseEntity<PagedResponse<List<InvoiceResponse>>> getAllInvoices(PageRequestDto pageRequestDto) {
-        return AppResponse.success(invoiceService.getAllInvoices(pageRequestDto.buildPageable()),
+    public ResponseEntity<PagedResponse<List<InvoiceResponse>>> getAllInvoices(
+            InvoiceSearchRequest request,
+            PageRequestDto pageRequestDto
+    ) {
+        return AppResponse.success(invoiceService.getAllInvoices(request, pageRequestDto.buildPageable()),
                 AppConstants.SUCCESS_MESSAGES.INVOICES_FETCHED);
     }
 

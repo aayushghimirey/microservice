@@ -10,7 +10,7 @@ spring:
     password: ${FLYWAY_PASSWORD}
     locations:
       - classpath:db/migration
-      - classpath:db/migration/common
+      - classpath:db/common-migration
 
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/invoice}
@@ -36,6 +36,8 @@ app:
     groups:
       invoice-group: invoice-group-consumer
   clients:
+    business-service:
+      url: ${BUSINESS_SERVICE_URL:http://localhost:8081}
     menu-service:
       url: ${MENU_SERVICE_URL:http://localhost:8082}
 

@@ -72,24 +72,36 @@ public class OrderEventListener {
 
     private void updateInvoice(Invoice invoice, OrderCreatedEvent event) {
 
-        if(event.getStatus().equals("CANCELLED")) {
+        if (event.getStatus().equals("CANCELLED")) {
             invoice.setStatus(InvoiceStatus.CANCELLED);
             invoiceRepository.save(invoice);
             return;
         }
 
-        invoice.setBillNumber(generateBillNumber());
-        invoice.setStatus(InvoiceStatus.PENDING);
         invoice.setSubTotal(event.getBillAmount());
-        invoice.setSessionId(event.getSessionId());
-        invoice.setTableId(event.getTableId());
-        invoice.setReservationTime(event.getReservationTime());
 
-//        invoice
-//
-//        event.getItems().forEach(ing -> {
-//
-//        });
+        invoice.getItems().clear();
+
+        event.getItems().forEach(item -> {
+            InvoiceItem invoiceItem = new InvoiceItem();
+            invoiceItem.setName(item.getName());
+            invoiceItem.setMenuItemId(item.getMenuId());
+            invoiceItem.setQuantity(item.getQuantity());
+            invoiceItem.setPrice(item.getPrice());
+
+            item.getIngredient().forEach(ing -> {
+                InvoiceItemIngredient ingredient = InvoiceItemIngredient.builder()
+                        .variantId(ing.getVariantId())
+                        .unitId(ing.getUnitId())
+                        .quantity(ing.getQuantity())
+                        .build();
+                invoiceItem.addIngredient(ingredient);
+            });
+
+            invoice.addItem(invoiceItem);
+
+        });
+
 
         invoice.calculateGrossTotal();
     }
@@ -109,8 +121,11 @@ public class OrderEventListener {
 
         event.getItems().forEach(item -> {
             InvoiceItem invoiceItem = new InvoiceItem();
+            invoiceItem.setName(item.getName());
             invoiceItem.setMenuItemId(item.getMenuId());
             invoiceItem.setQuantity(item.getQuantity());
+            invoiceItem.setPrice(item.getPrice());
+
 
             invoice.addItem(invoiceItem);
 

@@ -20,6 +20,7 @@ CREATE TABLE invoice_item (
     id UUID PRIMARY KEY,
     menu_item_id UUID,
     quantity DOUBLE PRECISION NOT NULL,
+    printable BOOLEAN DEFAULT FALSE,
     invoice_id UUID REFERENCES invoice(id),
     created_date_time TIMESTAMP,
     last_updated_date_time TIMESTAMP,

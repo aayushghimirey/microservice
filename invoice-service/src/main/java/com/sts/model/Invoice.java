@@ -1,5 +1,7 @@
 package com.sts.model;
 
+import com.sts.enums.BillingType;
+import com.sts.enums.MoneyTransaction;
 import com.sts.utils.enums.InvoiceStatus;
 import com.sts.domain.Audit;
 import io.github.aayushghimirey.jpa_postgres_rls.annotation.RlsRule;
@@ -31,6 +33,14 @@ public class Invoice extends Audit {
     private UUID tableId;
     private UUID sessionId;
     private UUID reservationId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private MoneyTransaction paymentMethod;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private BillingType invoiceType;
 
     @Enumerated(EnumType.STRING)
     private InvoiceStatus status;
