@@ -19,7 +19,7 @@ spring:
     password: ${FLYWAY_PASSWORD}
     locations:
       - classpath:db/migration
-      - classpath:db/migration/common
+      - classpath:db/common-migration
 
 server:
   port: ${SERVER_PORT:8081}

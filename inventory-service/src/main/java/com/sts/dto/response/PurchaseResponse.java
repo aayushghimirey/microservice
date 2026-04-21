@@ -16,6 +16,8 @@ public record PurchaseResponse(
         BigDecimal subTotal,
         BigDecimal vatAmount,
         BigDecimal grossTotal,
+        String vendorName,
+        UUID vendorId,
         List<PurchaseItemResponse> items
 ) {
 

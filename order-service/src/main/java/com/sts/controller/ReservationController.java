@@ -2,6 +2,8 @@ package com.sts.controller;
 
 
 import com.sts.dto.request.UpdateOrderItemCommand;
+import com.sts.dto.response.ReservationOrderInfo;
+import com.sts.enums.DateSelection;
 import com.sts.pagination.PageRequestDto;
 import com.sts.response.PagedResponse;
 import com.sts.utils.enums.ReservationStatus;
@@ -102,4 +104,13 @@ public class ReservationController {
                 response,
                 AppConstants.SUCCESS_MESSAGES.RESERVATION_FETCHED);
     }
+
+
+    // info
+    @GetMapping("/dashboard")
+    public ResponseEntity<ApiResponse<ReservationOrderInfo>> reservationOrderInfo(@RequestParam("dateSelection") DateSelection dateSelection) {
+        return AppResponse.success(reservationService.reservationOrderInfo(dateSelection), "Fetch info");
+    }
+
+
 }

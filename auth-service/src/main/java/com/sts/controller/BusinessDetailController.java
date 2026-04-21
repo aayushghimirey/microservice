@@ -1,8 +1,8 @@
 package com.sts.controller;
 
+import com.sts.domain.BusinessDetailResponse;
 import com.sts.dto.request.BusinessDetailRequest;
 import com.sts.dto.request.BusinessDetailUpdate;
-import com.sts.dto.response.BusinessDetailResponse;
 import com.sts.response.ApiResponse;
 import com.sts.response.AppResponse;
 import com.sts.service.BusinessDetailService;

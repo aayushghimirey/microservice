@@ -7,8 +7,6 @@ import com.sts.repository.InvoiceRecordRepository;
 import com.sts.service.AbstractFinanceService;
 import com.sts.service.interfaces.InvoiceRecordService;
 import io.github.aayushghimirey.jpa_postgres_rls.core.RlsContext;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;

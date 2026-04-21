@@ -1,11 +1,18 @@
 package com.sts.service;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import com.sts.dto.request.UpdateOrderItemCommand;
+import com.sts.dto.response.ReservationOrderInfo;
+import com.sts.enums.DateSelection;
 import com.sts.filter.TenantHolder;
 import com.sts.utils.OrderOutboxPublisher;
 import com.sts.utils.feign.MenuClientGateway;
@@ -150,6 +157,51 @@ public class ReservationService {
         rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
 
         return reservationRepository.findByStatus(status, pageable).map(reservationMapper::toResponse);
+    }
+
+    @Transactional
+    public ReservationOrderInfo reservationOrderInfo(DateSelection dateSelection) {
+
+        rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
+
+
+        ZoneId zone = ZoneId.of("Asia/Kathmandu");
+
+        Instant from = switch (dateSelection) {
+
+            case TODAY -> LocalDate.now(zone)
+                    .atStartOfDay(zone)
+                    .toInstant();
+
+            case WEEK -> Instant.now().minus(7, ChronoUnit.DAYS);
+
+            case MONTH -> Instant.now().minus(30, ChronoUnit.DAYS);
+        };
+
+        List<Object[]> results =
+                reservationRepository.countByStatusFrom(from);
+
+        Map<ReservationStatus, Integer> map = new EnumMap<>(ReservationStatus.class);
+
+        for (Object[] row : results) {
+            map.put(
+                    (ReservationStatus) row[0],
+                    ((Long) row[1]).intValue()
+            );
+        }
+        int pending = map.getOrDefault(ReservationStatus.PENDING, 0);
+        int updated = map.getOrDefault(ReservationStatus.UPDATED, 0);
+        int cancelled = map.getOrDefault(ReservationStatus.CANCELLED, 0);
+        int completed = map.getOrDefault(ReservationStatus.COMPLETED, 0);
+
+        int total = pending + updated + cancelled + completed;
+
+        return new ReservationOrderInfo(
+                total,
+                cancelled,
+                completed
+        );
+
     }
 
     /*

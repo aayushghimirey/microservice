@@ -1,7 +1,5 @@
 package com.sts.model;
 
-import io.github.aayushghimirey.jpa_postgres_rls.annotation.RlsRule;
-import io.github.aayushghimirey.jpa_postgres_rls.annotation.RowLevelSecurity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -20,8 +18,8 @@ import java.util.UUID;
 @Table(name = "tenant")
 @EntityListeners(AuditingEntityListener.class)
 
-@RowLevelSecurity
-@RlsRule(table = "tenant", policy = "tenant_rls_policy", requiredVariable = "id")
+//@RowLevelSecurity
+//@RlsRule(table = "tenant", policy = "tenant_rls_policy", requiredVariable = "id")
 public class Tenant {
 
     @Id

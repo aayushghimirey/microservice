@@ -48,9 +48,13 @@ public class OrderCreatedEvent {
     @Builder
     public static class MenuItem {
 
+        private String name;
+
         private UUID menuId;
 
         private double quantity;
+
+        private BigDecimal price;
 
         private List<MenuIngredientResponse> ingredient;
     }

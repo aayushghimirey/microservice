@@ -235,6 +235,7 @@ services:
       SPRING_DATASOURCE_USERNAME: app_user
       SPRING_DATASOURCE_PASSWORD: AppUser@1234
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      BUSINESS_SERVICE_URL: http://auth-service:8080
       FLYWAY_USER: postgres
       FLYWAY_PASSWORD: admin
       EUREKA_CLIENT_DEFAULT_ZONE: http://eureka-service:8761/eureka

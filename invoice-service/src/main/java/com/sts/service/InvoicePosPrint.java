@@ -13,8 +13,9 @@ import java.util.List;
 
 public final class InvoicePosPrint {
 
-    private static final DateTimeFormatter DATE_FMT =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").withZone(ZoneId.systemDefault());
+    private final static DateTimeFormatter DATE_FMT =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+                    .withZone(ZoneId.of("Asia/Kathmandu"));
 
     private InvoicePosPrint() {
     }

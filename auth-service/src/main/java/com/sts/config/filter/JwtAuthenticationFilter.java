@@ -2,14 +2,11 @@ package com.sts.config.filter;
 
 import com.sts.filter.TenantHolder;
 import com.sts.service.JwtService;
-import com.sts.utils.AppConstants;
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,7 +21,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.UUID;
 
-
 @Component
 @Slf4j
 @AllArgsConstructor
@@ -35,69 +31,98 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
-    private final String SUPER_ADMIN_USERNAME = "superadmin";
+    private static final String SUPER_ADMIN_USERNAME = "superadmin";
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
 
+        String path = request.getServletPath();
 
-        // public urls
-        if (pathMatcher.match("/auth/public/**", request.getServletPath()) ||
-                pathMatcher.match("/auth/super/login", request.getServletPath())) {
-            log.info("Skipping JWT filter: Match found for {}", request.getServletPath());
+        // Skip public endpoints
+        if (pathMatcher.match("/auth/public/**", path) ||
+                pathMatcher.match("/auth/super/login", path)) {
+
             filterChain.doFilter(request, response);
             return;
         }
 
         String authHeader = request.getHeader("Authorization");
+
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        String token = authHeader.substring(7);
-        log.info("Token found: {}", token);
+        String token = authHeader.substring(7).trim();
+
+        if (token.isBlank()) {
+            log.error("Empty JWT token");
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         try {
-            final String username = jwtService.extractUsername(token);
+            String username = jwtService.extractUsername(token);
 
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (username == null || username.isBlank()) {
+                log.error("JWT missing username/subject");
+                filterChain.doFilter(request, response);
+                return;
+            }
 
-            if (username != null && authentication == null) {
+            Authentication existingAuth = SecurityContextHolder.getContext().getAuthentication();
+
+            if (existingAuth == null) {
+
                 UserDetails userDetails;
 
                 if (SUPER_ADMIN_USERNAME.equals(username)) {
-                    log.info("Static SuperAdmin detected, bypassing database lookup");
-                    // Create a dummy UserDetails object for the static admin
+                    log.info("Static SuperAdmin detected");
+
                     userDetails = org.springframework.security.core.userdetails.User.builder()
                             .username(SUPER_ADMIN_USERNAME)
-                            .password("") // Password doesn't matter for token validation
-                            .roles("SUPER_ADMIN") // This adds the ROLE_ prefix automatically
+                            .password("")
+                            .roles("SUPER_ADMIN")
                             .build();
                 } else {
-                    // Regular user: load from database via UserDetailsService
                     userDetails = userDetailsService.loadUserByUsername(username);
                 }
 
                 if (jwtService.isTokenValid(token, userDetails)) {
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            userDetails.getAuthorities()
+
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(
+                                    userDetails,
+                                    null,
+                                    userDetails.getAuthorities()
+                            );
+
+                    String tenantId = jwtService.extractTenantId(token);
+
+                    if (tenantId != null && !tenantId.isBlank()) {
+                        TenantHolder.setTenantId(UUID.fromString(tenantId));
+                    }
+
+                    authToken.setDetails(
+                            new WebAuthenticationDetailsSource().buildDetails(request)
                     );
 
-                    TenantHolder.setTenantId(UUID.fromString(jwtService.extractTenantId(token)));
-
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
+
             filterChain.doFilter(request, response);
-        } catch (Exception exception) {
-            log.error("Error logging in: {}", exception.getMessage());
-            // Optionally send a 401 response here instead of just continuing the chain
-            filterChain.doFilter(request, response);
+
+        } catch (Exception ex) {
+            log.error("JWT processing failed: {}", ex.getMessage(), ex);
+
+            SecurityContextHolder.clearContext();
             TenantHolder.clear();
+
+            // optional: return 401 instead of continuing
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
     }
 }

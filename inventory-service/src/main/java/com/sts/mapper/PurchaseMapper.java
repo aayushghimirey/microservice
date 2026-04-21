@@ -64,6 +64,8 @@ public class PurchaseMapper {
                 purchase.getSubTotal(),
                 purchase.getVatAmount(),
                 purchase.getGrossTotal(),
+                purchase.getVendor() != null ? purchase.getVendor().getName() : null,
+                purchase.getVendor() != null ? purchase.getVendor().getId() : null,
                 purchase.getPurchaseItems().stream()
                         .map(this::toItemResponse)
                         .toList());

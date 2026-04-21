@@ -1,7 +1,10 @@
 package com.sts.service.impl;
 
 import com.sts.dto.request.CreatePurchaseCommand;
+import com.sts.dto.request.GetPurchaseQueryRequest;
+import com.sts.dto.response.PurchaseInfo;
 import com.sts.dto.response.PurchaseResponse;
+import com.sts.enums.DateSelection;
 import com.sts.event.StockUpdateEvent;
 import com.sts.event.factory.StockUpdateFactoryRegistry;
 import com.sts.exception.DuplicateResourceException;
@@ -21,8 +24,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 
 @Slf4j
 @Service
@@ -71,13 +82,43 @@ class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<PurchaseResponse> getAllPurchases(Pageable pageable) {
+    public Page<PurchaseResponse> getAllPurchases(GetPurchaseQueryRequest request, Pageable pageable) {
 
         rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
 
+        Specification<Purchase> purchaseSpecification = buildSpecification(request);
+
         return purchaseRepository
-                .findAll(pageable)
+                .findAll(purchaseSpecification, pageable)
                 .map(purchaseMapper::toResponse);
+    }
+
+    @Transactional(readOnly = true)
+    public PurchaseInfo getPurchaseInfo(DateSelection dateSelection) {
+
+        ZoneId zoneId = ZoneId.of("Asia/Kathmandu");
+
+        Instant instant = switch (dateSelection) {
+
+            case TODAY -> LocalDate.now(zoneId)
+                    .atStartOfDay(zoneId)
+                    .toInstant();
+
+            case WEEK -> Instant.now().minus(7, ChronoUnit.DAYS);
+
+            case MONTH -> Instant.now().minus(1, ChronoUnit.MONTHS);
+        };
+
+        BigDecimal purchaseAmountSum =
+                purchaseRepository.findPurchaseAmountSum(instant);
+
+        Long countPurchase =
+                purchaseRepository.countPurchase(instant);
+
+        return new PurchaseInfo(
+                countPurchase,
+                purchaseAmountSum != null ? purchaseAmountSum : BigDecimal.ZERO
+        );
     }
 
     // -------------------- Helpers ----------------------
@@ -95,5 +136,33 @@ class PurchaseServiceImpl implements PurchaseService {
         domainEventPublisher.publish(stockUpdateEvent);
     }
 
+
+    private Specification<Purchase> buildSpecification(GetPurchaseQueryRequest request) {
+        return (root, query, criteriaBuilder) -> {
+            var predicates = criteriaBuilder.conjunction();
+
+            if (request.invoiceNumber() != null) {
+                predicates = criteriaBuilder.and(predicates,
+                        criteriaBuilder.like(root.get("invoiceNumber"), "%" + request.invoiceNumber() + "%"));
+            }
+
+            if (request.vendorId() != null) {
+                predicates = criteriaBuilder.and(predicates,
+                        criteriaBuilder.equal(root.get("vendor").get("id"), request.vendorId()));
+            }
+
+            if (request.billingType() != null) {
+                predicates = criteriaBuilder.and(predicates,
+                        criteriaBuilder.equal(root.get("billingType"), request.billingType()));
+            }
+
+            if (request.moneyTransaction() != null) {
+                predicates = criteriaBuilder.and(predicates,
+                        criteriaBuilder.equal(root.get("moneyTransaction"), request.moneyTransaction()));
+            }
+
+            return predicates;
+        };
+    }
 
 }

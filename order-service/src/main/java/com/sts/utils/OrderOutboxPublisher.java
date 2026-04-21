@@ -75,8 +75,10 @@ public class OrderOutboxPublisher {
 
         List<OrderCreatedEvent.MenuItem> items = reservation.getReservationOrders().stream()
                 .map(item -> new OrderCreatedEvent.MenuItem(
+                        menuItemMap.get(item.getMenuItemId()).getName(),
                         item.getMenuItemId(),
                         item.getQuantity(),
+                        item.getPrice(),
                         menuItemMap.get(item.getMenuItemId()).getIngredients()
                 )).toList();
 

@@ -1,8 +1,8 @@
 package com.sts.service;
 
+import com.sts.domain.BusinessDetailResponse;
 import com.sts.dto.request.BusinessDetailRequest;
 import com.sts.dto.request.BusinessDetailUpdate;
-import com.sts.dto.response.BusinessDetailResponse;
 import com.sts.filter.TenantHolder;
 import com.sts.model.BusinessDetail;
 import com.sts.repository.BusinessDetailRepository;
@@ -10,6 +10,8 @@ import io.github.aayushghimirey.jpa_postgres_rls.core.RlsContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -62,6 +64,26 @@ public class BusinessDetailService {
                 .businessEmail(businessDetail.getBusinessEmail())
                 .build();
     }
+
+    @Transactional
+    public BusinessDetailResponse getBusinessDetailPublic(UUID tenantId) {
+
+        rlsContext.with("app.tenant_id", tenantId).apply();
+
+
+        BusinessDetail businessDetail = businessDetailRepository.findByTenantId(tenantId)
+                .orElseThrow(() -> new RuntimeException("Business detail not found"));
+
+        return BusinessDetailResponse.builder()
+                .id(businessDetail.getId())
+                .companyName(businessDetail.getCompanyName())
+                .address(businessDetail.getAddress())
+                .panNumber(businessDetail.getPanNumber())
+                .businessNumber(businessDetail.getBusinessNumber())
+                .businessEmail(businessDetail.getBusinessEmail())
+                .build();
+    }
+
 
     @Transactional
     public BusinessDetailResponse updateBusinessDetail(BusinessDetailUpdate request) {

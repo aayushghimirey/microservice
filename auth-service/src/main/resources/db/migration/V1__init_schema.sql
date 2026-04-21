@@ -6,12 +6,6 @@ CREATE TABLE tenant (
     updated_at TIMESTAMP
 );
 
-ALTER TABLE tenant ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY tenant_rls_policy ON tenant
-    USING (id = NULLIF(current_setting('app.id', true), '')::uuid)
-    WITH CHECK (true);
-
 CREATE TABLE users (
     id UUID PRIMARY KEY,
     created_date_time TIMESTAMP,
@@ -25,12 +19,4 @@ CREATE TABLE users (
     role VARCHAR(255) NOT NULL,
     permission VARCHAR(255)
 );
-
-ALTER TABLE users
-ENABLE ROW LEVEL SECURITY;
-
-
-CREATE POLICY user_isolation_policy ON users
-    USING (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid)
-    WITH CHECK (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid);
 

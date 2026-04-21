@@ -1,12 +1,14 @@
-package com.sts.dto.response;
+package com.sts.domain;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class BusinessDetailResponse {
 
     private UUID id;

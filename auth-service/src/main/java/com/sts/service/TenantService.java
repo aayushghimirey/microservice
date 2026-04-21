@@ -7,11 +7,14 @@ import com.sts.model.User;
 import com.sts.repository.TenantRepository;
 import com.sts.repository.UserRepository;
 import com.sts.utils.UserRole;
+import io.github.aayushghimirey.jpa_postgres_rls.core.RlsContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,8 +24,9 @@ public class TenantService {
     private final TenantRepository tenantRepository;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final RlsContext rlsContext;
 
-//    @Transactional
+    //    @Transactional
     public void registerTenant(TenantRequest request) {
 
         final Tenant savedTenant = this.saveTenant(userMapper.toTenantEntity(request));
@@ -31,6 +35,11 @@ public class TenantService {
 
         userRepository.save(adminUser);
 
+    }
+
+    @Transactional(readOnly = true)
+    public List<Tenant> getAllTenants() {
+        return tenantRepository.findAll();
     }
 
     private Tenant saveTenant(Tenant tenant) {
