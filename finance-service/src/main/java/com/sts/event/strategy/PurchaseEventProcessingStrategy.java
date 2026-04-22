@@ -26,6 +26,7 @@ public class PurchaseEventProcessingStrategy extends AbstractEventProcessingStra
     protected void save(PurchaseCreatedEvent event) {
 
         TenantHolder.setTenantId(event.getTenantId());
+
         rlsContext.with("app.tenant_id", event.getTenantId()).apply();
 
         if (purchaseRecordRepository.findByPurchaseId(event.getPurchaseId()).isPresent()) {

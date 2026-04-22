@@ -1,11 +1,10 @@
 package com.sts.service;
 
-import java.util.UUID;
-
+import com.sts.dto.response.StockTransactionResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.sts.dto.response.StockTransactionResponse;
+import java.util.UUID;
 
 
 public interface StockTransactionService {

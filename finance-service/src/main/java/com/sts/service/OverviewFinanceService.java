@@ -1,6 +1,6 @@
 package com.sts.service;
 
-import com.sts.dto.FinanceServiceInfo;
+import com.sts.dto.FinanceDashboardInfo;
 import com.sts.enums.DateSelection;
 import com.sts.filter.TenantHolder;
 import com.sts.repository.InvoiceRecordRepository;
@@ -27,7 +27,7 @@ public class OverviewFinanceService {
     private final RlsContext rlsContext;
 
     @Transactional
-    public FinanceServiceInfo financeServiceInfo(DateSelection dateSelection) {
+    public FinanceDashboardInfo financeDashboardInfo(DateSelection dateSelection) {
 
         rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
 
@@ -52,6 +52,6 @@ public class OverviewFinanceService {
         BigDecimal purchaseExp =
                 purchaseRecordRepository.sumGrossTotal(from);
 
-        return new FinanceServiceInfo(purchaseExp, invoiceRev, vatAmount);
+        return new FinanceDashboardInfo(purchaseExp, invoiceRev, vatAmount);
     }
 }

@@ -67,7 +67,8 @@ public class StockServiceImpl implements StockService {
         assertStockNameUnique(command.name(), null);
 
         Stock stock = stockRepository.save(stockMapper.buildStock(command));
-        // keep snapshot of the created stock for outbox event
+
+        // snapshot of the created stock for outbox event to menu service
         stockOutboxPublisher.publish(stock);
 
         return stockMapper.toResponse(stock);
@@ -79,7 +80,6 @@ public class StockServiceImpl implements StockService {
 
         rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
 
-
         assertStockNameUnique(command.name(), stockId);
 
         Stock stock = referenceResolver.getStockOrThrow(stockId);
@@ -87,7 +87,6 @@ public class StockServiceImpl implements StockService {
         stockUpdateMapper.updateStock(stock, command);
 
         Stock updated = stockRepository.save(stock);
-
 
         return stockMapper.toResponse(updated);
     }
@@ -106,6 +105,9 @@ public class StockServiceImpl implements StockService {
         StockUpdateEvent event = stockFactoryRegistry
                 .forAdjustment(variant.getId(), command.unitId(), command.quantity(), command.isAddition(), variant.getTenantId());
 
+        /*
+         * Domain event handle by StockUpdateProcessor
+         * */
         domainEventPublisher.publish(event);
     }
 
@@ -128,7 +130,6 @@ public class StockServiceImpl implements StockService {
 
         rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
 
-
         return stockVariantRepository.findAllByStockId(stockId, pageable)
                 .map(stockMapper::toVariantResponse);
     }
@@ -138,7 +139,6 @@ public class StockServiceImpl implements StockService {
     public boolean existsByVariantIdAndUnitId(UUID variantId, UUID unitId) {
 
         rlsContext.with("app.tenant_id", TenantHolder.getTenantId()).apply();
-
 
         log.info(AppConstants.Logs.VALIDATING_VARIANT_WITH_UNIT, variantId, unitId);
 

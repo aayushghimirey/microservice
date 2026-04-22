@@ -1,25 +1,23 @@
 package com.sts.controller;
 
-import java.util.List;
-import java.util.UUID;
-
+import com.sts.dto.request.CreateVendorCommand;
 import com.sts.dto.request.GetVendorQueryRequest;
 import com.sts.dto.request.UpdateVendorCommand;
-import com.sts.utils.constant.AppConstants;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import com.sts.dto.request.CreateVendorCommand;
 import com.sts.dto.response.VendorResponse;
 import com.sts.pagination.PageRequestDto;
 import com.sts.response.ApiResponse;
 import com.sts.response.AppResponse;
 import com.sts.response.PagedResponse;
 import com.sts.service.VendorService;
-
+import com.sts.utils.constant.AppConstants;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -52,10 +50,8 @@ public class VendorController {
     public ResponseEntity<PagedResponse<List<VendorResponse>>> getAllVendors(
             @ModelAttribute GetVendorQueryRequest queryRequest,
             PageRequestDto pageRequestDto) {
-
-        return AppResponse.success(
-                vendorService.getAllVendors(queryRequest, pageRequestDto.buildPageable()),
-                AppConstants.Response.FETCHED_VENDORS);
+        var vendors = vendorService.getAllVendors(queryRequest, pageRequestDto.buildPageable());
+        return AppResponse.success(vendors, AppConstants.Response.FETCHED_VENDORS);
 
     }
 

@@ -89,6 +89,8 @@ public class VendorServiceImpl implements VendorService {
         return vendorRepository.findAll(spec, pageable).map(vendorMapper::toResponse);
     }
 
+
+    // ------ private helpers --------
     private void assertVendorNameUnique(String name) {
         if (vendorRepository.existsByName(name)) {
             log.warn("Vendor with name '{}' already exists.", name);

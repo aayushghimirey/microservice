@@ -35,25 +35,17 @@ public class InvoiceEventListener {
                 event.getClass().getSimpleName());
 
         try {
-
             log.info("Processing invoice event: invoiceId={}", event.getInvoiceId());
 
-            domainEventPublisher.publish(
-                    stockUpdateFactoryRegistry.forInvoice(event)
-            );
+            // publish domains stock update event
+            domainEventPublisher.publish(stockUpdateFactoryRegistry.forInvoice(event));
 
-            log.info("Successfully processed invoice event: invoiceId={}",
-                    event.getInvoiceId());
+            log.info("Successfully processed invoice event: invoiceId={}", event.getInvoiceId());
 
             acknowledgment.acknowledge();
 
         } catch (Exception e) {
-
-            log.error("Failed to process invoice event: invoiceId={} error={}",
-                    event.getInvoiceId(),
-                    e.getMessage(),
-                    e);
-
+            log.error("Failed to process invoice event: invoiceId={} error={}", event.getInvoiceId(), e.getMessage(), e);
             throw e;
         }
     }

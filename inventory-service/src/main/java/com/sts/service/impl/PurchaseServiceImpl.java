@@ -31,7 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 
@@ -63,6 +62,7 @@ class PurchaseServiceImpl implements PurchaseService {
 
         Vendor vendor = referenceResolver.getVendorOrThrow(command.vendorId());
 
+        // validating purchase items
         command.items().forEach(item ->
                 variantUnitResolver.getVariantUnitOrThrow(item.variantId(), item.unitId()));
 
@@ -94,7 +94,7 @@ class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Transactional(readOnly = true)
-    public PurchaseInfo getPurchaseInfo(DateSelection dateSelection) {
+    public PurchaseInfo getPurchaseDashboardInfo(DateSelection dateSelection) {
 
         ZoneId zoneId = ZoneId.of("Asia/Kathmandu");
 
@@ -120,6 +120,8 @@ class PurchaseServiceImpl implements PurchaseService {
                 purchaseAmountSum != null ? purchaseAmountSum : BigDecimal.ZERO
         );
     }
+
+
 
     // -------------------- Helpers ----------------------
 

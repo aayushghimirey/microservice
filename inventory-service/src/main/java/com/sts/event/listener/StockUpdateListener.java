@@ -8,6 +8,9 @@ import com.sts.event.StockUpdateEvent;
 
 import lombok.RequiredArgsConstructor;
 
+/*
+ * Entry point for stock update
+ * */
 @Component
 @RequiredArgsConstructor
 public class StockUpdateListener {

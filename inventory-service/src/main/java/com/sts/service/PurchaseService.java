@@ -16,6 +16,6 @@ public interface PurchaseService {
 
     Page<PurchaseResponse> getAllPurchases(GetPurchaseQueryRequest request, Pageable pageable);
 
-    PurchaseInfo getPurchaseInfo(DateSelection dateSelection);
+    PurchaseInfo getPurchaseDashboardInfo(DateSelection dateSelection);
 
 }

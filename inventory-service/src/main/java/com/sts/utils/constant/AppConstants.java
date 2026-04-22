@@ -91,6 +91,7 @@ public interface AppConstants {
         String VENDOR_CREATED = "Vendor created successfully with vendorId={}";
         String VENDOR_UPDATED = "Vendor updated successfully with vendorId={}";
         String FETCHED_VENDORS = "Fetched vendors successfully, totalRecords={}";
+        String FETCHED_PURCHASE_DASHBOARD = "Fetched purchase successfully";
     }
 
     // -------------------- ERROR MESSAGES --------------------

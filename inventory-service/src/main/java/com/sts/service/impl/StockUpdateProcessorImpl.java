@@ -1,10 +1,8 @@
 package com.sts.service.impl;
 
-import com.sts.entity.OutboxEventType;
 import com.sts.event.StockUpdateEvent;
 import com.sts.exception.ResourceNotFoundException;
 import com.sts.filter.TenantHolder;
-import com.sts.model.stock.Stock;
 import com.sts.model.stock.StockTransaction;
 import com.sts.model.stock.StockVariant;
 import com.sts.model.stock.VariantUnit;
@@ -12,15 +10,12 @@ import com.sts.repository.StockTransactionRepository;
 import com.sts.repository.StockVariantRepository;
 import com.sts.repository.VariantUnitRepository;
 import com.sts.service.StockUpdateProcessor;
-import com.sts.shared.StockOutboxPublisher;
 import com.sts.utils.constant.AppConstants;
-import com.sts.utils.enums.StockUpdateSource;
 import com.sts.utils.enums.TransactionReference;
 import io.github.aayushghimirey.jpa_postgres_rls.core.RlsContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -28,6 +23,10 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+
+/*
+ * Every stock related things like deduct stock , create transaction
+ * */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -44,13 +43,14 @@ public class StockUpdateProcessorImpl implements StockUpdateProcessor {
     public void process(StockUpdateEvent event) {
 
         TenantHolder.setTenantId(event.tenantId());
-        rlsContext.with("app.tenant_id", event.tenantId()).apply();
 
+        rlsContext.with("app.tenant_id", event.tenantId()).apply();
 
         log.info("Stock UPDATE event from {}", event.transactionReference());
 
         UUID referenceId = resolveReferenceId(event);
 
+        // all variant and units found in stock update event
         Map<UUID, StockVariant> variantMap = batchFetchVariants(event.items());
         Map<UUID, VariantUnit> unitMap = batchFetchUnits(event.items());
 
@@ -58,6 +58,7 @@ public class StockUpdateProcessorImpl implements StockUpdateProcessor {
         List<StockTransaction> transactionsToSave = new ArrayList<>();
 
         for (var item : event.items()) {
+            // process for each items
             processItem(item, referenceId, variantMap, unitMap,
                     variantsToUpdate, transactionsToSave, event.transactionReference(), event.isAddition());
         }
@@ -68,26 +69,27 @@ public class StockUpdateProcessorImpl implements StockUpdateProcessor {
 
     }
 
+    // -------- private helpers ------------
+
     private Map<UUID, StockVariant> batchFetchVariants(List<StockUpdateEvent.StockUpdateItem> items) {
-        Set<UUID> ids = items.stream()
+        Set<UUID> variantIds = items.stream()
                 .map(StockUpdateEvent.StockUpdateItem::variantId)
                 .collect(Collectors.toSet());
 
-        return stockVariantRepository.findAllById(ids).stream()
+        return stockVariantRepository.findAllById(variantIds).stream()
                 .collect(Collectors.toMap(StockVariant::getId, Function.identity()));
     }
 
     private Map<UUID, VariantUnit> batchFetchUnits(List<StockUpdateEvent.StockUpdateItem> items) {
-        Set<UUID> ids = items.stream()
+        Set<UUID> unitIds = items.stream()
                 .map(StockUpdateEvent.StockUpdateItem::unitId)
                 .collect(Collectors.toSet());
 
-        return variantUnitRepository.findAllById(ids).stream()
+        return variantUnitRepository.findAllById(unitIds).stream()
                 .collect(Collectors.toMap(VariantUnit::getId, Function.identity()));
     }
 
-    // ── Processing ────────────────────────────────────────────────────────────
-
+    // Logical Processor
     private void processItem(
             StockUpdateEvent.StockUpdateItem item,
             UUID referenceId,
@@ -98,11 +100,13 @@ public class StockUpdateProcessorImpl implements StockUpdateProcessor {
             boolean isAddition
     ) {
 
+        // get variant from prev fetch
         StockVariant variant = variantMap.get(item.variantId());
         if (variant == null)
             throw new ResourceNotFoundException(
                     String.format("Variant not found: %s", item.variantId()));
 
+        // get unit from prev fetch
         VariantUnit unit = unitMap.get(item.unitId());
         if (unit == null)
             throw new ResourceNotFoundException(

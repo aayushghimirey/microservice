@@ -18,12 +18,10 @@ public interface StockService {
 
     void adjustStock(StockAdjustmentCommand command);
 
-
     Page<StockResponse> getAllQueryStock(GetStockQueryRequest queryRequest, Pageable pageable);
 
     Page<StockResponse.VariantResponse> getAllVariantByStockId(UUID stockId, Pageable pageable);
 
-    // id validators
     boolean existsByVariantIdAndUnitId(UUID variantId, UUID unitId);
 
 

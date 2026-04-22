@@ -14,7 +14,6 @@ import com.sts.utils.constant.AppConstants;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.bouncycastle.pqc.crypto.newhope.NHSecretKeyProcessor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,7 +60,7 @@ public class PurchaseController {
                 pageRequestDto.getSize());
 
         var purchases =
-                purchaseService.getAllPurchases(request,pageRequestDto.buildPageable());
+                purchaseService.getAllPurchases(request, pageRequestDto.buildPageable());
 
         log.info("Request completed: getAllPurchases totalElements={}",
                 purchases.getTotalElements());
@@ -73,7 +72,7 @@ public class PurchaseController {
 
     @GetMapping("/dashboard")
     public ResponseEntity<ApiResponse<PurchaseInfo>> getPurchaseInfo(DateSelection dateSelection) {
-        return AppResponse.success(purchaseService.getPurchaseInfo(dateSelection), "Sucess");
+        return AppResponse.success(purchaseService.getPurchaseDashboardInfo(dateSelection), AppConstants.Response.FETCHED_PURCHASE_DASHBOARD);
     }
 
 

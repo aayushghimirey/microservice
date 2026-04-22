@@ -1,19 +1,5 @@
 package com.sts.controller;
 
-import java.util.List;
-import java.util.UUID;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.sts.dto.request.CreateStockCommand;
 import com.sts.dto.request.GetStockQueryRequest;
 import com.sts.dto.request.StockAdjustmentCommand;
@@ -25,10 +11,15 @@ import com.sts.response.AppResponse;
 import com.sts.response.PagedResponse;
 import com.sts.service.StockService;
 import com.sts.utils.constant.AppConstants;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Validated
@@ -89,14 +80,11 @@ public class StockController {
         log.info("Request received: getStocks page={} size={}",
                 pageRequestDto.getPage(), pageRequestDto.getSize());
 
-        var response =
-                stockService.getAllQueryStock(queryRequest, pageRequestDto.buildPageable());
+        var response = stockService.getAllQueryStock(queryRequest, pageRequestDto.buildPageable());
 
         log.info("Request completed: getStocks totalElements={}", response.getTotalElements());
 
-        return AppResponse.success(
-                response,
-                AppConstants.Response.FETCHED_STOCKS);
+        return AppResponse.success(response, AppConstants.Response.FETCHED_STOCKS);
     }
 
     @GetMapping("/{stockId}/variants")
@@ -106,32 +94,25 @@ public class StockController {
 
         log.info("Request received: getStockVariants stockId={}", stockId);
 
-        var response =
-                stockService.getAllVariantByStockId(stockId, pageRequestDto.buildPageable());
+        var response = stockService.getAllVariantByStockId(stockId, pageRequestDto.buildPageable());
 
         log.info("Request completed: getStockVariants stockId={} totalElements={}",
                 stockId, response.getTotalElements());
 
-        return AppResponse.success(
-                response,
-                AppConstants.Response.FETCHED_STOCK_VARIANTS);
+        return AppResponse.success(response, AppConstants.Response.FETCHED_STOCK_VARIANTS);
     }
 
     @GetMapping("/variants/{variantId}/units/{unitId}/exists")
-    public ResponseEntity<ApiResponse<Boolean>> existsVariantUnit(
-            @PathVariable UUID variantId,
-            @PathVariable UUID unitId) {
+    public ResponseEntity<ApiResponse<Boolean>> existsVariantUnit(@PathVariable UUID variantId,
+                                                                  @PathVariable UUID unitId) {
 
-        log.info("Request received: existsVariantUnit variantId={} unitId={}",
-                variantId, unitId);
+        log.info("Request received: existsVariantUnit variantId={} unitId={}", variantId, unitId);
 
         var exists = stockService.existsByVariantIdAndUnitId(variantId, unitId);
 
         log.info("Request completed: existsVariantUnit variantId={} unitId={} exists={}",
                 variantId, unitId, exists);
 
-        return AppResponse.success(
-                exists,
-                AppConstants.Response.STOCK_VERIFIED);
+        return AppResponse.success(exists, AppConstants.Response.STOCK_VERIFIED);
     }
 }

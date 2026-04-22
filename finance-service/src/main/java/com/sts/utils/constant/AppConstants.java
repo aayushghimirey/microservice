@@ -8,6 +8,8 @@ public interface AppConstants {
     interface SUCCESS_MESSAGES {
         String INVOICE_FETCHED = "Invoice record fetched successfully";
         String PURCHASE_FETCHED = "Purchase record fetched successfully";
+
+        String FINANCE_DASHBOARD_FETCHED = "Finance dashboard fetched successfully";
     }
 
 

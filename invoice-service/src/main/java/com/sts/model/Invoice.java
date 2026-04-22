@@ -35,11 +35,9 @@ public class Invoice extends Audit {
     private UUID reservationId;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private MoneyTransaction paymentMethod;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private BillingType invoiceType;
 
     @Enumerated(EnumType.STRING)

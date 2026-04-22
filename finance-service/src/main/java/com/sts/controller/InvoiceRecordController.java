@@ -2,7 +2,6 @@ package com.sts.controller;
 
 import com.sts.dto.InvoiceRecordResponse;
 import com.sts.pagination.PageRequestDto;
-import com.sts.response.AppResponse;
 import com.sts.response.PagedResponse;
 import com.sts.service.FinanceService;
 import com.sts.service.interfaces.InvoiceRecordService;

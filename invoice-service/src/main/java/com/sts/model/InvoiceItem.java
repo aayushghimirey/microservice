@@ -19,7 +19,6 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
 @RowLevelSecurity
 @RlsRule(table = "invoice_item", policy = "invoice_item_tenant_policy", requiredVariable = "app.tenant_id")
 public class InvoiceItem extends Audit {
