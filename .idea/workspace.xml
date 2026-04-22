@@ -5,33 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ab18d2d-25ec-4bf1-8ae3-75379509bd42" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/event/EventProcessingFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/controller/FinanceInfoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/controller/FinanceInfoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/controller/InvoiceRecordController.java" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/controller/InvoiceRecordController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/dto/FinanceServiceInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/dto/FinanceDashboardInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/event/strategy/PurchaseEventProcessingStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/event/strategy/PurchaseEventProcessingStrategy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/service/OverviewFinanceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/service/OverviewFinanceService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/utils/constant/AppConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/finance-service/src/main/java/com/sts/utils/constant/AppConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/controller/PurchaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/controller/PurchaseController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/controller/StockController.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/controller/StockController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/controller/StockTransactionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/controller/StockTransactionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/controller/VendorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/controller/VendorController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/event/StockUpdateEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/event/StockUpdateEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/event/listener/InvoiceEventListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/event/listener/InvoiceEventListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/event/listener/StockUpdateListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/event/listener/StockUpdateListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/PurchaseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/PurchaseService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/StockService.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/StockService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/StockTransactionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/StockTransactionService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/VendorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/VendorService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/PurchaseServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/PurchaseServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/StockServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/StockServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/StockTransactionServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/StockTransactionServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/StockUpdateProcessorImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/StockUpdateProcessorImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/VendorServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/service/impl/VendorServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/utils/constant/AppConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/main/java/com/sts/utils/constant/AppConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/invoice-service/src/main/java/com/sts/model/Invoice.java" beforeDir="false" afterPath="$PROJECT_DIR$/invoice-service/src/main/java/com/sts/model/Invoice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/invoice-service/src/main/resources/db/migration/V7__added_bill_type_invoice.sql" beforeDir="false" afterPath="$PROJECT_DIR$/invoice-service/src/main/resources/db/migration/V7__added_bill_type_invoice.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/invoice-service/src/main/java/com/sts/event/listener/OrderEventListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/invoice-service/src/main/java/com/sts/event/listener/OrderEventListener.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,49 +45,49 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.ApiGatewayApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.EurekaApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.FinanceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.InventoryApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.InvoiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.MenuApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.OrderApplication.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.InvoiceEventListenerTest (1).executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.InvoiceEventListenerTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.InvoiceEventProcessingStrategyTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.InvoiceRecordServiceImplTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.InvoiceRecordServiceImplTest.should_return_normal.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PurchaseServiceImplTest.createPurchase.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PurchaseServiceImplTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StockRepositoryTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StockRepositoryTest.existsByName.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StockServiceImplTest.adjustStock.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StockServiceImplTest.createStock_shouldThrowDuplicateResourceException_whenNameExists.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StockServiceImplTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StockServiceImplTest.shouldCreateStockSuccessfully.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StockUpdateProcessorImplTest.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_directory_selection&quot;: &quot;A:/re-microservice/inventory-service/src/main/java/com/sts/shared/outbox&quot;,
-    &quot;last_opened_file_path&quot;: &quot;A:/re-microservice/order-service&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15722656&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor&quot;,
-    &quot;settings.editor.splitter.proportion&quot;: &quot;0.26358974&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.ApiGatewayApplication.executor": "Run",
+    "Application.EurekaApplication.executor": "Run",
+    "Application.FinanceApplication.executor": "Run",
+    "Application.InventoryApplication.executor": "Run",
+    "Application.InvoiceApplication.executor": "Run",
+    "Application.MenuApplication.executor": "Run",
+    "Application.OrderApplication.executor": "Run",
+    "JUnit.InvoiceEventListenerTest (1).executor": "Run",
+    "JUnit.InvoiceEventListenerTest.executor": "Run",
+    "JUnit.InvoiceEventProcessingStrategyTest.executor": "Run",
+    "JUnit.InvoiceRecordServiceImplTest.executor": "Run",
+    "JUnit.InvoiceRecordServiceImplTest.should_return_normal.executor": "Run",
+    "JUnit.PurchaseServiceImplTest.createPurchase.executor": "Run",
+    "JUnit.PurchaseServiceImplTest.executor": "Run",
+    "JUnit.StockRepositoryTest.executor": "Run",
+    "JUnit.StockRepositoryTest.existsByName.executor": "Run",
+    "JUnit.StockServiceImplTest.adjustStock.executor": "Run",
+    "JUnit.StockServiceImplTest.createStock_shouldThrowDuplicateResourceException_whenNameExists.executor": "Run",
+    "JUnit.StockServiceImplTest.executor": "Run",
+    "JUnit.StockServiceImplTest.shouldCreateStockSuccessfully.executor": "Run",
+    "JUnit.StockUpdateProcessorImplTest.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_directory_selection": "A:/re-microservice/inventory-service/src/main/java/com/sts/shared/outbox",
+    "last_opened_file_path": "C:/Users/workh/.m2/repository/org/springframework/data/spring-data-jpa",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15722656",
+    "project.structure.side.proportion": "0.2",
+    "run.configurations.included.in.services": "true",
+    "settings.editor.selected.configurable": "preferences.editor",
+    "settings.editor.splitter.proportion": "0.26358974",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.sts.service.specification" />
