@@ -37,7 +37,7 @@ public class StockTransactionController {
             @PathVariable UUID variantId,
             PageRequestDto pageRequestDto) {
 
-        var transactions = stockTransactionService.getAllTransactionByVariantId(variantId, pageRequestDto.buildPageable());
+        var transactions = stockTransactionService.getAllTransactionByVariantId(variantId, pageRequestDto.buildPageableNoSort());
 
         return AppResponse.success(transactions, AppConstants.Response.FETCHED_TRANSACTION);
     }

@@ -38,7 +38,7 @@ public class ApiGatewayApplication {
                 )
 
                 .route("auth-service", predicateSpec -> predicateSpec
-                        .path("/auth/public/**", "/auth/super/**", "/business-details/**")
+                        .path("/auth/public/**", "/auth/super/**", "/business-details/**", "/staffs/**")
                         .uri("lb://auth-service")
                 )
                 .route("inventory-service", predicateSpec -> predicateSpec
